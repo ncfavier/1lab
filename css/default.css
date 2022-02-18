@@ -281,10 +281,16 @@ table {
 
 details {
   margin-top: 1em;
-  margin-bottom: 1em;
+  margin-bottom: 1em; }
+
+details:not(.text) {
+  border-left: 5px solid #00bcd4;
+  padding-left: 1em; }
+
+details.text {
   border: 3px solid #b2ebf2;
   transition: border 0.3s ease-in-out; }
-  details > summary {
+  details.text > summary {
     list-style-type: none;
     background-color: #b2ebf2;
     border-left: 1em solid #b2ebf2;
@@ -293,30 +299,30 @@ details {
     padding-right: 1em;
     transition: background-color 0.3s ease-in-out, border-left 0.3s ease-in-out;
     cursor: pointer; }
-    details > summary:hover::after {
+    details.text > summary:hover::after {
       text-decoration: underline; }
-    details > summary::after {
+    details.text > summary::after {
       content: 'read more';
       font-style: italic;
       margin-left: 0.223em;
       color: black; }
-    details > summary > :nth-child(1) {
+    details.text > summary > :nth-child(1) {
       margin-top: 0; }
-  details[open] {
+  details.text[open] {
     border: 3px solid #80deea; }
-    details[open] summary {
+    details.text[open] summary {
       border-left: 1em solid #80deea;
       background-color: #80deea; }
-      details[open] summary::after {
+      details.text[open] summary::after {
         content: 'read less'; }
-  details:not([open]):hover {
+  details.text:not([open]):hover {
     border: 3px solid #80deea; }
-  details:not([open]) summary:hover {
+  details.text:not([open]) summary:hover {
     border-left: 1em solid #80deea;
     background-color: #80deea; }
-    details:not([open]) summary:hover::after {
+    details.text:not([open]) summary:hover::after {
       text-decoration: underline; }
-  details > *:not(summary) {
+  details.text > *:not(summary) {
     margin-left: 1em;
     margin-right: 1em; }
 
