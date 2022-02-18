@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Agda,categories,topos" />
+
+  <title>…at.Functor.Adjoint.Monad - 1Lab</title>
+
+  <link rel="stylesheet" href="/css/default.css" />
+  <link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/css/agda-cats.css" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="…at.Functor.Adjoint.Monad - 1Lab" />
+  <meta name="twitter:image" content="https://1lab.dev/static/cube-128x.png" />
+
+  <meta name="og:title" content="…at.Functor.Adjoint.Monad - 1Lab" />
+  <meta name="og:image" content="https://1lab.dev/static/cube-128x.png" />
+  <meta name="og:site-name" content="1Lab" />
+  <meta name="og:type" content="website" />
+
+    <meta name="og:description" content="A formalised, explorable online resource for Homotopy Type Theory." />
+  <meta name="twitter:description" content="A formalised, explorable online resource for Homotopy Type Theory." />
+  <meta name="description" content="A formalised, explorable online resource for Homotopy Type Theory." />
+  
+  <script src="/equations.js"></script>
+  <script src="/highlight-hover.js"></script>
+
+  <noscript>
+    <style>
+      body span.reasoning-step .as-written {
+        display: inline;
+      }
+
+      body span.reasoning-step .alternate {
+        display: none;
+      }
+    </style>
+  </noscript>
+</head>
+
+<body>
+<main>
+<div id="post-toc-container" style="padding-left: 1em; padding-right: 1em;">
+
+  <!-- Table of contents (only if the page has a table of contents) -->
+    <aside id="toc">
+    <div id="toc-container" style="min-width: 10em; font-size: 15pt;">
+      <!-- Title for the page -->
+      <h3 class="Agda" style="margin-top: 0; margin-bottom: 0; white-space: pre;">
+                <a class="Module">…at.Functor.Adjoint.Monad</a>
+              </h3>
+
+      <!-- Cube logo -->
+      <img alt="1Lab" src="/static/cube-72x.png" style="display: block; margin-bottom: 1em; margin: auto;" width="32px" height="32px" />
+
+      <!-- Actual table of contents (separated from the rest by
+      horizontal rules) -->
+      <hr />
+      <ul>
+      <li><a href="#the-monad-from-an-adjunction"><a href="#the-monad-from-an-adjunction" class="header-link">The Monad from an Adjunction<span class="header-link-emoji">🔗</span></a></a></li>
+      </ul>
+      <hr />
+
+      <!-- Sidebar controls -->
+      <div style="display: flex; gap: 0.25em; flex-flow: row wrap;">
+        <!-- Sidebar equations control -->
+        <span class="equations" style="display: flex; align-items: center; gap: 0.25em; flex-wrap: nowrap;">
+          <input name="sidebar-eqns" type="checkbox" class="equations" id="sidebar-eqns">
+          <label for="sidebar-eqns">Equations</label>
+        </span>
+
+        <!-- Sidebar fonts control -->
+        <span style="display: flex; align-items: center; gap: 0.25em; flex-wrap: nowrap;">
+          <input name="sidebar-font" type="checkbox" id="toggle-fonts">
+          <label for="toggle-fonts">Serif Font</label>
+        </span>
+      </div>
+
+      <hr />
+
+      <!-- Navbar navigation (lol) -->
+      <div id="return" style="white-space: nowrap;">
+              <a href="index.html">️back to index</a> <br />
+              <a href="all-pages.html">view all pages</a> <br />
+        <a href="https://github.com/plt-amy/cubical-1lab/blob/bc12ed4aea8cfe97b599ff4c04db5f254f57217d/src/Cat/Functor/Adjoint/Monad.lagda.md">link to source</a> <br />
+                <hr /> <div class="author-list">Written by Amélia Liao</div> <br />
+              </div>
+    </div>
+  </aside>
+  
+  <article>
+    <!-- Article navigation (narrow screens only) -->
+    <div class="narrow-only" id="article-nav">
+      <!-- Index return anchor (only if the page is not the index) -->
+            <div id="return">
+        <a href="index.html">️back to index</a>
+      </div>
+      
+      <!-- Font toggle checkbox -->
+      <span class="equations" style="display: flex; gap: 0.25em; flex-wrap: nowrap;">
+        <input name="navbar-eqns" type="checkbox" class="equations" id="navbar-eqns">
+        <label for="navbar-eqns">Equations</label>
+      </span>
+    </div>
+
+<pre class="Agda"><a id="9" class="Keyword">open</a> <a id="14" class="Keyword">import</a> <a id="21" href="Cat.Functor.Adjoint.html" class="Module">Cat.Functor.Adjoint</a>
+<a id="41" class="Keyword">open</a> <a id="46" class="Keyword">import</a> <a id="53" href="Cat.Prelude.html" class="Module">Cat.Prelude</a>
+<a id="65" class="Keyword">open</a> <a id="70" class="Keyword">import</a> <a id="77" href="Cat.Monad.html" class="Module">Cat.Monad</a>
+
+<a id="88" class="Keyword">open</a> <a data-type="(C : Precategory o₁ h₁) (D : Precategory o₂ h₂) →
+Type (o₁ ⊔ h₁ ⊔ o₂ ⊔ h₂)" id="93" href="Cat.Base.html#6604" class="Module">Functor</a>
+<a id="101" class="Keyword">open</a> <a data-type="Type (o ⊔ h)" id="106" href="Cat.Monad.html#708" class="Module">Monad</a>
+<a id="112" class="Keyword">open</a> <a data-type="(F G : Functor C D) → Type (o₁ ⊔ h₁ ⊔ h₂)" id="117" href="Cat.Base.html#10721" class="Module Operator">_=&gt;_</a>
+</pre>
+<h1 id="the-monad-from-an-adjunction"><a href="#the-monad-from-an-adjunction" class="header-link">The Monad from an Adjunction<span class="header-link-emoji">🔗</span></a></h1>
+<pre class="Agda"><a id="163" class="Keyword">module</a>
+  <a id="172" href="Cat.Functor.Adjoint.Monad.html" class="Module">Cat.Functor.Adjoint.Monad</a>
+  <a id="200" class="Symbol">{</a><a id="201" href="Cat.Functor.Adjoint.Monad.html#201" class="Bound">o₁</a> <a id="204" href="Cat.Functor.Adjoint.Monad.html#204" class="Bound">h₁</a> <a id="207" href="Cat.Functor.Adjoint.Monad.html#207" class="Bound">o₂</a> <a id="210" href="Cat.Functor.Adjoint.Monad.html#210" class="Bound">h₂</a> <a id="213" class="Symbol">:</a> <a id="215" class="Symbol">_}</a>
+  <a id="220" class="Symbol">{</a><a id="221" href="Cat.Functor.Adjoint.Monad.html#221" class="Bound">C</a> <a id="223" class="Symbol">:</a> <a data-type="(o h : Level) → Type (lsuc o ⊔ lsuc h)" id="225" href="Cat.Base.html#611" class="Record">Precategory</a> <a id="237" href="Cat.Functor.Adjoint.Monad.html#201" class="Bound">o₁</a> <a id="240" href="Cat.Functor.Adjoint.Monad.html#204" class="Bound">h₁</a><a id="242" class="Symbol">}</a>
+  <a id="246" class="Symbol">{</a><a id="247" href="Cat.Functor.Adjoint.Monad.html#247" class="Bound">D</a> <a id="249" class="Symbol">:</a> <a data-type="(o h : Level) → Type (lsuc o ⊔ lsuc h)" id="251" href="Cat.Base.html#611" class="Record">Precategory</a> <a id="263" href="Cat.Functor.Adjoint.Monad.html#207" class="Bound">o₂</a> <a id="266" href="Cat.Functor.Adjoint.Monad.html#210" class="Bound">h₂</a><a id="268" class="Symbol">}</a>
+  <a id="272" class="Symbol">{</a><a id="273" href="Cat.Functor.Adjoint.Monad.html#273" class="Bound">L</a> <a id="275" class="Symbol">:</a> <a data-type="(C : Precategory o₁ h₁) (D : Precategory o₂ h₂) →
+Type (o₁ ⊔ h₁ ⊔ o₂ ⊔ h₂)" id="277" href="Cat.Base.html#6604" class="Record">Functor</a> <a id="285" href="Cat.Functor.Adjoint.Monad.html#221" class="Bound">C</a> <a id="287" href="Cat.Functor.Adjoint.Monad.html#247" class="Bound">D</a><a id="288" class="Symbol">}</a> <a id="290" class="Symbol">{</a><a id="291" href="Cat.Functor.Adjoint.Monad.html#291" class="Bound">R</a> <a id="293" class="Symbol">:</a> <a data-type="(C : Precategory o₁ h₁) (D : Precategory o₂ h₂) →
+Type (o₁ ⊔ h₁ ⊔ o₂ ⊔ h₂)" id="295" href="Cat.Base.html#6604" class="Record">Functor</a> <a id="303" href="Cat.Functor.Adjoint.Monad.html#247" class="Bound">D</a> <a id="305" href="Cat.Functor.Adjoint.Monad.html#221" class="Bound">C</a><a id="306" class="Symbol">}</a>
+  <a id="310" class="Symbol">(</a><a id="311" href="Cat.Functor.Adjoint.Monad.html#311" class="Bound">L⊣R</a> <a id="315" class="Symbol">:</a> <a id="317" href="Cat.Functor.Adjoint.Monad.html#273" class="Bound">L</a> <a data-type="(L : Functor C D) (R₁ : Functor D C) → Type (C.o ⊔ C.h ⊔ D.o ⊔ D.h)" id="319" href="Cat.Functor.Adjoint.html#1898" class="Record Operator">⊣</a> <a id="321" href="Cat.Functor.Adjoint.Monad.html#291" class="Bound">R</a><a id="322" class="Symbol">)</a>
+  <a id="326" class="Keyword">where</a>
+
+<a id="333" class="Keyword">private</a>
+  <a id="343" class="Keyword">module</a> <a id="C"></a><a id="350" href="Cat.Functor.Adjoint.Monad.html#350" class="Module">C</a> <a id="352" class="Symbol">=</a> <a data-type="(o h : Level) → Type (lsuc o ⊔ lsuc h)" id="354" href="Cat.Base.html#611" class="Module">Precategory</a> <a id="366" href="Cat.Functor.Adjoint.Monad.html#221" class="Bound">C</a>
+  <a id="370" class="Keyword">module</a> <a id="D"></a><a id="377" href="Cat.Functor.Adjoint.Monad.html#377" class="Module">D</a> <a id="379" class="Symbol">=</a> <a data-type="(o h : Level) → Type (lsuc o ⊔ lsuc h)" id="381" href="Cat.Base.html#611" class="Module">Precategory</a> <a id="393" href="Cat.Functor.Adjoint.Monad.html#247" class="Bound">D</a>
+  <a id="397" class="Keyword">module</a> <a id="L"></a><a id="404" href="Cat.Functor.Adjoint.Monad.html#404" class="Module">L</a> <a id="406" class="Symbol">=</a> <a data-type="(C : Precategory o₁ h₁) (D : Precategory o₂ h₂) →
+Type (o₁ ⊔ h₁ ⊔ o₂ ⊔ h₂)" id="408" href="Cat.Base.html#6604" class="Module">Functor</a> <a id="416" href="Cat.Functor.Adjoint.Monad.html#273" class="Bound">L</a>
+  <a id="420" class="Keyword">module</a> <a id="R"></a><a id="427" href="Cat.Functor.Adjoint.Monad.html#427" class="Module">R</a> <a id="429" class="Symbol">=</a> <a data-type="(C : Precategory o₁ h₁) (D : Precategory o₂ h₂) →
+Type (o₁ ⊔ h₁ ⊔ o₂ ⊔ h₂)" id="431" href="Cat.Base.html#6604" class="Module">Functor</a> <a id="439" href="Cat.Functor.Adjoint.Monad.html#291" class="Bound">R</a>
+  <a id="443" class="Keyword">module</a> <a id="adj"></a><a id="450" href="Cat.Functor.Adjoint.Monad.html#450" class="Module">adj</a> <a id="454" class="Symbol">=</a> <a data-type="(L : Functor C D) (R₁ : Functor D C) → Type (C.o ⊔ C.h ⊔ D.o ⊔ D.h)" id="456" href="Cat.Functor.Adjoint.html#1898" class="Module Operator">_⊣_</a> <a id="460" href="Cat.Functor.Adjoint.Monad.html#311" class="Bound">L⊣R</a>
+</pre>
+<p>Every adjunction <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>⊣</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">L \dashv R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> gives rise to a monad, where the underlying functor is <span style="white-space: nowrap;"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>∘</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">R \circ L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∘</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span>.</span></p>
+<pre class="Agda"><a id="Adjunction→Monad"></a><a data-type="(L⊣R : L ⊣ R₁) → Monad" id="572" href="Cat.Functor.Adjoint.Monad.html#572" class="Function">Adjunction→Monad</a> <a id="589" class="Symbol">:</a> <a data-type="Type (o ⊔ h)" id="591" href="Cat.Monad.html#708" class="Record">Monad</a>
+<a data-type="(L⊣R : L ⊣ R₁) → Monad" id="597" href="Cat.Functor.Adjoint.Monad.html#572" class="Function">Adjunction→Monad</a> <a id="614" class="Symbol">.</a><a data-type="Monad → Functor C C" id="615" href="Cat.Monad.html#765" class="Field">M</a> <a id="617" class="Symbol">=</a> <a id="619" href="Cat.Functor.Adjoint.Monad.html#291" class="Bound">R</a> <a data-type="Functor D E → Functor C D → Functor C E" id="621" href="Cat.Base.html#8511" class="Function Operator">F∘</a> <a id="624" href="Cat.Functor.Adjoint.Monad.html#273" class="Bound">L</a>
+</pre>
+<p>The unit of the monad is just adjunction monad, and the multiplication comes from the counit.</p>
+<pre class="Agda"><a data-type="(L⊣R : L ⊣ R₁) → Monad" id="730" href="Cat.Functor.Adjoint.Monad.html#572" class="Function">Adjunction→Monad</a> <a id="747" class="Symbol">.</a><a data-type="(r : Monad) → Id =&gt; r .M" id="748" href="Cat.Monad.html#788" class="Field">unit</a> <a id="753" class="Symbol">=</a> <a data-type="L ⊣ R₁ → Id =&gt; (R₁ F∘ L)" id="755" href="Cat.Functor.Adjoint.html#2048" class="Field">adj.unit</a>
+<a data-type="(L⊣R : L ⊣ R₁) → Monad" id="764" href="Cat.Functor.Adjoint.Monad.html#572" class="Function">Adjunction→Monad</a> <a id="781" class="Symbol">.</a><a data-type="(r : Monad) → (r .M F∘ r .M) =&gt; r .M" id="782" href="Cat.Monad.html#807" class="Field">mult</a> <a id="787" class="Symbol">=</a> <a data-type="(η : (x : C .Ob) → D .Hom (₀ F x) (₀ G x))
+(is-natural
+ : (x y : C .Ob) (f : C .Hom x y) →
+   D ._∘_ (η y) (₁ F f) ≡ D ._∘_ (₁ G f) (η x)) →
+F =&gt; G" id="789" href="Cat.Base.html#10913" class="InductiveConstructor">NT</a> <a id="792" class="Symbol">(λ</a> <a id="795" href="Cat.Functor.Adjoint.Monad.html#795" class="Bound">x</a> <a id="797" class="Symbol">→</a> <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="799" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="803" class="Symbol">(</a><a data-type="F =&gt; G → (x : C .Ob) → D .Hom (₀ F x) (₀ G x)" id="804" href="Cat.Base.html#11272" class="Field">η</a> <a data-type="L ⊣ R₁ → (L F∘ R₁) =&gt; Id" id="806" href="Cat.Functor.Adjoint.html#2076" class="Field">adj.counit</a> <a id="817" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Ob → D .Ob" id="818" href="Cat.Base.html#8129" class="Function">L.₀</a> <a id="822" href="Cat.Functor.Adjoint.Monad.html#795" class="Bound">x</a><a id="823" class="Symbol">)))</a> <a id="827" class="Symbol">λ</a> <a id="829" href="Cat.Functor.Adjoint.Monad.html#829" class="Bound">x</a> <a id="831" href="Cat.Functor.Adjoint.Monad.html#831" class="Bound">y</a> <a id="833" href="Cat.Functor.Adjoint.Monad.html#833" class="Bound">f</a> <a id="835" class="Symbol">→</a>
+  <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="839" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="843" class="Symbol">(</a><a data-type="(r : L ⊣ R₁) (x : D .Ob) → D .Hom (₀ (L F∘ R₁) x) (₀ Id x)" id="844" href="Cat.Functor.Adjoint.html#2172" class="Function">adj.counit.ε</a> <a id="857" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Ob → D .Ob" id="858" href="Cat.Base.html#8129" class="Function">L.₀</a> <a id="862" href="Cat.Functor.Adjoint.Monad.html#831" class="Bound">y</a><a id="863" class="Symbol">))</a> <a data-type="(r : Precategory o h) → r .Hom y z → r .Hom x y → r .Hom x z" id="866" href="Cat.Base.html#2898" class="Function Operator">C.∘</a> <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="870" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="874" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="875" href="Cat.Base.html#8210" class="Function">L.₁</a> <a id="879" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="880" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="884" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="885" href="Cat.Base.html#8210" class="Function">L.₁</a> <a id="889" href="Cat.Functor.Adjoint.Monad.html#833" class="Bound">f</a><a id="890" class="Symbol">)))</a> <span class="reasoning-step"><span class="as-written Function"><a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="894" href="1Lab.Path.html#46757" class="Function">≡⟨</a> <a data-type="x ≡ y → y ≡ x" id="897" href="1Lab.Path.html#10628" class="Function">sym</a> <a id="901" class="Symbol">(</a><a data-type="(r : Functor C D) (f : C .Hom y z) (g : C .Hom x y) →
+r .F₁ (C ._∘_ f g) ≡ (D ∘ r .F₁ f) (r .F₁ g)" id="902" href="Cat.Base.html#7785" class="Function">R.F-∘</a> <a id="908" class="Symbol">_</a> <a id="910" class="Symbol">_)</a> <a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="913" href="1Lab.Path.html#46757" class="Function">⟩</a></span><span class="alternate Function">≡</span></span>
+  <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="917" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="921" class="Symbol">(</a><a data-type="(r : L ⊣ R₁) (x : D .Ob) → D .Hom (₀ (L F∘ R₁) x) (₀ Id x)" id="922" href="Cat.Functor.Adjoint.html#2172" class="Function">adj.counit.ε</a> <a id="935" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Ob → D .Ob" id="936" href="Cat.Base.html#8129" class="Function">L.₀</a> <a id="940" href="Cat.Functor.Adjoint.Monad.html#831" class="Bound">y</a><a id="941" class="Symbol">)</a> <a data-type="(r : Precategory o h) → r .Hom y z → r .Hom x y → r .Hom x z" id="943" href="Cat.Base.html#2898" class="Function Operator">D.∘</a> <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="947" href="Cat.Base.html#8210" class="Function">L.₁</a> <a id="951" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="952" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="956" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="957" href="Cat.Base.html#8210" class="Function">L.₁</a> <a id="961" href="Cat.Functor.Adjoint.Monad.html#833" class="Bound">f</a><a id="962" class="Symbol">)))</a>       <span class="reasoning-step"><span class="as-written Function"><a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="972" href="1Lab.Path.html#46757" class="Function">≡⟨</a> <a data-type="(f : (x : A) → B₁ x) (p : x ≡ y) →
+PathP (λ i → B₁ (p i)) (f x) (f y)" id="975" href="1Lab.Path.html#20807" class="Function">ap</a> <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="978" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="982" class="Symbol">(</a><a data-type="(r : F =&gt; G) (x y : C .Ob) (f : C .Hom x y) →
+D ._∘_ (r .η y) (₁ F f) ≡ D ._∘_ (₁ G f) (r .η x)" id="983" href="Cat.Base.html#11850" class="Function">adj.counit.is-natural</a> <a id="1005" class="Symbol">_</a> <a id="1007" class="Symbol">_</a> <a id="1009" class="Symbol">_)</a> <a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1012" href="1Lab.Path.html#46757" class="Function">⟩</a></span><span class="alternate Function">≡</span></span>
+  <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1016" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="1020" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1021" href="Cat.Base.html#8210" class="Function">L.₁</a> <a id="1025" href="Cat.Functor.Adjoint.Monad.html#833" class="Bound">f</a> <a data-type="(r : Precategory o h) → r .Hom y z → r .Hom x y → r .Hom x z" id="1027" href="Cat.Base.html#2898" class="Function Operator">D.∘</a> <a data-type="(r : L ⊣ R₁) (x : D .Ob) → D .Hom (₀ (L F∘ R₁) x) (₀ Id x)" id="1031" href="Cat.Functor.Adjoint.html#2172" class="Function">adj.counit.ε</a> <a id="1044" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Ob → D .Ob" id="1045" href="Cat.Base.html#8129" class="Function">L.₀</a> <a id="1049" href="Cat.Functor.Adjoint.Monad.html#829" class="Bound">x</a><a id="1050" class="Symbol">))</a>                   <span class="reasoning-step"><span class="as-written Function"><a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1071" href="1Lab.Path.html#46757" class="Function">≡⟨</a> <a data-type="(r : Functor C D) (f : C .Hom y z) (g : C .Hom x y) →
+r .F₁ (C ._∘_ f g) ≡ (D ∘ r .F₁ f) (r .F₁ g)" id="1074" href="Cat.Base.html#7785" class="Function">R.F-∘</a> <a id="1080" class="Symbol">_</a> <a id="1082" class="Symbol">_</a> <a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1084" href="1Lab.Path.html#46757" class="Function">⟩</a></span><span class="alternate Function">≡</span></span>
+  <a id="1088" class="Symbol">_</a>                                                      <a data-type="(x : A) → x ≡ x" id="1143" href="1Lab.Path.html#47085" class="Function Operator">∎</a>
+</pre>
+<p>The monad laws follow from the zig-zag identities. In fact, the <span class="Agda"><a data-type="(r : Monad) → (C ∘ η (r .mult) x) (r .unit .η (F₀ (r .M) x)) ≡ id C" href="Cat.Monad.html#1150" class="Field">right-ident</a></span>ity law is exactly the <span class="Agda"><a data-type="(r : L ⊣ R₁) →
+C ._∘_ (F₁ R₁ (η (r .counit) B₁)) (r .unit .η (F₀ R₁ B₁)) ≡ C .id" href="Cat.Functor.Adjoint.html#2712" class="Field">zag</a></span> identity.</p>
+<pre class="Agda"><a data-type="(L⊣R : L ⊣ R₁) → Monad" id="1301" href="Cat.Functor.Adjoint.Monad.html#572" class="Function">Adjunction→Monad</a> <a id="1318" class="Symbol">.</a><a data-type="(r : Monad) → (C ∘ η (r .mult) x) (r .unit .η (F₀ (r .M) x)) ≡ id C" id="1319" href="Cat.Monad.html#1150" class="Field">right-ident</a> <a id="1331" class="Symbol">{</a><a id="1332" href="Cat.Functor.Adjoint.Monad.html#1332" class="Bound">x</a><a id="1333" class="Symbol">}</a> <a id="1335" class="Symbol">=</a> <a data-type="(r : L ⊣ R₁) →
+C ._∘_ (F₁ R₁ (η (r .counit) B₁)) (r .unit .η (F₀ R₁ B₁)) ≡ C .id" id="1337" href="Cat.Functor.Adjoint.html#2712" class="Field">adj.zag</a>
+</pre>
+<p>The others are slightly more involved.</p>
+<pre class="Agda"><a data-type="(L⊣R : L ⊣ R₁) → Monad" id="1394" href="Cat.Functor.Adjoint.Monad.html#572" class="Function">Adjunction→Monad</a> <a id="1411" class="Symbol">.</a><a data-type="(r : Monad) → (C ∘ η (r .mult) x) (F₁ (r .M) (r .unit .η x)) ≡ id C" id="1412" href="Cat.Monad.html#1090" class="Field">left-ident</a> <a id="1423" class="Symbol">=</a>
+  <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1427" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="1431" class="Symbol">(</a><a data-type="(r : L ⊣ R₁) (x : D .Ob) → D .Hom (₀ (L F∘ R₁) x) (₀ Id x)" id="1432" href="Cat.Functor.Adjoint.html#2172" class="Function">adj.counit.ε</a> <a id="1445" class="Symbol">_)</a> <a data-type="(r : Precategory o h) → r .Hom y z → r .Hom x y → r .Hom x z" id="1448" href="Cat.Base.html#2898" class="Function Operator">C.∘</a> <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1452" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="1456" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1457" href="Cat.Base.html#8210" class="Function">L.₁</a> <a id="1461" class="Symbol">(</a><a data-type="F =&gt; G → (x : C .Ob) → D .Hom (₀ F x) (₀ G x)" id="1462" href="Cat.Base.html#11272" class="Function">adj.unit.η</a> <a id="1473" class="Symbol">_))</a> <span class="reasoning-step"><span class="as-written Function"><a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1477" href="1Lab.Path.html#46757" class="Function">≡⟨</a> <a data-type="x ≡ y → y ≡ x" id="1480" href="1Lab.Path.html#10628" class="Function">sym</a> <a id="1484" class="Symbol">(</a><a data-type="(r : Functor C D) (f : C .Hom y z) (g : C .Hom x y) →
+r .F₁ (C ._∘_ f g) ≡ (D ∘ r .F₁ f) (r .F₁ g)" id="1485" href="Cat.Base.html#7785" class="Function">R.F-∘</a> <a id="1491" class="Symbol">_</a> <a id="1493" class="Symbol">_)</a> <a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1496" href="1Lab.Path.html#46757" class="Function">⟩</a></span><span class="alternate Function">≡</span></span>
+  <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1500" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="1504" class="Symbol">(</a><a data-type="(r : L ⊣ R₁) (x : D .Ob) → D .Hom (₀ (L F∘ R₁) x) (₀ Id x)" id="1505" href="Cat.Functor.Adjoint.html#2172" class="Function">adj.counit.ε</a> <a id="1518" class="Symbol">_</a> <a data-type="(r : Precategory o h) → r .Hom y z → r .Hom x y → r .Hom x z" id="1520" href="Cat.Base.html#2898" class="Function Operator">D.∘</a> <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1524" href="Cat.Base.html#8210" class="Function">L.₁</a> <a id="1528" class="Symbol">(</a><a data-type="F =&gt; G → (x : C .Ob) → D .Hom (₀ F x) (₀ G x)" id="1529" href="Cat.Base.html#11272" class="Function">adj.unit.η</a> <a id="1540" class="Symbol">_))</a>       <span class="reasoning-step"><span class="as-written Function"><a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1550" href="1Lab.Path.html#46757" class="Function">≡⟨</a> <a data-type="(f : (x : A) → B₁ x) (p : x ≡ y) →
+PathP (λ i → B₁ (p i)) (f x) (f y)" id="1553" href="1Lab.Path.html#20807" class="Function">ap</a> <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1556" href="Cat.Base.html#8210" class="Function">R.₁</a> <a data-type="(r : L ⊣ R₁) →
+D ._∘_ (η (r .counit) (F₀ L A)) (F₁ L (r .unit .η A)) ≡ D .id" id="1560" href="Cat.Functor.Adjoint.html#2649" class="Field">adj.zig</a> <a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1568" href="1Lab.Path.html#46757" class="Function">⟩</a></span><span class="alternate Function">≡</span></span>
+  <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1572" href="Cat.Base.html#8210" class="Function">R.₁</a> <a data-type="(r : Precategory o h) → r .Hom x x" id="1576" href="Cat.Base.html#2868" class="Function">D.id</a>                                          <span class="reasoning-step"><span class="as-written Function"><a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1622" href="1Lab.Path.html#46757" class="Function">≡⟨</a> <a data-type="(r : Functor C D) → r .F₁ (C .id) ≡ id D" id="1625" href="Cat.Base.html#7745" class="Function">R.F-id</a> <a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1632" href="1Lab.Path.html#46757" class="Function">⟩</a></span><span class="alternate Function">≡</span></span>
+  <a data-type="(r : Precategory o h) → r .Hom x x" id="1636" href="Cat.Base.html#2868" class="Function">C.id</a>                                              <a data-type="(x : A) → x ≡ x" id="1686" href="1Lab.Path.html#47085" class="Function Operator">∎</a>
+
+<a data-type="(L⊣R : L ⊣ R₁) → Monad" id="1689" href="Cat.Functor.Adjoint.Monad.html#572" class="Function">Adjunction→Monad</a> <a id="1706" class="Symbol">.</a><a data-type="(r : Monad) →
+(C ∘ η (r .mult) x) (F₁ (r .M) (η (r .mult) x)) ≡
+(C ∘ η (r .mult) x) (η (r .mult) (F₀ (r .M) x))" id="1707" href="Cat.Monad.html#1221" class="Field">mult-assoc</a> <a id="1718" class="Symbol">=</a>
+  <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1722" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="1726" class="Symbol">(</a><a data-type="(r : L ⊣ R₁) (x : D .Ob) → D .Hom (₀ (L F∘ R₁) x) (₀ Id x)" id="1727" href="Cat.Functor.Adjoint.html#2172" class="Function">adj.counit.ε</a> <a id="1740" class="Symbol">_)</a> <a data-type="(r : Precategory o h) → r .Hom y z → r .Hom x y → r .Hom x z" id="1743" href="Cat.Base.html#2898" class="Function Operator">C.∘</a> <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1747" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="1751" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1752" href="Cat.Base.html#8210" class="Function">L.₁</a> <a id="1756" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1757" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="1761" class="Symbol">(</a><a data-type="(r : L ⊣ R₁) (x : D .Ob) → D .Hom (₀ (L F∘ R₁) x) (₀ Id x)" id="1762" href="Cat.Functor.Adjoint.html#2172" class="Function">adj.counit.ε</a> <a id="1775" class="Symbol">_)))</a>   <span class="reasoning-step"><span class="as-written Function"><a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1782" href="1Lab.Path.html#46757" class="Function">≡⟨</a> <a data-type="x ≡ y → y ≡ x" id="1785" href="1Lab.Path.html#10628" class="Function">sym</a> <a id="1789" class="Symbol">(</a><a data-type="(r : Functor C D) (f : C .Hom y z) (g : C .Hom x y) →
+r .F₁ (C ._∘_ f g) ≡ (D ∘ r .F₁ f) (r .F₁ g)" id="1790" href="Cat.Base.html#7785" class="Function">R.F-∘</a> <a id="1796" class="Symbol">_</a> <a id="1798" class="Symbol">_)</a> <a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1801" href="1Lab.Path.html#46757" class="Function">⟩</a></span><span class="alternate Function">≡</span></span>
+  <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1805" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="1809" class="Symbol">(</a><a data-type="(r : L ⊣ R₁) (x : D .Ob) → D .Hom (₀ (L F∘ R₁) x) (₀ Id x)" id="1810" href="Cat.Functor.Adjoint.html#2172" class="Function">adj.counit.ε</a> <a id="1823" class="Symbol">_</a> <a data-type="(r : Precategory o h) → r .Hom y z → r .Hom x y → r .Hom x z" id="1825" href="Cat.Base.html#2898" class="Function Operator">D.∘</a> <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1829" href="Cat.Base.html#8210" class="Function">L.₁</a> <a id="1833" class="Symbol">(</a><a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1834" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="1838" class="Symbol">(</a><a data-type="(r : L ⊣ R₁) (x : D .Ob) → D .Hom (₀ (L F∘ R₁) x) (₀ Id x)" id="1839" href="Cat.Functor.Adjoint.html#2172" class="Function">adj.counit.ε</a> <a id="1852" class="Symbol">_)))</a>         <span class="reasoning-step"><span class="as-written Function"><a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1865" href="1Lab.Path.html#46757" class="Function">≡⟨</a> <a data-type="(f : (x : A) → B₁ x) (p : x ≡ y) →
+PathP (λ i → B₁ (p i)) (f x) (f y)" id="1868" href="1Lab.Path.html#20807" class="Function">ap</a> <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1871" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="1875" class="Symbol">(</a><a data-type="(r : F =&gt; G) (x y : C .Ob) (f : C .Hom x y) →
+D ._∘_ (r .η y) (₁ F f) ≡ D ._∘_ (₁ G f) (r .η x)" id="1876" href="Cat.Base.html#11850" class="Function">adj.counit.is-natural</a> <a id="1898" class="Symbol">_</a> <a id="1900" class="Symbol">_</a> <a id="1902" class="Symbol">_)</a> <a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1905" href="1Lab.Path.html#46757" class="Function">⟩</a></span><span class="alternate Function">≡</span></span>
+  <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1909" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="1913" class="Symbol">(</a><a data-type="(r : L ⊣ R₁) (x : D .Ob) → D .Hom (₀ (L F∘ R₁) x) (₀ Id x)" id="1914" href="Cat.Functor.Adjoint.html#2172" class="Function">adj.counit.ε</a> <a id="1927" class="Symbol">_</a> <a data-type="(r : Precategory o h) → r .Hom y z → r .Hom x y → r .Hom x z" id="1929" href="Cat.Base.html#2898" class="Function Operator">D.∘</a> <a data-type="(r : L ⊣ R₁) (x : D .Ob) → D .Hom (₀ (L F∘ R₁) x) (₀ Id x)" id="1933" href="Cat.Functor.Adjoint.html#2172" class="Function">adj.counit.ε</a> <a id="1946" class="Symbol">_)</a>                     <span class="reasoning-step"><span class="as-written Function"><a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1969" href="1Lab.Path.html#46757" class="Function">≡⟨</a> <a data-type="(r : Functor C D) (f : C .Hom y z) (g : C .Hom x y) →
+r .F₁ (C ._∘_ f g) ≡ (D ∘ r .F₁ f) (r .F₁ g)" id="1972" href="Cat.Base.html#7785" class="Function">R.F-∘</a> <a id="1978" class="Symbol">_</a> <a id="1980" class="Symbol">_</a> <a data-type="(x : A) → y ≡ z → x ≡ y → x ≡ z" id="1982" href="1Lab.Path.html#46757" class="Function">⟩</a></span><span class="alternate Function">≡</span></span>
+  <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="1986" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="1990" class="Symbol">(</a><a data-type="(r : L ⊣ R₁) (x : D .Ob) → D .Hom (₀ (L F∘ R₁) x) (₀ Id x)" id="1991" href="Cat.Functor.Adjoint.html#2172" class="Function">adj.counit.ε</a> <a id="2004" class="Symbol">_)</a> <a data-type="(r : Precategory o h) → r .Hom y z → r .Hom x y → r .Hom x z" id="2007" href="Cat.Base.html#2898" class="Function Operator">C.∘</a> <a data-type="(r : Functor C D) → C .Hom x y → D .Hom (F₀ r x) (F₀ r y)" id="2011" href="Cat.Base.html#8210" class="Function">R.₁</a> <a id="2015" class="Symbol">(</a><a data-type="(r : L ⊣ R₁) (x : D .Ob) → D .Hom (₀ (L F∘ R₁) x) (₀ Id x)" id="2016" href="Cat.Functor.Adjoint.html#2172" class="Function">adj.counit.ε</a> <a id="2029" class="Symbol">_)</a>               <a data-type="(x : A) → x ≡ x" id="2046" href="1Lab.Path.html#47085" class="Function Operator">∎</a>
+</pre>
+  </article>
+</div>
+
+</main>
+</body>
+</html>
