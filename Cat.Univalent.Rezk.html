@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Agda,categories,topos" />
+
+  <title>Cat.Univalent.Rezk - 1Lab</title>
+
+  <link rel="stylesheet" href="/css/default.css" />
+  <link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/css/agda-cats.css" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Cat.Univalent.Rezk - 1Lab" />
+  <meta name="twitter:image" content="https://1lab.dev/static/cube-128x.png" />
+
+  <meta name="og:title" content="Cat.Univalent.Rezk - 1Lab" />
+  <meta name="og:image" content="https://1lab.dev/static/cube-128x.png" />
+  <meta name="og:site-name" content="1Lab" />
+  <meta name="og:type" content="website" />
+
+    <meta name="og:description" content="A formalised, explorable online resource for Homotopy Type Theory." />
+  <meta name="twitter:description" content="A formalised, explorable online resource for Homotopy Type Theory." />
+  <meta name="description" content="A formalised, explorable online resource for Homotopy Type Theory." />
+  
+  <script src="/equations.js"></script>
+  <script src="/highlight-hover.js"></script>
+
+  <noscript>
+    <style>
+      body span.reasoning-step .as-written {
+        display: inline;
+      }
+
+      body span.reasoning-step .alternate {
+        display: none;
+      }
+    </style>
+  </noscript>
+</head>
+
+<body>
+<main>
+<div id="post-toc-container" style="padding-left: 1em; padding-right: 1em;">
+
+  <!-- Table of contents (only if the page has a table of contents) -->
+    <aside id="toc">
+    <div id="toc-container" style="min-width: 10em; font-size: 15pt;">
+      <!-- Title for the page -->
+      <h3 class="Agda" style="margin-top: 0; margin-bottom: 0; white-space: pre;">
+                <a class="Module">Cat.Univalent.Rezk</a>
+              </h3>
+
+      <!-- Cube logo -->
+      <img alt="1Lab" src="/static/cube-72x.png" style="display: block; margin-bottom: 1em; margin: auto;" width="32px" height="32px" />
+
+      <!-- Actual table of contents (separated from the rest by
+      horizontal rules) -->
+      <hr />
+      <ul>
+      <li><a href="#the-rezk-completion"><a href="#the-rezk-completion" class="header-link">The Rezk completion<span class="header-link-emoji">🔗</span></a></a></li>
+      </ul>
+      <hr />
+
+      <!-- Sidebar controls -->
+      <div style="display: flex; gap: 0.25em; flex-flow: row wrap;">
+        <!-- Sidebar equations control -->
+        <span class="equations" style="display: flex; align-items: center; gap: 0.25em; flex-wrap: nowrap;">
+          <input name="sidebar-eqns" type="checkbox" class="equations" id="sidebar-eqns">
+          <label for="sidebar-eqns">Equations</label>
+        </span>
+
+        <!-- Sidebar fonts control -->
+        <span style="display: flex; align-items: center; gap: 0.25em; flex-wrap: nowrap;">
+          <input name="sidebar-font" type="checkbox" id="toggle-fonts">
+          <label for="toggle-fonts">Serif Font</label>
+        </span>
+      </div>
+
+      <hr />
+
+      <!-- Navbar navigation (lol) -->
+      <div id="return" style="white-space: nowrap;">
+              <a href="index.html">️back to index</a> <br />
+              <a href="all-pages.html">view all pages</a> <br />
+        <a href="https://github.com/plt-amy/cubical-1lab/blob/bd404705122c93c6f6db3406308b3a111a06832e/src/Cat/Univalent/Rezk.lagda.md">link to source</a> <br />
+                <hr /> <div class="author-list">Written by Amélia Liao</div> <br />
+              </div>
+    </div>
+  </aside>
+  
+  <article>
+    <!-- Article navigation (narrow screens only) -->
+    <div class="narrow-only" id="article-nav">
+      <!-- Index return anchor (only if the page is not the index) -->
+            <div id="return">
+        <a href="index.html">️back to index</a>
+      </div>
+      
+      <!-- Font toggle checkbox -->
+      <span class="equations" style="display: flex; gap: 0.25em; flex-wrap: nowrap;">
+        <input name="navbar-eqns" type="checkbox" class="equations" id="navbar-eqns">
+        <label for="navbar-eqns">Equations</label>
+      </span>
+    </div>
+
+<pre class="Agda"><a id="9" class="Keyword">open</a> <a id="14" class="Keyword">import</a> <a id="21" href="Cat.Functor.FullSubcategory.html" class="Module">Cat.Functor.FullSubcategory</a>
+<a id="49" class="Keyword">open</a> <a id="54" class="Keyword">import</a> <a id="61" href="Cat.Instances.Functor.html" class="Module">Cat.Instances.Functor</a>
+<a id="83" class="Keyword">open</a> <a id="88" class="Keyword">import</a> <a id="95" href="Cat.Instances.Sets.html" class="Module">Cat.Instances.Sets</a>
+<a id="114" class="Keyword">open</a> <a id="119" class="Keyword">import</a> <a id="126" href="Cat.Functor.Hom.html" class="Module">Cat.Functor.Hom</a>
+<a id="142" class="Keyword">open</a> <a id="147" class="Keyword">import</a> <a id="154" href="Cat.Prelude.html" class="Module">Cat.Prelude</a>
+
+<a id="167" class="Keyword">module</a> <a id="174" href="Cat.Univalent.Rezk.html" class="Module">Cat.Univalent.Rezk</a> <a id="193" class="Keyword">where</a>
+</pre>
+<!--
+<pre class="Agda"><a id="217" class="Keyword">private</a> <a id="225" class="Keyword">variable</a>
+  <a id="236" href="Cat.Univalent.Rezk.html#236" class="Generalizable">o</a> <a id="238" href="Cat.Univalent.Rezk.html#238" class="Generalizable">h</a> <a id="240" href="Cat.Univalent.Rezk.html#240" class="Generalizable">o&#39;</a> <a id="243" href="Cat.Univalent.Rezk.html#243" class="Generalizable">h&#39;</a> <a id="246" class="Symbol">:</a> <a id="248" href="Agda.Primitive.html#597" class="Postulate">Level</a>
+</pre>-->
+<h1 id="the-rezk-completion"><a href="#the-rezk-completion" class="header-link">The Rezk completion<span class="header-link-emoji">🔗</span></a></h1>
+<p>In the same way that we can <a href="Cat.Functor.Adjoint.html">freely</a> <a href="Cat.Thin.Completion.html">complete</a> a <a href="Cat.Thin.html#thin-categories">proset</a> into a <a href="Cat.Thin.Completion.html#posets">poset</a>, it is possible to, in a universal way, replace any precategory <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">A</mi></mrow><annotation encoding="application/x-tex">\ca{A}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal">A</span></span></span></span> by a category <span style="white-space: nowrap;"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi mathvariant="script">A</mi><mo stretchy="true">^</mo></mover></mrow><annotation encoding="application/x-tex">\widehat{\ca{A}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9233em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9233em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathcal">A</span></span><span class="svg-align" style="width:calc(100% - 0.2778em);margin-left:0.2778em;top:-3.6833em;"><span class="pstrut" style="height:3em;"></span><span style="height:0.24em;"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="0.24em" viewBox="0 0 1062 239" preserveAspectRatio="none"><path d="M529 0h5l519 115c5 1 9 5 9 10 0 1-1 2-1 3l-4 22
+c-1 5-5 9-11 9h-2L532 67 19 159h-2c-5 0-9-4-11-9l-5-22c-1-6 2-12 8-13z"></path></svg></span></span></span></span></span></span></span></span></span>,</span> such that there is a weak equivalence (a <a href="Cat.Functor.Base.html#ff-functors">fully faithful</a>, <a href="Cat.Functor.Base.html#essential-fibres">essentially surjective</a> functor) <span style="white-space: nowrap;"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">A</mi><mo>→</mo><mover accent="true"><mi mathvariant="script">A</mi><mo stretchy="true">^</mo></mover></mrow><annotation encoding="application/x-tex">\ca{A} \to \widehat{\ca{A}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9233em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9233em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathcal">A</span></span><span class="svg-align" style="width:calc(100% - 0.2778em);margin-left:0.2778em;top:-3.6833em;"><span class="pstrut" style="height:3em;"></span><span style="height:0.24em;"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="0.24em" viewBox="0 0 1062 239" preserveAspectRatio="none"><path d="M529 0h5l519 115c5 1 9 5 9 10 0 1-1 2-1 3l-4 22
+c-1 5-5 9-11 9h-2L532 67 19 159h-2c-5 0-9-4-11-9l-5-22c-1-6 2-12 8-13z"></path></svg></span></span></span></span></span></span></span></span></span>,</span> such that any map from <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">A</mi></mrow><annotation encoding="application/x-tex">\ca{A}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal">A</span></span></span></span> to a <a href="Cat.Univalent.html">univalent category</a> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">C</mi></mrow><annotation encoding="application/x-tex">\ca{C}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.05834em;">C</span></span></span></span> factors uniquely through <span style="white-space: nowrap;"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi mathvariant="script">A</mi><mo stretchy="true">^</mo></mover></mrow><annotation encoding="application/x-tex">\widehat{\ca{A}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9233em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9233em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathcal">A</span></span><span class="svg-align" style="width:calc(100% - 0.2778em);margin-left:0.2778em;top:-3.6833em;"><span class="pstrut" style="height:3em;"></span><span style="height:0.24em;"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="0.24em" viewBox="0 0 1062 239" preserveAspectRatio="none"><path d="M529 0h5l519 115c5 1 9 5 9 10 0 1-1 2-1 3l-4 22
+c-1 5-5 9-11 9h-2L532 67 19 159h-2c-5 0-9-4-11-9l-5-22c-1-6 2-12 8-13z"></path></svg></span></span></span></span></span></span></span></span></span>.</span></p>
+<p>The construction is essentially piecing together a handful of pre-existing results: The univalence principle for <span style="white-space: nowrap;"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>-types</span> implies that <a href="Cat.Instances.Sets.html">Sets is a univalent category</a>, and <a href="Cat.Instances.Functor.html#functor-categories">functor categories with univalent codomain are univalent</a>; The <a href="Cat.Functor.Hom.html#the-yoneda-embedding">Yoneda lemma</a> implies that any precategory <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">A</mi></mrow><annotation encoding="application/x-tex">\ca{A}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal">A</span></span></span></span> admits a <a href="Cat.Functor.FullSubcategory.html#from-full-inclusions">full inclusion</a> into <span style="white-space: nowrap;"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><msup><mi mathvariant="script">A</mi><mrow><mi mathvariant="normal">o</mi><mi mathvariant="normal">p</mi></mrow></msup><mo separator="true">,</mo><mrow><mi mathvariant="bold">S</mi><mi mathvariant="bold">e</mi><mi mathvariant="bold">t</mi><mi mathvariant="bold">s</mi></mrow><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[\ca{A}\op, \sets]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord"><span class="mord mathcal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathrm mtight">op</span></span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathbf">Sets</span></span><span class="mclose">]</span></span></span></span>,</span> and <a href="Cat.Functor.FullSubcategory.html#univalence">full subcategories of univalent categories are univalent</a> — so, like Grothendieck cracking the nut, the sea of theory has risen to the point where our result is trivial:</p>
+<pre class="Agda"><a id="Rezk-completion"></a><a data-type="Precategory o h → Precategory (o ⊔ lsuc h) (o ⊔ h)" id="1835" href="Cat.Univalent.Rezk.html#1835" class="Function">Rezk-completion</a> <a id="1851" class="Symbol">:</a> <a data-type="(o h : Level) → Type (lsuc o ⊔ lsuc h)" id="1853" href="Cat.Base.html#611" class="Record">Precategory</a> <a id="1865" href="Cat.Univalent.Rezk.html#236" class="Generalizable">o</a> <a id="1867" href="Cat.Univalent.Rezk.html#238" class="Generalizable">h</a> <a id="1869" class="Symbol">→</a> <a data-type="(o h : Level) → Type (lsuc o ⊔ lsuc h)" id="1871" href="Cat.Base.html#611" class="Record">Precategory</a> <a id="1883" class="Symbol">(</a><a id="1884" href="Cat.Univalent.Rezk.html#236" class="Generalizable">o</a> <a data-type="Level → Level → Level" id="1886" href="Agda.Primitive.html#810" class="Primitive Operator">⊔</a> <a data-type="Level → Level" id="1888" href="Agda.Primitive.html#780" class="Primitive">lsuc</a> <a id="1893" href="Cat.Univalent.Rezk.html#238" class="Generalizable">h</a><a id="1894" class="Symbol">)</a> <a id="1896" class="Symbol">(</a><a id="1897" href="Cat.Univalent.Rezk.html#236" class="Generalizable">o</a> <a data-type="Level → Level → Level" id="1899" href="Agda.Primitive.html#810" class="Primitive Operator">⊔</a> <a id="1901" href="Cat.Univalent.Rezk.html#238" class="Generalizable">h</a><a id="1902" class="Symbol">)</a>
+<a data-type="Precategory o h → Precategory (o ⊔ lsuc h) (o ⊔ h)" id="1904" href="Cat.Univalent.Rezk.html#1835" class="Function">Rezk-completion</a> <a id="1920" href="Cat.Univalent.Rezk.html#1920" class="Bound">A</a> <a id="1922" class="Symbol">=</a> <a data-type="(ff : isFf F) → Precategory (o ⊔ (o ⊔ h ⊔ o&#39;)) h" id="1924" href="Cat.Functor.FullSubcategory.html#3930" class="Function">FullInclusion→FullSubcat</a> <a id="1949" class="Symbol">{</a><a id="1950" class="Argument">F</a> <a id="1952" class="Symbol">=</a> <a data-type="(C : Precategory o h) → Functor C Cat[ C ^op , Sets h ]" id="1954" href="Cat.Functor.Hom.html#2919" class="Function">よ</a> <a id="1956" href="Cat.Univalent.Rezk.html#1920" class="Bound">A</a><a id="1957" class="Symbol">}</a> <a id="1959" class="Symbol">(</a><a data-type="(C : Precategory o h) → isFf (よ C)" id="1960" href="Cat.Functor.Hom.html#3265" class="Function">よ-Ff</a> <a id="1965" href="Cat.Univalent.Rezk.html#1920" class="Bound">A</a><a id="1966" class="Symbol">)</a>
+
+<a id="isCategory-Rezk-completion"></a><a data-type="isCategory (Rezk-completion A)" id="1969" href="Cat.Univalent.Rezk.html#1969" class="Function">isCategory-Rezk-completion</a> 
+  <a id="1999" class="Symbol">:</a> <a id="2001" class="Symbol">∀</a> <a id="2003" class="Symbol">{</a><a id="2004" href="Cat.Univalent.Rezk.html#2004" class="Bound">A</a> <a id="2006" class="Symbol">:</a> <a data-type="(o h : Level) → Type (lsuc o ⊔ lsuc h)" id="2008" href="Cat.Base.html#611" class="Record">Precategory</a> <a id="2020" href="Cat.Univalent.Rezk.html#236" class="Generalizable">o</a> <a id="2022" href="Cat.Univalent.Rezk.html#238" class="Generalizable">h</a><a id="2023" class="Symbol">}</a> <a id="2025" class="Symbol">→</a> <a data-type="(C : Precategory o h) → Type (o ⊔ h)" id="2027" href="Cat.Univalent.html#946" class="Function">isCategory</a> <a id="2038" class="Symbol">(</a><a data-type="Precategory o h → Precategory (o ⊔ lsuc h) (o ⊔ h)" id="2039" href="Cat.Univalent.Rezk.html#1835" class="Function">Rezk-completion</a> <a id="2055" href="Cat.Univalent.Rezk.html#2004" class="Bound">A</a><a id="2056" class="Symbol">)</a>
+<a data-type="isCategory (Rezk-completion A)" id="2058" href="Cat.Univalent.Rezk.html#1969" class="Function">isCategory-Rezk-completion</a> <a id="2085" class="Symbol">{</a><a id="2086" href="Cat.Univalent.Rezk.html#2086" class="Bound">o</a><a id="2087" class="Symbol">}</a> <a id="2089" class="Symbol">{</a><a id="2090" href="Cat.Univalent.Rezk.html#2090" class="Bound">h</a><a id="2091" class="Symbol">}</a> <a id="2093" class="Symbol">{</a><a id="2094" href="Cat.Univalent.Rezk.html#2094" class="Bound">A</a><a id="2095" class="Symbol">}</a> <a id="2097" class="Symbol">=</a> 
+  <a data-type="(P : Ob C → Type ℓ) (pprop : (x : Ob C) → isProp (P x)) →
+isCategory C → isCategory (Restrict P pprop)" id="2102" href="Cat.Functor.FullSubcategory.html#2674" class="Function">isCategory-Restrict</a> <a id="2122" class="Symbol">_</a> <a id="2124" class="Symbol">(λ</a> <a id="2127" href="Cat.Univalent.Rezk.html#2127" class="Bound">_</a> <a id="2129" class="Symbol">→</a> <a data-type="isProp ∥ A ∥" id="2131" href="1Lab.HIT.Truncation.html#667" class="InductiveConstructor">squash</a><a id="2137" class="Symbol">)</a> 
+    <a id="2144" class="Symbol">(</a><a data-type="(DisCat : isCategory D) → isCategory Cat[ C , D ]" id="2145" href="Cat.Instances.Functor.html#5023" class="Function">isCategory-Functor</a> <a id="2164" class="Symbol">{</a><a id="2165" class="Argument">D</a> <a id="2167" class="Symbol">=</a> <a data-type="(o : Level) → Precategory (lsuc o) o" id="2169" href="Cat.Base.html#6251" class="Function">Sets</a> <a id="2174" class="Symbol">_}</a> <a data-type="isCategory (Sets ℓ)" id="2177" href="Cat.Instances.Sets.html#1615" class="Function">isCategory-Sets</a><a id="2192" class="Symbol">)</a>
+</pre>
+<!--
+NOTE: Do _not_ under any circumstances remove the `{D = Sets _}`
+annotation above or Agda _will_ spin forever
+-->
+  </article>
+</div>
+
+</main>
+</body>
+<style>.equations { display: none !important; }</style></html>
