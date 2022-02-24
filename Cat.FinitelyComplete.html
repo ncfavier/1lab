@@ -88,7 +88,7 @@
       <div id="return" style="white-space: nowrap;">
               <a href="index.html">️back to index</a> <br />
               <a href="all-pages.html">view all pages</a> <br />
-        <a href="https://github.com/plt-amy/cubical-1lab/blob/f90d0ebc7109b840d780ffbedcd5ad243c44eecc/src/Cat/FinitelyComplete.lagda.md">link to source</a> <br />
+        <a href="https://github.com/plt-amy/cubical-1lab/blob/5c218a6a109b562f297c521caebd2587b02be539/src/Cat/FinitelyComplete.lagda.md">link to source</a> <br />
                 <hr /> <div class="author-list">Written by Amélia Liao and Reed Mullanix</div> <br />
               </div>
     </div>
@@ -133,7 +133,7 @@
 <li>A terminal object, binary products, binary equalisers;</li>
 <li>A terminal object and binary pullbacks.</li>
 </ul>
-<pre class="Agda"><a id="1428" class="Keyword">record</a> <a id="Finitely-complete"></a><a data-type="(C : Precategory ℓ ℓ&#39;) → Type (ℓ ⊔ ℓ&#39;)" id="1435" href="Cat.FinitelyComplete.html#1435" class="Record">Finitely-complete</a> <a id="1453" class="Symbol">:</a> <a id="1455" href="1Lab.Type.html#394" class="Primitive">Type</a> <a id="1460" class="Symbol">(</a><a id="1461" href="Cat.FinitelyComplete.html#63" class="Bound">ℓ</a> <a data-type="Level → Level → Level" id="1463" href="Agda.Primitive.html#810" class="Primitive Operator">⊔</a> <a id="1465" href="Cat.FinitelyComplete.html#65" class="Bound">ℓ&#39;</a><a id="1467" class="Symbol">)</a> <a id="1469" class="Keyword">where</a>
+<pre class="Agda"><a id="1428" class="Keyword">record</a> <a id="Finitely-complete"></a><a data-type="(C : Precategory ℓ ℓ&#39;) → Type (ℓ ⊔ ℓ&#39;)" id="1435" href="Cat.FinitelyComplete.html#1435" class="Record">Finitely-complete</a> <a id="1453" class="Symbol">:</a> <a id="1455" href="1Lab.Type.html#391" class="Primitive">Type</a> <a id="1460" class="Symbol">(</a><a id="1461" href="Cat.FinitelyComplete.html#63" class="Bound">ℓ</a> <a data-type="Level → Level → Level" id="1463" href="Agda.Primitive.html#810" class="Primitive Operator">⊔</a> <a id="1465" href="Cat.FinitelyComplete.html#65" class="Bound">ℓ&#39;</a><a id="1467" class="Symbol">)</a> <a id="1469" class="Keyword">where</a>
   <a id="1477" class="Keyword">field</a>
     <a id="Finitely-complete.terminal"></a><a data-type="Finitely-complete C → Terminal C" id="1487" href="Cat.FinitelyComplete.html#1487" class="Field">terminal</a>   <a id="1498" class="Symbol">:</a> <a data-type="(C : Precategory o h) → Type (o ⊔ h)" id="1500" href="Cat.Diagram.Terminal.html#405" class="Record">Terminal</a>
     <a id="Finitely-complete.products"></a><a data-type="Finitely-complete C → (A B₁ : Ob C) → Product C A B₁" id="1513" href="Cat.FinitelyComplete.html#1513" class="Field">products</a>   <a id="1524" class="Symbol">:</a> <a id="1526" class="Symbol">∀</a> <a id="1528" href="Cat.FinitelyComplete.html#1528" class="Bound">A</a> <a id="1530" href="Cat.FinitelyComplete.html#1530" class="Bound">B</a> <a id="1532" class="Symbol">→</a> <a data-type="(C : Precategory o h) (A B₁ : Ob C) → Type (o ⊔ h)" id="1534" href="Cat.Diagram.Product.html#2504" class="Record">Product</a> <a id="1542" href="Cat.FinitelyComplete.html#1528" class="Bound">A</a> <a id="1544" href="Cat.FinitelyComplete.html#1530" class="Bound">B</a>
