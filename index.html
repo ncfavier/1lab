@@ -105,7 +105,7 @@
       <!-- Navbar navigation (lol) -->
       <div id="return" style="white-space: nowrap;">
                     <a href="all-pages.html">view all pages</a> <br />
-        <a href="https://github.com/plt-amy/cubical-1lab/blob/056e18d3e6c91a88f3642791c9ee1ab579cea88c/src/index.lagda.md">link to source</a> <br />
+        <a href="https://github.com/plt-amy/cubical-1lab/blob/d19cdbbe8ec37bd96fe14120dde7a880c1c0225c/src/index.lagda.md">link to source</a> <br />
                 <hr /> <div class="author-list">Written by Amélia Liao and uni</div> <br />
               </div>
     </div>
@@ -305,47 +305,46 @@
 <a id="14522" class="Keyword">open</a> <a id="14527" class="Keyword">import</a> <a id="14534" href="Cat.Instances.Comma.html" class="Module">Cat.Instances.Comma</a>     <a id="14558" class="Comment">-- Comma precategory over a cospan of functors</a>
 <a id="14605" class="Keyword">open</a> <a id="14610" class="Keyword">import</a> <a id="14617" href="Cat.Instances.Functor.html" class="Module">Cat.Instances.Functor</a>   <a id="14641" class="Comment">-- Functor (pre)categories</a>
 <a id="14668" class="Keyword">open</a> <a id="14673" class="Keyword">import</a> <a id="14680" href="Cat.Instances.Product.html" class="Module">Cat.Instances.Product</a>   <a id="14704" class="Comment">-- Product of precategories</a>
-<a id="14732" class="Keyword">open</a> <a id="14737" class="Keyword">import</a> <a id="14744" href="Cat.Instances.Monoids.html" class="Module">Cat.Instances.Monoids</a>   <a id="14768" class="Comment">-- Precategory of monoids</a>
-<a id="14794" class="Keyword">open</a> <a id="14799" class="Keyword">import</a> <a id="14806" href="Cat.Instances.Karoubi.html" class="Module">Cat.Instances.Karoubi</a>   <a id="14830" class="Comment">-- Split-idempotent completion of a precategory</a>
-<a id="14878" class="Keyword">open</a> <a id="14883" class="Keyword">import</a> <a id="14890" href="Cat.Instances.Discrete.html" class="Module">Cat.Instances.Discrete</a>  <a id="14914" class="Comment">-- Discrete category on a groupoid or set</a>
-<a id="14956" class="Keyword">open</a> <a id="14961" class="Keyword">import</a> <a id="14968" href="Cat.Instances.Elements.html" class="Module">Cat.Instances.Elements</a>  <a id="14992" class="Comment">-- Precategory of elements of a presheaf</a>
-<a id="15033" class="Keyword">open</a> <a id="15038" class="Keyword">import</a> <a id="15045" href="Cat.Instances.Delooping.html" class="Module">Cat.Instances.Delooping</a> <a id="15069" class="Comment">-- Delooping category of a monoid/group</a>
+<a id="14732" class="Keyword">open</a> <a id="14737" class="Keyword">import</a> <a id="14744" href="Cat.Instances.Karoubi.html" class="Module">Cat.Instances.Karoubi</a>   <a id="14768" class="Comment">-- Split-idempotent completion of a precategory</a>
+<a id="14816" class="Keyword">open</a> <a id="14821" class="Keyword">import</a> <a id="14828" href="Cat.Instances.Discrete.html" class="Module">Cat.Instances.Discrete</a>  <a id="14852" class="Comment">-- Discrete category on a groupoid or set</a>
+<a id="14894" class="Keyword">open</a> <a id="14899" class="Keyword">import</a> <a id="14906" href="Cat.Instances.Elements.html" class="Module">Cat.Instances.Elements</a>  <a id="14930" class="Comment">-- Precategory of elements of a presheaf</a>
+<a id="14971" class="Keyword">open</a> <a id="14976" class="Keyword">import</a> <a id="14983" href="Cat.Instances.Delooping.html" class="Module">Cat.Instances.Delooping</a> <a id="15007" class="Comment">-- Delooping category of a monoid/group</a>
 
-<a id="15110" class="Keyword">open</a> <a id="15115" class="Keyword">import</a> <a id="15122" href="Cat.Instances.StrictCat.html" class="Module">Cat.Instances.StrictCat</a>          <a id="15155" class="Comment">-- Precategory of strict precategories</a>
-<a id="15194" class="Keyword">open</a> <a id="15199" class="Keyword">import</a> <a id="15206" href="Cat.Instances.StrictCat.Cohesive.html" class="Module">Cat.Instances.StrictCat.Cohesive</a> <a id="15239" class="Comment">-- Strict categories are &quot;spatial&quot;</a>
+<a id="15048" class="Keyword">open</a> <a id="15053" class="Keyword">import</a> <a id="15060" href="Cat.Instances.StrictCat.html" class="Module">Cat.Instances.StrictCat</a>          <a id="15093" class="Comment">-- Precategory of strict precategories</a>
+<a id="15132" class="Keyword">open</a> <a id="15137" class="Keyword">import</a> <a id="15144" href="Cat.Instances.StrictCat.Cohesive.html" class="Module">Cat.Instances.StrictCat.Cohesive</a> <a id="15177" class="Comment">-- Strict categories are &quot;spatial&quot;</a>
 
-<a id="15275" class="Keyword">open</a> <a id="15280" class="Keyword">import</a> <a id="15287" href="Cat.Instances.Shape.Terminal.html" class="Module">Cat.Instances.Shape.Terminal</a>  <a id="15317" class="Comment">-- Category with one point</a>
+<a id="15213" class="Keyword">open</a> <a id="15218" class="Keyword">import</a> <a id="15225" href="Cat.Instances.Shape.Terminal.html" class="Module">Cat.Instances.Shape.Terminal</a>  <a id="15255" class="Comment">-- Category with one point</a>
 </pre>
 <h2 id="thin-categories"><a href="#thin-categories" class="header-link">Thin categories<span class="header-link-emoji">🔗</span></a></h2>
 <p>Strict thin categories are a presentation of pre-ordered sets, i.e. sets equipped with a transitive and reflexive relation — so we call them “prosets”. When this relation is antisymmetric, we additionally have a <em>univalent</em> thin strict category — so we call these “posets”.</p>
-<pre class="Agda"><a id="15656" class="Keyword">open</a> <a id="15661" class="Keyword">import</a> <a id="15668" href="Cat.Thin.html" class="Module">Cat.Thin</a>            <a id="15688" class="Comment">-- Basics of thin categories</a>
-<a id="15717" class="Keyword">open</a> <a id="15722" class="Keyword">import</a> <a id="15729" href="Cat.Thin.Completion.html" class="Module">Cat.Thin.Completion</a> <a id="15749" class="Comment">-- Free poset on a proset</a>
+<pre class="Agda"><a id="15594" class="Keyword">open</a> <a id="15599" class="Keyword">import</a> <a id="15606" href="Cat.Thin.html" class="Module">Cat.Thin</a>            <a id="15626" class="Comment">-- Basics of thin categories</a>
+<a id="15655" class="Keyword">open</a> <a id="15660" class="Keyword">import</a> <a id="15667" href="Cat.Thin.Completion.html" class="Module">Cat.Thin.Completion</a> <a id="15687" class="Comment">-- Free poset on a proset</a>
 </pre>
 <h2 id="displayed-categories"><a href="#displayed-categories" class="header-link">Displayed categories<span class="header-link-emoji">🔗</span></a></h2>
 <p>We also have a work-in-progress formalisation of <a href="https://www.jonmsterling.com/math/lectures/categorical-foundations.html">Foundations of Relative Category Theory</a>, in which the core idea is thinking of “categories over categories”.</p>
-<pre class="Agda"><a id="16061" class="Keyword">open</a> <a id="16066" class="Keyword">import</a> <a id="16073" href="Cat.Displayed.Base.html" class="Module">Cat.Displayed.Base</a>             <a id="16104" class="Comment">-- Displayed categories</a>
-<a id="16128" class="Keyword">open</a> <a id="16133" class="Keyword">import</a> <a id="16140" href="Cat.Displayed.Total.html" class="Module">Cat.Displayed.Total</a>            <a id="16171" class="Comment">-- Total category of a displayed category</a>
-<a id="16213" class="Keyword">open</a> <a id="16218" class="Keyword">import</a> <a id="16225" href="Cat.Displayed.Cartesian.html" class="Module">Cat.Displayed.Cartesian</a>        <a id="16256" class="Comment">-- Cartesian lifts, cartesian fibrations</a>
-<a id="16297" class="Keyword">open</a> <a id="16302" class="Keyword">import</a> <a id="16309" href="Cat.Displayed.Instances.Family.html" class="Module">Cat.Displayed.Instances.Family</a> <a id="16340" class="Comment">-- Family fibration</a>
-<a id="16360" class="Keyword">open</a> <a id="16365" class="Keyword">import</a> <a id="16372" href="Cat.Displayed.Instances.Slice.html" class="Module">Cat.Displayed.Instances.Slice</a>  <a id="16403" class="Comment">-- Canonical self-indexing</a>
+<pre class="Agda"><a id="15999" class="Keyword">open</a> <a id="16004" class="Keyword">import</a> <a id="16011" href="Cat.Displayed.Base.html" class="Module">Cat.Displayed.Base</a>             <a id="16042" class="Comment">-- Displayed categories</a>
+<a id="16066" class="Keyword">open</a> <a id="16071" class="Keyword">import</a> <a id="16078" href="Cat.Displayed.Total.html" class="Module">Cat.Displayed.Total</a>            <a id="16109" class="Comment">-- Total category of a displayed category</a>
+<a id="16151" class="Keyword">open</a> <a id="16156" class="Keyword">import</a> <a id="16163" href="Cat.Displayed.Cartesian.html" class="Module">Cat.Displayed.Cartesian</a>        <a id="16194" class="Comment">-- Cartesian lifts, cartesian fibrations</a>
+<a id="16235" class="Keyword">open</a> <a id="16240" class="Keyword">import</a> <a id="16247" href="Cat.Displayed.Instances.Family.html" class="Module">Cat.Displayed.Instances.Family</a> <a id="16278" class="Comment">-- Family fibration</a>
+<a id="16298" class="Keyword">open</a> <a id="16303" class="Keyword">import</a> <a id="16310" href="Cat.Displayed.Instances.Slice.html" class="Module">Cat.Displayed.Instances.Slice</a>  <a id="16341" class="Comment">-- Canonical self-indexing</a>
 </pre>
 <h1 id="algebra"><a href="#algebra" class="header-link">Algebra<span class="header-link-emoji">🔗</span></a></h1>
 <p>In the <code>Algebra</code> namespace, the theory of universal algebra is developed from a univalent perspective. Specifically, every definition of an algebraic structure comes with an associated proof that it is univalent — concretely, identification of groups is group isomorphism (for instance).</p>
-<pre class="Agda"><a id="16745" class="Keyword">open</a> <a id="16750" class="Keyword">import</a> <a id="16757" href="Algebra.Magma.html" class="Module">Algebra.Magma</a>                      <a id="16792" class="Comment">-- Binary operations </a>
-<a id="16814" class="Keyword">open</a> <a id="16819" class="Keyword">import</a> <a id="16826" href="Algebra.Magma.Unital.html" class="Module">Algebra.Magma.Unital</a>               <a id="16861" class="Comment">-- Operations with two-sided units</a>
-<a id="16896" class="Keyword">open</a> <a id="16901" class="Keyword">import</a> <a id="16908" href="Algebra.Magma.Unital.EckmannHilton.html" class="Module">Algebra.Magma.Unital.EckmannHilton</a> <a id="16943" class="Comment">-- The Eckmann-Hilton argument</a>
+<pre class="Agda"><a id="16683" class="Keyword">open</a> <a id="16688" class="Keyword">import</a> <a id="16695" href="Algebra.Magma.html" class="Module">Algebra.Magma</a>                      <a id="16730" class="Comment">-- Binary operations </a>
+<a id="16752" class="Keyword">open</a> <a id="16757" class="Keyword">import</a> <a id="16764" href="Algebra.Magma.Unital.html" class="Module">Algebra.Magma.Unital</a>               <a id="16799" class="Comment">-- Operations with two-sided units</a>
+<a id="16834" class="Keyword">open</a> <a id="16839" class="Keyword">import</a> <a id="16846" href="Algebra.Magma.Unital.EckmannHilton.html" class="Module">Algebra.Magma.Unital.EckmannHilton</a> <a id="16881" class="Comment">-- The Eckmann-Hilton argument</a>
 
-<a id="16975" class="Keyword">open</a> <a id="16980" class="Keyword">import</a> <a id="16987" href="Algebra.Semigroup.html" class="Module">Algebra.Semigroup</a>   <a id="17007" class="Comment">-- Semigroups (associative magmas)</a>
-<a id="17042" class="Keyword">open</a> <a id="17047" class="Keyword">import</a> <a id="17054" href="Algebra.Monoid.html" class="Module">Algebra.Monoid</a>      <a id="17074" class="Comment">-- Monoids as unital semigroups</a>
+<a id="16913" class="Keyword">open</a> <a id="16918" class="Keyword">import</a> <a id="16925" href="Algebra.Semigroup.html" class="Module">Algebra.Semigroup</a>   <a id="16945" class="Comment">-- Semigroups (associative magmas)</a>
+<a id="16980" class="Keyword">open</a> <a id="16985" class="Keyword">import</a> <a id="16992" href="Algebra.Monoid.html" class="Module">Algebra.Monoid</a>      <a id="17012" class="Comment">-- Monoids as unital semigroups</a>
 
-<a id="17107" class="Keyword">open</a> <a id="17112" class="Keyword">import</a> <a id="17119" href="Algebra.Group.html" class="Module">Algebra.Group</a>                   <a id="17151" class="Comment">-- Groups as monoids with inverses</a>
-<a id="17186" class="Keyword">open</a> <a id="17191" class="Keyword">import</a> <a id="17198" href="Algebra.Group.Free.html" class="Module">Algebra.Group.Free</a>              <a id="17230" class="Comment">-- Free groups</a>
-<a id="17245" class="Keyword">open</a> <a id="17250" class="Keyword">import</a> <a id="17257" href="Algebra.Group.Cayley.html" class="Module">Algebra.Group.Cayley</a>            <a id="17289" class="Comment">-- Cayley&#39;s theorem</a>
-<a id="17309" class="Keyword">open</a> <a id="17314" class="Keyword">import</a> <a id="17321" href="Algebra.Group.Homotopy.html" class="Module">Algebra.Group.Homotopy</a>          <a id="17353" class="Comment">-- Homotopy groups</a>
-<a id="17372" class="Keyword">open</a> <a id="17377" class="Keyword">import</a> <a id="17384" href="Algebra.Group.Subgroup.html" class="Module">Algebra.Group.Subgroup</a>          <a id="17416" class="Comment">-- Subgroups; Images and kernels</a>
-<a id="17449" class="Keyword">open</a> <a id="17454" class="Keyword">import</a> <a id="17461" href="Algebra.Group.Quotients.html" class="Module">Algebra.Group.Quotients</a>         <a id="17493" class="Comment">-- Quotients by normal subgroups</a>
-<a id="17526" class="Keyword">open</a> <a id="17531" class="Keyword">import</a> <a id="17538" href="Algebra.Group.Ab.Free.html" class="Module">Algebra.Group.Ab.Free</a>           <a id="17570" class="Comment">-- Abelianisations</a>
-<a id="17589" class="Keyword">open</a> <a id="17594" class="Keyword">import</a> <a id="17601" href="Algebra.Group.Quotients.IsoThms.html" class="Module">Algebra.Group.Quotients.IsoThms</a> <a id="17633" class="Comment">-- Isomorphism theorems</a>
+<a id="17045" class="Keyword">open</a> <a id="17050" class="Keyword">import</a> <a id="17057" href="Algebra.Group.html" class="Module">Algebra.Group</a>                   <a id="17089" class="Comment">-- Groups as monoids with inverses</a>
+<a id="17124" class="Keyword">open</a> <a id="17129" class="Keyword">import</a> <a id="17136" href="Algebra.Group.Free.html" class="Module">Algebra.Group.Free</a>              <a id="17168" class="Comment">-- Free groups</a>
+<a id="17183" class="Keyword">open</a> <a id="17188" class="Keyword">import</a> <a id="17195" href="Algebra.Group.Cayley.html" class="Module">Algebra.Group.Cayley</a>            <a id="17227" class="Comment">-- Cayley&#39;s theorem</a>
+<a id="17247" class="Keyword">open</a> <a id="17252" class="Keyword">import</a> <a id="17259" href="Algebra.Group.Homotopy.html" class="Module">Algebra.Group.Homotopy</a>          <a id="17291" class="Comment">-- Homotopy groups</a>
+<a id="17310" class="Keyword">open</a> <a id="17315" class="Keyword">import</a> <a id="17322" href="Algebra.Group.Subgroup.html" class="Module">Algebra.Group.Subgroup</a>          <a id="17354" class="Comment">-- Subgroups; Images and kernels</a>
+<a id="17387" class="Keyword">open</a> <a id="17392" class="Keyword">import</a> <a id="17399" href="Algebra.Group.Quotients.html" class="Module">Algebra.Group.Quotients</a>         <a id="17431" class="Comment">-- Quotients by normal subgroups</a>
+<a id="17464" class="Keyword">open</a> <a id="17469" class="Keyword">import</a> <a id="17476" href="Algebra.Group.Ab.Free.html" class="Module">Algebra.Group.Ab.Free</a>           <a id="17508" class="Comment">-- Abelianisations</a>
+<a id="17527" class="Keyword">open</a> <a id="17532" class="Keyword">import</a> <a id="17539" href="Algebra.Group.Quotients.IsoThms.html" class="Module">Algebra.Group.Quotients.IsoThms</a> <a id="17571" class="Comment">-- Isomorphism theorems</a>
 </pre>
 <section class="footnotes" role="doc-endnotes">
 <hr />
