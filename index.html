@@ -105,7 +105,7 @@
       <!-- Navbar navigation (lol) -->
       <div id="return" style="white-space: nowrap;">
                     <a href="all-pages.html">view all pages</a> <br />
-        <a href="https://github.com/plt-amy/cubical-1lab/blob/91701e7887a83343b89798ba9208e19934d1c62b/src/index.lagda.md">link to source</a> <br />
+        <a href="https://github.com/plt-amy/cubical-1lab/blob/e245836695ec5045ed06518c01f56dd5f3501cce/src/index.lagda.md">link to source</a> <br />
                 <hr /> <div class="author-list">Written by Amélia Liao and uni</div> <br />
               </div>
     </div>
@@ -337,14 +337,17 @@
 <a id="16912" class="Keyword">open</a> <a id="16917" class="Keyword">import</a> <a id="16924" href="Algebra.Semigroup.html" class="Module">Algebra.Semigroup</a>   <a id="16944" class="Comment">-- Semigroups (associative magmas)</a>
 <a id="16979" class="Keyword">open</a> <a id="16984" class="Keyword">import</a> <a id="16991" href="Algebra.Monoid.html" class="Module">Algebra.Monoid</a>      <a id="17011" class="Comment">-- Monoids as unital semigroups</a>
 
-<a id="17044" class="Keyword">open</a> <a id="17049" class="Keyword">import</a> <a id="17056" href="Algebra.Group.html" class="Module">Algebra.Group</a>                   <a id="17088" class="Comment">-- Groups as monoids with inverses</a>
-<a id="17123" class="Keyword">open</a> <a id="17128" class="Keyword">import</a> <a id="17135" href="Algebra.Group.Free.html" class="Module">Algebra.Group.Free</a>              <a id="17167" class="Comment">-- Free groups</a>
-<a id="17182" class="Keyword">open</a> <a id="17187" class="Keyword">import</a> <a id="17194" href="Algebra.Group.Cayley.html" class="Module">Algebra.Group.Cayley</a>            <a id="17226" class="Comment">-- Cayley&#39;s theorem</a>
-<a id="17246" class="Keyword">open</a> <a id="17251" class="Keyword">import</a> <a id="17258" href="Algebra.Group.Homotopy.html" class="Module">Algebra.Group.Homotopy</a>          <a id="17290" class="Comment">-- Homotopy groups</a>
-<a id="17309" class="Keyword">open</a> <a id="17314" class="Keyword">import</a> <a id="17321" href="Algebra.Group.Subgroup.html" class="Module">Algebra.Group.Subgroup</a>          <a id="17353" class="Comment">-- Subgroups; Images and kernels</a>
-<a id="17386" class="Keyword">open</a> <a id="17391" class="Keyword">import</a> <a id="17398" href="Algebra.Group.Quotients.html" class="Module">Algebra.Group.Quotients</a>         <a id="17430" class="Comment">-- Quotients by normal subgroups</a>
-<a id="17463" class="Keyword">open</a> <a id="17468" class="Keyword">import</a> <a id="17475" href="Algebra.Group.Ab.Free.html" class="Module">Algebra.Group.Ab.Free</a>           <a id="17507" class="Comment">-- Abelianisations</a>
-<a id="17526" class="Keyword">open</a> <a id="17531" class="Keyword">import</a> <a id="17538" href="Algebra.Group.Quotients.IsoThms.html" class="Module">Algebra.Group.Quotients.IsoThms</a> <a id="17570" class="Comment">-- Isomorphism theorems</a>
+<a id="17044" class="Keyword">open</a> <a id="17049" class="Keyword">import</a> <a id="17056" href="Algebra.Group.html" class="Module">Algebra.Group</a>                      <a id="17091" class="Comment">-- Groups as monoids with inverses</a>
+<a id="17126" class="Keyword">open</a> <a id="17131" class="Keyword">import</a> <a id="17138" href="Algebra.Group.Free.html" class="Module">Algebra.Group.Free</a>                 <a id="17173" class="Comment">-- Free groups</a>
+<a id="17188" class="Keyword">open</a> <a id="17193" class="Keyword">import</a> <a id="17200" href="Algebra.Group.Cayley.html" class="Module">Algebra.Group.Cayley</a>               <a id="17235" class="Comment">-- Cayley&#39;s theorem</a>
+<a id="17255" class="Keyword">open</a> <a id="17260" class="Keyword">import</a> <a id="17267" href="Algebra.Group.Cat.Base.html" class="Module">Algebra.Group.Cat.Base</a>             <a id="17302" class="Comment">-- Category of groups</a>
+<a id="17324" class="Keyword">open</a> <a id="17329" class="Keyword">import</a> <a id="17336" href="Algebra.Group.Cat.FinitelyComplete.html" class="Module">Algebra.Group.Cat.FinitelyComplete</a> <a id="17371" class="Comment">-- Limits in the category Groups</a>
+<a id="17404" class="Keyword">open</a> <a id="17409" class="Keyword">import</a> <a id="17416" href="Algebra.Group.Homotopy.html" class="Module">Algebra.Group.Homotopy</a>             <a id="17451" class="Comment">-- Homotopy groups</a>
+<a id="17470" class="Keyword">open</a> <a id="17475" class="Keyword">import</a> <a id="17482" href="Algebra.Group.Subgroup.html" class="Module">Algebra.Group.Subgroup</a>             <a id="17517" class="Comment">-- Subgroups, images and kernels</a>
+<a id="17550" class="Keyword">open</a> <a id="17555" class="Keyword">import</a> <a id="17562" href="Algebra.Group.Quotients.html" class="Module">Algebra.Group.Quotients</a>            <a id="17597" class="Comment">-- Quotients by normal subgroups</a>
+<a id="17630" class="Keyword">open</a> <a id="17635" class="Keyword">import</a> <a id="17642" href="Algebra.Group.Quotients.IsoThms.html" class="Module">Algebra.Group.Quotients.IsoThms</a>    <a id="17677" class="Comment">-- Isomorphism theorems</a>
+
+<a id="17702" class="Keyword">open</a> <a id="17707" class="Keyword">import</a> <a id="17714" href="Algebra.Group.Ab.Free.html" class="Module">Algebra.Group.Ab.Free</a>              <a id="17749" class="Comment">-- Abelianisations</a>
 </pre>
 <section class="footnotes" role="doc-endnotes">
 <hr />
