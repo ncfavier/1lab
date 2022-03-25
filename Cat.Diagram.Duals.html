@@ -91,7 +91,7 @@
       <div id="return" style="white-space: nowrap;">
               <a href="index.html">️back to index</a> <br />
               <a href="all-pages.html">view all pages</a> <br />
-        <a href="https://github.com/plt-amy/cubical-1lab/blob/7f52e5db85b4fe0314b8b78015e3b05e271e1da2/src/Cat/Diagram/Duals.lagda.md">link to source</a> <br />
+        <a href="https://github.com/plt-amy/cubical-1lab/blob/7dc82728cfb152d410236fb12e86e9d69272201b/src/Cat/Diagram/Duals.lagda.md">link to source</a> <br />
                 <hr /> <div class="author-list">Written by Amélia Liao</div> <br />
               </div>
     </div>
@@ -208,7 +208,7 @@ is-equaliser (C ^op) f g coeq → is-coequaliser C f g coeq" id="1762" href="Cat
 (C ∘ has-is-coeq r .coequalise p) (r .coeq) ≡ e′" id="1872" href="Cat.Diagram.Coequaliser.html#834" class="Field">universal</a>  <a id="1883" class="Symbol">=</a> <a data-type="(r : Kernel C ∅ f) →
 (C ∘ r .kernel) (has-is-kernel r .limiting p) ≡ e′" id="1885" href="Cat.Diagram.Equaliser.html#790" class="Field">eq.universal</a>
     <a id="1902" class="Symbol">;</a> <a data-type="(r : Coequaliser C f g) →
-e′ ≡ (C ∘ colim) (r .coeq) → colim ≡ has-is-coeq r .coequalise p" id="1904" href="Cat.Diagram.Coequaliser.html#938" class="Field">unique</a>     <a id="1915" class="Symbol">=</a> <a data-type="(r : Kernel C ∅ f) →
+e′ ≡ (C ∘ colim) (r .coeq) → colim ≡ has-is-coeq r .coequalise p" id="1904" href="Cat.Diagram.Coequaliser.html#937" class="Field">unique</a>     <a id="1915" class="Symbol">=</a> <a data-type="(r : Kernel C ∅ f) →
 e′ ≡ (C ∘ r .kernel) lim&#39; → lim&#39; ≡ has-is-kernel r .limiting p" id="1917" href="Cat.Diagram.Equaliser.html#873" class="Field">eq.unique</a>
     <a id="1931" class="Symbol">}</a>
   <a id="1935" class="Keyword">where</a> <a id="1941" class="Keyword">module</a> <a id="1948" href="Cat.Diagram.Duals.html#1948" class="Module">eq</a> <a id="1951" class="Symbol">=</a> <a data-type="(C : Precategory ℓ ℓ′) (f g : Hom C A B₁) (equ : Hom C E A) →
@@ -233,7 +233,7 @@ is-coequaliser C f g coeq → is-equaliser (C ^op) f g coeq" id="2124" href="Cat
 (C ∘ has-is-coeq r .coequalise p) (r .coeq) ≡ e′" id="2254" href="Cat.Diagram.Coequaliser.html#834" class="Field">coeq.universal</a>
     <a id="2273" class="Symbol">;</a> <a data-type="(r : Kernel C ∅ f) →
 e′ ≡ (C ∘ r .kernel) lim&#39; → lim&#39; ≡ has-is-kernel r .limiting p" id="2275" href="Cat.Diagram.Equaliser.html#873" class="Field">unique</a>    <a id="2285" class="Symbol">=</a> <a data-type="(r : Coequaliser C f g) →
-e′ ≡ (C ∘ colim) (r .coeq) → colim ≡ has-is-coeq r .coequalise p" id="2287" href="Cat.Diagram.Coequaliser.html#938" class="Field">coeq.unique</a>
+e′ ≡ (C ∘ colim) (r .coeq) → colim ≡ has-is-coeq r .coequalise p" id="2287" href="Cat.Diagram.Coequaliser.html#937" class="Field">coeq.unique</a>
     <a id="2303" class="Symbol">}</a>
   <a id="2307" class="Keyword">where</a> <a id="2313" class="Keyword">module</a> <a id="2320" href="Cat.Diagram.Duals.html#2320" class="Module">coeq</a> <a id="2325" class="Symbol">=</a> <a data-type="(C : Precategory o ℓ) (f g : Hom C A B₁) (coeq : Hom C B₁ E) →
 Type (o ⊔ ℓ)" id="2327" href="Cat.Diagram.Coequaliser.html#642" class="Module">Coequ.is-coequaliser</a> <a id="2348" href="Cat.Diagram.Duals.html#2155" class="Bound">coeq</a>
