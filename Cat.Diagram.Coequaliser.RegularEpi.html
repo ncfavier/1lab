@@ -87,7 +87,7 @@
       <div id="return" style="white-space: nowrap;">
               <a href="index.html">️back to index</a> <br />
               <a href="all-pages.html">view all pages</a> <br />
-        <a href="https://github.com/plt-amy/cubical-1lab/blob/5a40bc0ad707483d84d7624fa2cfd647d01da6fc/src/Cat/Diagram/Coequaliser/RegularEpi.lagda.md">link to source</a> <br />
+        <a href="https://github.com/plt-amy/cubical-1lab/blob/bf2ab448aa8cbf7a41f5bcf41a045230db590dbb/src/Cat/Diagram/Coequaliser/RegularEpi.lagda.md">link to source</a> <br />
                 <hr /> <div class="author-list">Written by Amélia Liao</div> <br />
               </div>
     </div>
@@ -137,7 +137,7 @@ Type (o ⊔ ℓ)" id="1081" href="Cat.Diagram.Coequaliser.html#642" class="Recor
 Type (o ⊔ ℓ)" id="1118" href="Cat.Diagram.Coequaliser.html#642" class="Module">is-coequaliser</a> <a data-type="(r : is-regular-epi C f) → is-coequaliser C (r .arr₁) (r .arr₂) f" id="1133" href="Cat.Diagram.Coequaliser.RegularEpi.html#1065" class="Field">has-is-coeq</a> <a id="1145" class="Keyword">public</a>
 </pre>
 <p>From the definition we can directly conclude that regular epis are in fact epic:</p>
-<pre class="Agda">  <a id="is-regular-epi.is-regular-epi→is-epic"></a><a data-type="(r : is-regular-epi C f) → is-epic C f" id="1249" href="Cat.Diagram.Coequaliser.RegularEpi.html#1249" class="Function">is-regular-epi→is-epic</a> <a id="1272" class="Symbol">:</a> <a data-type="(C : Precategory o h) → Hom C a b → Type (o ⊔ h)" id="1274" href="Cat.Morphism.html#947" class="Function">is-epic</a> <a id="1282" href="Cat.Diagram.Coequaliser.RegularEpi.html#928" class="Bound">f</a>
+<pre class="Agda">  <a id="is-regular-epi.is-regular-epi→is-epic"></a><a data-type="(r : is-regular-epi C f) → is-epic C f" id="1249" href="Cat.Diagram.Coequaliser.RegularEpi.html#1249" class="Function">is-regular-epi→is-epic</a> <a id="1272" class="Symbol">:</a> <a data-type="(C : Precategory o h) → Hom C a b → Type (o ⊔ h)" id="1274" href="Cat.Morphism.html#1087" class="Function">is-epic</a> <a id="1282" href="Cat.Diagram.Coequaliser.RegularEpi.html#928" class="Bound">f</a>
   <a data-type="(r : is-regular-epi C f) → is-epic C f" id="1286" href="Cat.Diagram.Coequaliser.RegularEpi.html#1249" class="Function">is-regular-epi→is-epic</a> <a id="1309" class="Symbol">=</a> <a data-type="(C : Precategory o ℓ) (coequ : Hom C A E) →
 is-coequaliser C f g coequ → is-epic C coequ" id="1311" href="Cat.Diagram.Coequaliser.html#1837" class="Function">is-coequaliser→is-epic</a> <a id="1334" href="Cat.Diagram.Coequaliser.RegularEpi.html#206" class="Bound">C</a> <a id="1336" class="Symbol">_</a> <a data-type="(r : is-regular-epi C f) → is-coequaliser C (r .arr₁) (r .arr₂) f" id="1338" href="Cat.Diagram.Coequaliser.RegularEpi.html#1065" class="Field">has-is-coeq</a>
 
