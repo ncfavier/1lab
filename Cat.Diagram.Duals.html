@@ -91,7 +91,7 @@
       <div id="return" style="white-space: nowrap;">
               <a href="index.html">️back to index</a> <br />
               <a href="all-pages.html">view all pages</a> <br />
-        <a href="https://github.com/plt-amy/cubical-1lab/blob/bf2ab448aa8cbf7a41f5bcf41a045230db590dbb/src/Cat/Diagram/Duals.lagda.md">link to source</a> <br />
+        <a href="https://github.com/plt-amy/cubical-1lab/blob/1f331ef46d72e0c2568900bd22bcf25e7941c610/src/Cat/Diagram/Duals.lagda.md">link to source</a> <br />
                 <hr /> <div class="author-list">Written by Amélia Liao</div> <br />
               </div>
     </div>
@@ -142,7 +142,7 @@ Type (o ⊔ h)" id="888" href="Cat.Diagram.Coproduct.html#924" class="Record">Co
 is-product (C ^op) i2 i2 → is-coproduct C i2 i2" id="914" href="Cat.Diagram.Duals.html#782" class="Function">is-co-product→is-coproduct</a> <a id="941" href="Cat.Diagram.Duals.html#941" class="Bound">isp</a> <a id="945" class="Symbol">=</a>
   <a id="949" class="Keyword">record</a>
     <a id="960" class="Symbol">{</a> <a data-type="(r : Coproduct C A B₁) →
-Hom C A Q → Hom C A Q → Hom C (r .coapex) Q" id="962" href="Cat.Diagram.Coproduct.html#1010" class="Field Operator">[_,_]</a>      <a id="973" class="Symbol">=</a> <a data-type="(r : Product C A B₁) → Hom C Q A → Hom C Q B₁ → Hom C Q (r .apex)" id="975" href="Cat.Diagram.Product.html#1814" class="Field Operator">isp.⟨_,_⟩</a>
+Hom C A Q → Hom C B₁ Q → Hom C (r .coapex) Q" id="962" href="Cat.Diagram.Coproduct.html#1010" class="Field Operator">[_,_]</a>      <a id="973" class="Symbol">=</a> <a data-type="(r : Product C A B₁) → Hom C Q A → Hom C Q B₁ → Hom C Q (r .apex)" id="975" href="Cat.Diagram.Product.html#1814" class="Field Operator">isp.⟨_,_⟩</a>
     <a id="989" class="Symbol">;</a> <a data-type="(r : Coproduct C A B₁) →
 (C ∘ has-is-coproduct r .[_,_] inj0 inj1) (r .in₀) ≡ inj0" id="991" href="Cat.Diagram.Coproduct.html#1077" class="Field">in₀∘factor</a> <a id="1002" class="Symbol">=</a> <a data-type="(r : Product C A B₁) →
 (C ∘ r .π₁) (has-is-product r .⟨_,_⟩ p1 p2) ≡ p1" id="1004" href="Cat.Diagram.Product.html#1876" class="Field">isp.π₁∘factor</a>
@@ -169,7 +169,7 @@ Type (o ⊔ h)" id="1239" href="Cat.Diagram.Product.html#1732" class="Record">Co
 is-coproduct C i2 i2 → is-product (C ^op) i2 i2" id="1264" href="Cat.Diagram.Duals.html#1132" class="Function">is-coproduct→is-co-product</a> <a id="1291" href="Cat.Diagram.Duals.html#1291" class="Bound">iscop</a> <a id="1297" class="Symbol">=</a>
   <a id="1301" class="Keyword">record</a>
     <a id="1312" class="Symbol">{</a> <a data-type="(r : Product C A B₁) → Hom C Q A → Hom C Q B₁ → Hom C Q (r .apex)" id="1314" href="Cat.Diagram.Product.html#1814" class="Field Operator">⟨_,_⟩</a>     <a id="1324" class="Symbol">=</a> <a data-type="(r : Coproduct C A B₁) →
-Hom C A Q → Hom C A Q → Hom C (r .coapex) Q" id="1326" href="Cat.Diagram.Coproduct.html#1010" class="Field Operator">iscop.[_,_]</a>
+Hom C A Q → Hom C B₁ Q → Hom C (r .coapex) Q" id="1326" href="Cat.Diagram.Coproduct.html#1010" class="Field Operator">iscop.[_,_]</a>
     <a id="1342" class="Symbol">;</a> <a data-type="(r : Product C A B₁) →
 (C ∘ r .π₁) (has-is-product r .⟨_,_⟩ p1 p2) ≡ p1" id="1344" href="Cat.Diagram.Product.html#1876" class="Field">π₁∘factor</a> <a id="1354" class="Symbol">=</a> <a data-type="(r : Coproduct C A B₁) →
 (C ∘ has-is-coproduct r .[_,_] inj0 inj1) (r .in₀) ≡ inj0" id="1356" href="Cat.Diagram.Coproduct.html#1077" class="Field">iscop.in₀∘factor</a>
