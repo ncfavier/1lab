@@ -93,7 +93,7 @@
       <div id="return" style="white-space: nowrap;">
               <a href="index.html">️back to index</a> <br />
               <a href="all-pages.html">view all pages</a> <br />
-        <a href="https://github.com/plt-amy/cubical-1lab/blob/6aaee64ca4e3529f0cc34f793af0e962aa1c59a5/src/Cat/Thin.lagda.md">link to source</a> <br />
+        <a href="https://github.com/plt-amy/cubical-1lab/blob/e3563abcf6fc8f51c646d947150dbf45c594240a/src/Cat/Thin.lagda.md">link to source</a> <br />
                 <hr /> <div class="author-list">Written by Amélia Liao and Reed Mullanix</div> <br />
               </div>
     </div>
@@ -250,8 +250,8 @@ is-prop (Hom (r .underlying) A B₁)" id="2774" href="Cat.Thin.html#795" class="
       <a id="4524" class="Symbol">{</a> <a data-type="(C ≅ a) b → Hom C a b" id="4526" href="Cat.Morphism.html#2242" class="Field">to</a> <a id="4529" class="Symbol">=</a> <a id="4531" href="Cat.Thin.html#4474" class="Bound">f</a>
       <a id="4539" class="Symbol">;</a> <a data-type="(C ≅ a) b → Hom C b a" id="4541" href="Cat.Morphism.html#2265" class="Field">from</a> <a id="4546" class="Symbol">=</a> <a id="4548" href="Cat.Thin.html#4476" class="Bound">g</a>
       <a id="4556" class="Symbol">;</a> <a data-type="(r : (C ≅ a) b) → Inverses C (r .to) (r .from)" id="4558" href="Cat.Morphism.html#2288" class="Field">inverses</a> <a id="4567" class="Symbol">=</a> <a id="4569" class="Keyword">record</a>
-        <a id="4584" class="Symbol">{</a> <a data-type="(r : (C ≅ a) b) → (C ∘ r .to) (r .from) ≡ id C" id="4586" href="Cat.Morphism.html#1853" class="Field">invˡ</a> <a id="4591" class="Symbol">=</a> <a data-type="(r : Poset o h) (A B₁ : r .underlying .Ob) →
-is-prop (Hom (r .underlying) A B₁)" id="4593" href="Cat.Thin.html#795" class="Function">Hom-is-prop</a> <a id="4605" class="Symbol">_</a> <a id="4607" class="Symbol">_</a> <a id="4609" class="Symbol">_</a> <a id="4611" class="Symbol">_</a> <a id="4613" class="Symbol">;</a> <a data-type="(r : (C ≅ a) b) → (C ∘ r .from) (r .to) ≡ id C" id="4615" href="Cat.Morphism.html#1875" class="Field">invʳ</a> <a id="4620" class="Symbol">=</a> <a data-type="(r : Poset o h) (A B₁ : r .underlying .Ob) →
+        <a id="4584" class="Symbol">{</a> <a data-type="(r : (C ≅ a) b) → (C ∘ r .to) (r .from) ≡ id C" id="4586" href="Cat.Morphism.html#1853" class="Field">invl</a> <a id="4591" class="Symbol">=</a> <a data-type="(r : Poset o h) (A B₁ : r .underlying .Ob) →
+is-prop (Hom (r .underlying) A B₁)" id="4593" href="Cat.Thin.html#795" class="Function">Hom-is-prop</a> <a id="4605" class="Symbol">_</a> <a id="4607" class="Symbol">_</a> <a id="4609" class="Symbol">_</a> <a id="4611" class="Symbol">_</a> <a id="4613" class="Symbol">;</a> <a data-type="(r : (C ≅ a) b) → (C ∘ r .from) (r .to) ≡ id C" id="4615" href="Cat.Morphism.html#1875" class="Field">invr</a> <a id="4620" class="Symbol">=</a> <a data-type="(r : Poset o h) (A B₁ : r .underlying .Ob) →
 is-prop (Hom (r .underlying) A B₁)" id="4622" href="Cat.Thin.html#795" class="Function">Hom-is-prop</a> <a id="4634" class="Symbol">_</a> <a id="4636" class="Symbol">_</a> <a id="4638" class="Symbol">_</a> <a id="4640" class="Symbol">_</a> <a id="4642" class="Symbol">}</a> <a id="4644" class="Symbol">})</a>
 </pre>
 <p>Forgetting the univalence datum lets us turn a <span class="Agda"><a data-type="(o h : Level) → Type (lsuc o ⊔ lsuc h)" href="Cat.Thin.html#3489" class="Record">Poset</a></span> into a <span class="Agda"><a data-type="(o h : Level) → Type (lsuc o ⊔ lsuc h)" href="Cat.Thin.html#989" class="Record">Proset</a></span>.</p>
