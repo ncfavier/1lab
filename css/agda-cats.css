@@ -82,7 +82,8 @@ a[href].hover-highlight {
   /* OtherAspects. */
   /* Standard attributes. */
   font-family: 'iosevka', 'Iosevka', 'Fantasque Sans Mono', 'Roboto Mono', monospace;
-  font-weight: 400; }
+  font-weight: 400;
+  font-size: var(--code-font-size); }
   .Agda .Comment {
     color: #222;
     font-style: italic; }
