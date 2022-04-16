@@ -54,7 +54,6 @@ main {
       display: none; }
   main div#post-toc-container article {
     grid-column: 2;
-    width: 100%;
     line-height: 1.2; }
     main div#post-toc-container article a[href].header-link {
       color: black;
