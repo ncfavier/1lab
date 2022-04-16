@@ -477,3 +477,6 @@ div.profile {
   white-space: initial;
   font-size: 0.8em;
   font-style: italic; }
+
+.smallcaps {
+  font-variant: small-caps; }
