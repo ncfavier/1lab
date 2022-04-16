@@ -36,7 +36,8 @@ article {
   padding-top: 2em;
   padding-bottom: 2em;
   margin-top: 0 !important;
-  width: 85ch; }
+  width: 85ch;
+  max-width: 100%; }
   article > :nth-child(1), article > pre.Agda:first-of-type {
     margin-top: 0;
     padding-top: 0; }
