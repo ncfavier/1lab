@@ -89,7 +89,7 @@
       <div id="return" style="white-space: nowrap;">
               <a href="index.html">️back to index</a> <br />
               <a href="all-pages.html">view all pages</a> <br />
-        <a href="https://github.com/plt-amy/cubical-1lab/blob/3f8be3cf54b7f4544b51fe981081f530a3c6f523/src/Cat/Functor/Adjoint/Reflective.lagda.md">link to source</a> <br />
+        <a href="https://github.com/plt-amy/cubical-1lab/blob/0921caa4d77d3b7195f4339ee21ee1becd80544f/src/Cat/Functor/Adjoint/Reflective.lagda.md">link to source</a> <br />
                 <hr /> <div class="author-list">Written by Amélia Liao</div> <br />
               </div>
     </div>
@@ -200,7 +200,7 @@ Precategory (o₁ ⊔ o₂ ⊔ h₁ ⊔ h₂) (o₁ ⊔ h₁ ⊔ h₂)" id="3688
   <a id="3721" class="Keyword">open</a> <a data-type="(L : Functor C D) (R₁ : Functor D C) → Type (C.o ⊔ C.h ⊔ D.o ⊔ D.h)" id="3726" href="Cat.Functor.Adjoint.html#1896" class="Module Operator">_⊣_</a> <a id="3730" href="Cat.Functor.Adjoint.Reflective.html#3604" class="Bound">adj</a>
   <a id="3736" href="Cat.Functor.Adjoint.Reflective.html#3736" class="Function">invs</a> <a id="3741" class="Symbol">=</a> <a data-type="(eta : F =&gt; G) →
 ((x : C .Ob) → is-invertible D (eta .η x)) →
-is-invertible Cat[ C , D ] eta" id="3743" href="Cat.Instances.Functor.html#8705" class="Function">componentwise-invertible→invertible</a> <a data-type="L ⊣ R₁ → (L F∘ R₁) =&gt; Id" id="3779" href="Cat.Functor.Adjoint.html#2074" class="Function">counit</a> <a id="3786" class="Symbol">λ</a> <a id="3788" href="Cat.Functor.Adjoint.Reflective.html#3788" class="Bound">x</a> <a id="3790" class="Symbol">→</a>
+is-invertible Cat[ C , D ] eta" id="3743" href="Cat.Instances.Functor.html#8704" class="Function">componentwise-invertible→invertible</a> <a data-type="L ⊣ R₁ → (L F∘ R₁) =&gt; Id" id="3779" href="Cat.Functor.Adjoint.html#2074" class="Function">counit</a> <a id="3786" class="Symbol">λ</a> <a id="3788" href="Cat.Functor.Adjoint.Reflective.html#3788" class="Bound">x</a> <a id="3790" class="Symbol">→</a>
     <a data-type="(C : Precategory o h) (i : (C ≅ a) b) → is-invertible C (i .to)" id="3796" href="Cat.Morphism.html#3883" class="Function">D.iso→invertible</a> <a id="3813" class="Symbol">(</a><a data-type="(adj : F ⊣ G) → is-reflective adj → (D ≅ F₀ F (F₀ G o)) o" id="3814" href="Cat.Functor.Adjoint.Reflective.html#1978" class="Function">is-reflective→counit-is-iso</a> <a id="3842" href="Cat.Functor.Adjoint.Reflective.html#3604" class="Bound">adj</a> <a id="3846" href="Cat.Functor.Adjoint.Reflective.html#3608" class="Bound">ff</a> <a id="3849" class="Symbol">{</a><a id="3850" class="Argument">o</a> <a id="3852" class="Symbol">=</a> <a id="3854" href="Cat.Functor.Adjoint.Reflective.html#3788" class="Bound">x</a><a id="3855" class="Symbol">})</a>
 </pre>
 <p>We can now prove that the adjunction <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>⊣</mo><mi>ι</mi></mrow><annotation encoding="application/x-tex">L \dashv \iota</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⊣</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">ι</span></span></span></span> is monadic.</p>
