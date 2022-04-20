@@ -92,7 +92,7 @@
       <div id="return" style="white-space: nowrap;">
               <a href="index.html">️back to index</a> <br />
               <a href="all-pages.html">view all pages</a> <br />
-        <a href="https://github.com/plt-amy/cubical-1lab/blob/0921caa4d77d3b7195f4339ee21ee1becd80544f/src/Algebra/Lattice.lagda.md">link to source</a> <br />
+        <a href="https://github.com/plt-amy/cubical-1lab/blob/8376046893a57cd6248a00ab78837e53fee9a440/src/Algebra/Lattice.lagda.md">link to source</a> <br />
                 <hr /> <div class="author-list">Written by Amélia Liao</div> <br />
               </div>
     </div>
@@ -293,7 +293,7 @@ Monotone-map (Semilattice-on→Meet-on (Lattice-on→is-meet-semi l))
 (Semilattice-on→Join-on (Lattice-on→is-join-semi l))" id="5920" href="Algebra.Lattice.html#4936" class="Function">covariant-order-map</a> <a id="5940" href="Algebra.Lattice.html#5884" class="Bound">l</a><a id="5941" class="Symbol">)</a>
 <a data-type="(l : Lattice-on A) → is-equivalence (covariant-order-map l)" id="5943" href="Algebra.Lattice.html#5844" class="Function">covariant-order-map-is-equivalence</a> <a id="5978" href="Algebra.Lattice.html#5978" class="Bound">l</a> <a id="5980" class="Symbol">=</a>
   <a data-type="(ff : is-fully-faithful F) (eso : is-split-eso F) →
-is-equivalence F" id="5984" href="Cat.Functor.Equivalence.html#11560" class="Function">ff+split-eso→is-equivalence</a> <a id="6012" href="Algebra.Lattice.html#6324" class="Function">ff</a> <a id="6015" href="Algebra.Lattice.html#6694" class="Function">eso</a>
+is-equivalence F" id="5984" href="Cat.Functor.Equivalence.html#11818" class="Function">ff+split-eso→is-equivalence</a> <a id="6012" href="Algebra.Lattice.html#6324" class="Function">ff</a> <a id="6015" href="Algebra.Lattice.html#6694" class="Function">eso</a>
   <a id="6021" class="Keyword">where</a>
     <a id="6031" class="Keyword">open</a> <a data-type="(A : Type ℓ) → Type ℓ" id="6036" href="Algebra.Lattice.html#2043" class="Module">Lattice-on</a> <a id="6047" href="Algebra.Lattice.html#5978" class="Bound">l</a> <a id="6049" class="Keyword">hiding</a> <a id="6056" class="Symbol">(</a><a data-type="(r : Lattice-on A) → is-semilattice (_L∨_ r)" id="6057" href="Algebra.Lattice.html#2349" class="Function">Lattice-on→is-join-semi</a><a id="6080" class="Symbol">)</a>
     <a id="6086" class="Keyword">import</a>
@@ -322,7 +322,7 @@ Monotone-map (Semilattice-on→Meet-on (Lattice-on→is-meet-semi l))
     <a id="6741" href="Algebra.Lattice.html#6694" class="Function">eso</a> <a id="6745" href="Algebra.Lattice.html#6745" class="Bound">y</a> <a id="6747" class="Symbol">.</a><a data-type="∑ A B₁ → A" id="6748" href="Agda.Builtin.Sigma.html#252" class="Field">fst</a> <a id="6752" class="Symbol">=</a> <a id="6754" href="Algebra.Lattice.html#6745" class="Bound">y</a>
     <a id="6760" href="Algebra.Lattice.html#6694" class="Function">eso</a> <a id="6764" href="Algebra.Lattice.html#6764" class="Bound">y</a> <a id="6766" class="Symbol">.</a><a data-type="(r : ∑ A B₁) → B₁ (r .fst)" id="6767" href="Agda.Builtin.Sigma.html#264" class="Field">snd</a> <a id="6771" class="Symbol">=</a>
       <a data-type="(C : Precategory o h) (f : Hom C a b) (g : Hom C b a) →
-(C ∘ f) g ≡ id C → (C ∘ g) f ≡ id C → (C ≅ a) b" id="6779" href="Cat.Morphism.html#3455" class="Function">D.make-iso</a> <a id="6790" class="Symbol">(</a><a data-type="x ≡ y → y ≡ x" id="6791" href="1Lab.Path.html#10558" class="Function">sym</a> <a data-type="(r : Lattice-on A) → r ._L∨_ x x ≡ x" id="6795" href="Algebra.Lattice.html#1253" class="Function">∨-idempotent</a><a id="6807" class="Symbol">)</a> <a id="6809" class="Symbol">(</a><a data-type="x ≡ y → y ≡ x" id="6810" href="1Lab.Path.html#10558" class="Function">sym</a> <a data-type="(r : Lattice-on A) → r ._L∨_ x x ≡ x" id="6814" href="Algebra.Lattice.html#1253" class="Function">∨-idempotent</a><a id="6826" class="Symbol">)</a>
+(C ∘ f) g ≡ id C → (C ∘ g) f ≡ id C → (C ≅ a) b" id="6779" href="Cat.Morphism.html#3719" class="Function">D.make-iso</a> <a id="6790" class="Symbol">(</a><a data-type="x ≡ y → y ≡ x" id="6791" href="1Lab.Path.html#10558" class="Function">sym</a> <a data-type="(r : Lattice-on A) → r ._L∨_ x x ≡ x" id="6795" href="Algebra.Lattice.html#1253" class="Function">∨-idempotent</a><a id="6807" class="Symbol">)</a> <a id="6809" class="Symbol">(</a><a data-type="x ≡ y → y ≡ x" id="6810" href="1Lab.Path.html#10558" class="Function">sym</a> <a data-type="(r : Lattice-on A) → r ._L∨_ x x ≡ x" id="6814" href="Algebra.Lattice.html#1253" class="Function">∨-idempotent</a><a id="6826" class="Symbol">)</a>
         <a id="6836" class="Symbol">(</a><a data-type="(r : Unital-magma-on A) → is-set A" id="6837" href="Algebra.Magma.html#1624" class="Function">has-is-set</a> <a id="6848" class="Symbol">_</a> <a id="6850" class="Symbol">_</a> <a id="6852" class="Symbol">_</a> <a id="6854" class="Symbol">_)</a>
         <a id="6865" class="Symbol">(</a><a data-type="(r : Unital-magma-on A) → is-set A" id="6866" href="Algebra.Magma.html#1624" class="Function">has-is-set</a> <a id="6877" class="Symbol">_</a> <a id="6879" class="Symbol">_</a> <a id="6881" class="Symbol">_</a> <a id="6883" class="Symbol">_)</a>
 </pre>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="Agda,categories,topos" />
+
+  <title>…tor.Equivalence.Complete - 1Lab</title>
+
+  <link rel="stylesheet" href="/css/default.css" />
+  <link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/css/agda-cats.css" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="…tor.Equivalence.Complete - 1Lab" />
+  <meta name="twitter:image" content="https://1lab.dev/static/cube-128x.png" />
+
+  <meta name="og:title" content="…tor.Equivalence.Complete - 1Lab" />
+  <meta name="og:image" content="https://1lab.dev/static/cube-128x.png" />
+  <meta name="og:site-name" content="1Lab" />
+  <meta name="og:type" content="website" />
+
+    <meta name="og:description" content="A formalised, explorable online resource for Homotopy Type Theory." />
+  <meta name="twitter:description" content="A formalised, explorable online resource for Homotopy Type Theory." />
+  <meta name="description" content="A formalised, explorable online resource for Homotopy Type Theory." />
+  
+  <script src="/equations.js"></script>
+  <script src="/highlight-hover.js"></script>
+
+  <noscript>
+    <style>
+      body span.reasoning-step .as-written {
+        display: inline;
+      }
+
+      body span.reasoning-step .alternate {
+        display: none;
+      }
+    </style>
+  </noscript>
+
+  <!-- Google font embeds -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&amp;family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;display=swap" rel="stylesheet">
+</head>
+
+<body>
+<main>
+<div id="post-toc-container" style="padding-left: 1em; padding-right: 1em;">
+
+  <!-- Table of contents (only if the page has a table of contents) -->
+    <aside id="toc">
+    <div id="toc-container" style="min-width: 10em; font-size: 15pt;">
+      <!-- Title for the page -->
+      <h3 class="Agda" style="margin-top: 0; margin-bottom: 0; white-space: pre;">
+                <a class="Module">…tor.Equivalence.Complete</a>
+              </h3>
+
+      <!-- Cube logo -->
+      <img alt="1Lab" src="/static/cube-72x.png" style="display: block; margin-bottom: 1em; margin: auto;" width="32px" height="32px" />
+
+      <!-- Actual table of contents (separated from the rest by
+      horizontal rules) -->
+      <hr />
+      <ul>
+      <li><a href="#completeness-respects-equivalences"><a href="#completeness-respects-equivalences" class="header-link">Completeness respects equivalences<span class="header-link-emoji">🔗</span></a></a></li>
+      </ul>
+      <hr />
+
+      <!-- Sidebar controls -->
+      <div style="display: flex; gap: 0.25em; flex-flow: row wrap;">
+        <!-- Sidebar equations control -->
+        <span class="equations" style="display: flex; align-items: center; gap: 0.25em; flex-wrap: nowrap;">
+          <input name="sidebar-eqns" type="checkbox" class="equations" id="sidebar-eqns">
+          <label for="sidebar-eqns">Equations</label>
+        </span>
+
+        <!-- Sidebar fonts control -->
+        <span style="display: flex; align-items: center; gap: 0.25em; flex-wrap: nowrap;">
+          <input name="sidebar-font" type="checkbox" id="toggle-fonts">
+          <label for="toggle-fonts">Serif Font</label>
+        </span>
+      </div>
+
+      <hr />
+
+      <!-- Navbar navigation (lol) -->
+      <div id="return" style="white-space: nowrap;">
+              <a href="index.html">️back to index</a> <br />
+              <a href="all-pages.html">view all pages</a> <br />
+        <a href="https://github.com/plt-amy/cubical-1lab/blob/8376046893a57cd6248a00ab78837e53fee9a440/src/Cat/Functor/Equivalence/Complete.lagda.md">link to source</a> <br />
+                <hr /> <div class="author-list">Written by Amélia Liao</div> <br />
+              </div>
+    </div>
+  </aside>
+  
+  <article>
+    <!-- Article navigation (narrow screens only) -->
+    <div class="narrow-only" id="article-nav">
+      <!-- Index return anchor (only if the page is not the index) -->
+            <div id="return">
+        <a href="index.html">️back to index</a>
+      </div>
+      
+      <!-- Font toggle checkbox -->
+      <span class="equations" style="display: flex; gap: 0.25em; flex-wrap: nowrap;">
+        <input name="navbar-eqns" type="checkbox" class="equations" id="navbar-eqns">
+        <label for="navbar-eqns">Equations</label>
+      </span>
+    </div>
+
+<pre class="Agda"><a id="9" class="Keyword">open</a> <a id="14" class="Keyword">import</a> <a id="21" href="Cat.Functor.Adjoint.Continuous.html" class="Module">Cat.Functor.Adjoint.Continuous</a>
+<a id="52" class="Keyword">open</a> <a id="57" class="Keyword">import</a> <a id="64" href="Cat.Functor.Equivalence.html" class="Module">Cat.Functor.Equivalence</a>
+<a id="88" class="Keyword">open</a> <a id="93" class="Keyword">import</a> <a id="100" href="Cat.Diagram.Limit.Base.html" class="Module">Cat.Diagram.Limit.Base</a>
+<a id="123" class="Keyword">open</a> <a id="128" class="Keyword">import</a> <a id="135" href="Cat.Instances.Functor.html" class="Module">Cat.Instances.Functor</a>
+<a id="157" class="Keyword">open</a> <a id="162" class="Keyword">import</a> <a id="169" href="Cat.Functor.Base.html" class="Module">Cat.Functor.Base</a>
+<a id="186" class="Keyword">open</a> <a id="191" class="Keyword">import</a> <a id="198" href="Cat.Prelude.html" class="Module">Cat.Prelude</a>
+
+<a id="211" class="Keyword">module</a> <a id="218" href="Cat.Functor.Equivalence.Complete.html" class="Module">Cat.Functor.Equivalence.Complete</a> <a id="251" class="Keyword">where</a>
+</pre>
+<h1 id="completeness-respects-equivalences"><a href="#completeness-respects-equivalences" class="header-link">Completeness respects equivalences<span class="header-link-emoji">🔗</span></a></h1>
+<p>Let <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">C</mi></mrow><annotation encoding="application/x-tex">\ca{C}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.05834em;">C</span></span></span></span> be a category admitting limits for <span style="white-space: nowrap;"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">J</mi></mrow><annotation encoding="application/x-tex">\ca{J}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7805em;vertical-align:-0.0972em;"></span><span class="mord mathcal" style="margin-right:0.18472em;">J</span></span></span></span>-shaped</span> diagrams, and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>:</mo><mi mathvariant="script">C</mi><mo>≅</mo><mi mathvariant="script">D</mi></mrow><annotation encoding="application/x-tex">F : \ca{C} \cong \ca{D}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.05834em;">C</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≅</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.02778em;">D</span></span></span></span> an equivalence. Then <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">D</mi></mrow><annotation encoding="application/x-tex">\ca{D}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.02778em;">D</span></span></span></span> also admits limits for <span style="white-space: nowrap;"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">J</mi></mrow><annotation encoding="application/x-tex">\ca{J}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7805em;vertical-align:-0.0972em;"></span><span class="mord mathcal" style="margin-right:0.18472em;">J</span></span></span></span>-shaped</span> diagrams; In particular, if <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">C</mi></mrow><annotation encoding="application/x-tex">\ca{C}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.05834em;">C</span></span></span></span> is complete, then so is <span style="white-space: nowrap;"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">D</mi></mrow><annotation encoding="application/x-tex">\ca{D}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.02778em;">D</span></span></span></span>.</span></p>
+<pre class="Agda"><a id="553" class="Keyword">module</a>
+  <a id="562" href="Cat.Functor.Equivalence.Complete.html#562" class="Module">_</a> <a id="564" class="Symbol">{</a><a id="565" href="Cat.Functor.Equivalence.Complete.html#565" class="Bound">o</a> <a id="567" href="Cat.Functor.Equivalence.Complete.html#567" class="Bound">ℓ</a> <a id="569" href="Cat.Functor.Equivalence.Complete.html#569" class="Bound">o′</a> <a id="572" href="Cat.Functor.Equivalence.Complete.html#572" class="Bound">ℓ′</a><a id="574" class="Symbol">}</a> <a id="576" class="Symbol">{</a><a id="577" href="Cat.Functor.Equivalence.Complete.html#577" class="Bound">C</a> <a id="579" class="Symbol">:</a> <a data-type="(o h : Level) → Type (lsuc o ⊔ lsuc h)" id="581" href="Cat.Base.html#704" class="Record">Precategory</a> <a id="593" href="Cat.Functor.Equivalence.Complete.html#565" class="Bound">o</a> <a id="595" href="Cat.Functor.Equivalence.Complete.html#567" class="Bound">ℓ</a><a id="596" class="Symbol">}</a> <a id="598" class="Symbol">{</a><a id="599" href="Cat.Functor.Equivalence.Complete.html#599" class="Bound">D</a> <a id="601" class="Symbol">:</a> <a data-type="(o h : Level) → Type (lsuc o ⊔ lsuc h)" id="603" href="Cat.Base.html#704" class="Record">Precategory</a> <a id="615" href="Cat.Functor.Equivalence.Complete.html#569" class="Bound">o′</a> <a id="618" href="Cat.Functor.Equivalence.Complete.html#572" class="Bound">ℓ′</a><a id="620" class="Symbol">}</a>
+    <a id="626" class="Symbol">{</a><a id="627" href="Cat.Functor.Equivalence.Complete.html#627" class="Bound">F</a> <a id="629" class="Symbol">:</a> <a data-type="(C : Precategory o₁ h₁) (D : Precategory o₂ h₂) →
+Type (o₁ ⊔ h₁ ⊔ o₂ ⊔ h₂)" id="631" href="Cat.Base.html#7206" class="Record">Functor</a> <a id="639" href="Cat.Functor.Equivalence.Complete.html#577" class="Bound">C</a> <a id="641" href="Cat.Functor.Equivalence.Complete.html#599" class="Bound">D</a><a id="642" class="Symbol">}</a> <a id="644" class="Symbol">(</a><a id="645" href="Cat.Functor.Equivalence.Complete.html#645" class="Bound">eqv</a> <a id="649" class="Symbol">:</a> <a data-type="(F : Functor C D) → Type (C.o ⊔ C.h ⊔ D.o ⊔ D.h)" id="651" href="Cat.Functor.Equivalence.html#804" class="Record">is-equivalence</a> <a id="666" href="Cat.Functor.Equivalence.Complete.html#627" class="Bound">F</a><a id="667" class="Symbol">)</a>
+  <a id="671" class="Keyword">where</a>
+
+  <a id="680" class="Keyword">open</a> <a data-type="(F : Functor C D) → Type (C.o ⊔ C.h ⊔ D.o ⊔ D.h)" id="685" href="Cat.Functor.Equivalence.html#804" class="Module">is-equivalence</a> <a id="700" href="Cat.Functor.Equivalence.Complete.html#645" class="Bound">eqv</a>
+</pre>
+<p>This is a very short theorem: If <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">C</mi></mrow><annotation encoding="application/x-tex">\ca{C}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.05834em;">C</span></span></span></span> admits <span style="white-space: nowrap;"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">J</mi></mrow><annotation encoding="application/x-tex">\ca{J}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7805em;vertical-align:-0.0972em;"></span><span class="mord mathcal" style="margin-right:0.18472em;">J</span></span></span></span>-shaped</span> limits, then for any diagram <span style="white-space: nowrap;"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>:</mo><mi mathvariant="script">J</mi><mo>→</mo><mi mathvariant="script">D</mi></mrow><annotation encoding="application/x-tex">K : \ca{J} \to \ca{D}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7805em;vertical-align:-0.0972em;"></span><span class="mord mathcal" style="margin-right:0.18472em;">J</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.02778em;">D</span></span></span></span>,</span> the composite <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>F</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi>K</mi></mrow><annotation encoding="application/x-tex">F^{-1}K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> has a limit. But since equivalences are right adjoints, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span></span></span></span> preserves this limit, so <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><msup><mi>F</mi><mrow><mo>−</mo><mn>1</mn></mrow></msup><mi>K</mi></mrow><annotation encoding="application/x-tex">FF^{-1}K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> has a limit in <span style="white-space: nowrap;"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">D</mi></mrow><annotation encoding="application/x-tex">\ca{D}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathcal" style="margin-right:0.02778em;">D</span></span></span></span>;</span> But that composite is naturally isomorphic to <span style="white-space: nowrap;"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span>,</span> so <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> also has a limit.</p>
+<pre class="Agda">  <a data-type="is-equivalence F → is-complete co cℓ C → is-complete co cℓ D" id="1060" href="Cat.Functor.Equivalence.Complete.html#1060" class="Function">equivalence→complete</a> <a id="1081" class="Symbol">:</a> <a id="1083" class="Symbol">∀</a> <a id="1085" class="Symbol">{</a><a id="1086" href="Cat.Functor.Equivalence.Complete.html#1086" class="Bound">co</a> <a id="1089" href="Cat.Functor.Equivalence.Complete.html#1089" class="Bound">cℓ</a><a id="1091" class="Symbol">}</a> <a id="1093" class="Symbol">→</a> <a data-type="(o ℓ : Level) →
+Precategory oc ℓc → Type (oc ⊔ ℓc ⊔ lsuc o ⊔ lsuc ℓ)" id="1095" href="Cat.Diagram.Limit.Base.html#19364" class="Function">is-complete</a> <a id="1107" href="Cat.Functor.Equivalence.Complete.html#1086" class="Bound">co</a> <a id="1110" href="Cat.Functor.Equivalence.Complete.html#1089" class="Bound">cℓ</a> <a id="1113" href="Cat.Functor.Equivalence.Complete.html#577" class="Bound">C</a> <a id="1115" class="Symbol">→</a> <a data-type="(o ℓ : Level) →
+Precategory oc ℓc → Type (oc ⊔ ℓc ⊔ lsuc o ⊔ lsuc ℓ)" id="1117" href="Cat.Diagram.Limit.Base.html#19364" class="Function">is-complete</a> <a id="1129" href="Cat.Functor.Equivalence.Complete.html#1086" class="Bound">co</a> <a id="1132" href="Cat.Functor.Equivalence.Complete.html#1089" class="Bound">cℓ</a> <a id="1135" href="Cat.Functor.Equivalence.Complete.html#599" class="Bound">D</a>
+  <a data-type="is-equivalence F → is-complete co cℓ C → is-complete co cℓ D" id="1139" href="Cat.Functor.Equivalence.Complete.html#1060" class="Function">equivalence→complete</a> <a id="1160" href="Cat.Functor.Equivalence.Complete.html#1160" class="Bound">ccomp</a> <a id="1166" href="Cat.Functor.Equivalence.Complete.html#1166" class="Bound">K</a> <a id="1168" class="Symbol">=</a>
+    <a data-type="(Cat[ J₁ , C ] ≅ F) G → Limit F → Limit G" id="1174" href="Cat.Diagram.Limit.Base.html#20285" class="Function">Limit-ap-iso</a> <a id="1187" class="Symbol">(</a><a data-type="(Cat[ D , D ] ≅ F) Id → (Cat[ C , D ] ≅ (F F∘ G)) G" id="1188" href="Cat.Instances.Functor.html#13501" class="Function">F∘-iso-id-l</a> <a data-type="(r : is-equivalence F) → (Cat[ D , D ] ≅ (F F∘ F⁻¹ r)) Id" id="1200" href="Cat.Functor.Equivalence.html#1378" class="Function">F∘F⁻¹≅Id</a><a id="1208" class="Symbol">)</a>
+      <a id="1216" class="Symbol">(</a><a data-type="(P : A → Type ℓ₂) → x ≡ y → P x → P y" id="1217" href="1Lab.Path.html#15309" class="Function">subst</a> <a data-type="(F : Functor J₁ C) → Type (o₁ ⊔ h₁ ⊔ o₂ ⊔ h₂)" id="1223" href="Cat.Diagram.Limit.Base.html#10105" class="Function">Limit</a> <a data-type="(F F∘ (G F∘ H)) ≡ ((F F∘ G) F∘ H)" id="1229" href="Cat.Instances.Functor.html#12063" class="Function">F∘-assoc</a> <a id="1238" class="Symbol">(</a><a data-type="(L⊣R : L ⊣ R₁) → Limit F → Limit (R₁ F∘ F)" id="1239" href="Cat.Functor.Adjoint.Continuous.html#4671" class="Function">right-adjoint-limit</a> <a data-type="(r : is-equivalence F) → F⁻¹ r ⊣ F" id="1259" href="Cat.Functor.Equivalence.html#1740" class="Function">F⁻¹⊣F</a> <a id="1265" class="Symbol">(</a><a id="1266" href="Cat.Functor.Equivalence.Complete.html#1160" class="Bound">ccomp</a> <a id="1272" class="Symbol">(</a><a data-type="is-equivalence F → Functor D C" id="1273" href="Cat.Functor.Equivalence.html#1043" class="Field">F⁻¹</a> <a data-type="Functor D E → Functor C D → Functor C E" id="1277" href="Cat.Base.html#9697" class="Function Operator">F∘</a> <a id="1280" href="Cat.Functor.Equivalence.Complete.html#1166" class="Bound">K</a><a id="1281" class="Symbol">))))</a>
+</pre>
+  </article>
+</div>
+
+</main>
+</body>
+<style>.equations { display: none !important; }</style></html>

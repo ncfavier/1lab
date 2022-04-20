@@ -93,7 +93,7 @@
       <div id="return" style="white-space: nowrap;">
               <a href="index.html">️back to index</a> <br />
               <a href="all-pages.html">view all pages</a> <br />
-        <a href="https://github.com/plt-amy/cubical-1lab/blob/0921caa4d77d3b7195f4339ee21ee1becd80544f/src/Cat/Diagram/Equaliser/RegularMono.lagda.md">link to source</a> <br />
+        <a href="https://github.com/plt-amy/cubical-1lab/blob/8376046893a57cd6248a00ab78837e53fee9a440/src/Cat/Diagram/Equaliser/RegularMono.lagda.md">link to source</a> <br />
                 <hr /> <div class="author-list">Written by Amélia Liao</div> <br />
               </div>
     </div>
@@ -151,7 +151,7 @@ Type (ℓ ⊔ ℓ′)" id="1200" href="Cat.Diagram.Equaliser.html#604" class="Re
 Type (ℓ ⊔ ℓ′)" id="1235" href="Cat.Diagram.Equaliser.html#604" class="Module">is-equaliser</a> <a data-type="(r : is-regular-mono C f) → is-equaliser C (r .arr₁) (r .arr₂) f" id="1248" href="Cat.Diagram.Equaliser.RegularMono.html#1188" class="Field">has-is-eq</a> <a id="1258" class="Keyword">public</a>
 </pre>
 <p>From the definition we can directly conclude that regular monomorphisms are in fact monomorphisms:</p>
-<pre class="Agda">  <a id="is-regular-mono.is-regular-mono→is-mono"></a><a data-type="(r : is-regular-mono C f) → is-monic C f" id="1380" href="Cat.Diagram.Equaliser.RegularMono.html#1380" class="Function">is-regular-mono→is-mono</a> <a id="1404" class="Symbol">:</a> <a data-type="(C : Precategory o h) → Hom C a b → Type (o ⊔ h)" id="1406" href="Cat.Morphism.html#576" class="Function">is-monic</a> <a id="1415" href="Cat.Diagram.Equaliser.RegularMono.html#1081" class="Bound">f</a>
+<pre class="Agda">  <a id="is-regular-mono.is-regular-mono→is-mono"></a><a data-type="(r : is-regular-mono C f) → is-monic C f" id="1380" href="Cat.Diagram.Equaliser.RegularMono.html#1380" class="Function">is-regular-mono→is-mono</a> <a id="1404" class="Symbol">:</a> <a data-type="(C : Precategory o h) → Hom C a b → Type (o ⊔ h)" id="1406" href="Cat.Morphism.html#590" class="Function">is-monic</a> <a id="1415" href="Cat.Diagram.Equaliser.RegularMono.html#1081" class="Bound">f</a>
   <a data-type="(r : is-regular-mono C f) → is-monic C f" id="1419" href="Cat.Diagram.Equaliser.RegularMono.html#1380" class="Function">is-regular-mono→is-mono</a> <a id="1443" class="Symbol">=</a> <a data-type="(C : Precategory ℓ ℓ′) (equ : Hom C E A) →
 is-equaliser C f g equ → is-monic C equ" id="1445" href="Cat.Diagram.Equaliser.html#2117" class="Function">is-equaliser→is-monic</a> <a id="1467" href="Cat.Diagram.Equaliser.RegularMono.html#336" class="Bound">C</a> <a id="1469" class="Symbol">_</a> <a data-type="(r : is-regular-mono C f) → is-equaliser C (r .arr₁) (r .arr₂) f" id="1471" href="Cat.Diagram.Equaliser.RegularMono.html#1188" class="Field">has-is-eq</a>
 
