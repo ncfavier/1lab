@@ -376,6 +376,10 @@ $\cC^M$.
 
 <!--
 ```agda
+    ν-nat : M.M F∘ Forget => Forget
+    ν-nat .η (_ , alg) = alg .ν
+    ν-nat .is-natural _ _ f = sym (f .commutes)
+
 module _ {o h : _} {C : Precategory o h} {M N : Monad C} where
   private
     module C = Cat.Reasoning C

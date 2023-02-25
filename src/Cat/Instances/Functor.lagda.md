@@ -139,6 +139,18 @@ F∘-idr
   → F F∘ Id ≡ F
 F∘-idr = Functor-path (λ x → refl) λ x → refl
 
+F∘-eliml-pre : ∀ {o₁ ℓ₁ o₂ ℓ₂} {A : Precategory o₁ ℓ₁} {B : Precategory o₂ ℓ₂} {F G : Functor A B} → Id F∘ F => G → F => G
+F∘-eliml-pre {B = B} α .η = α .η
+F∘-eliml-pre {B = B} α .is-natural = α .is-natural
+
+F∘-assocl-pre : ∀ {o₁ ℓ₁ o₂ ℓ₂ o₃ ℓ₃ o₄ ℓ₄} {A : Precategory o₁ ℓ₁} {B : Precategory o₂ ℓ₂} {C : Precategory o₃ ℓ₃} {D : Precategory o₄ ℓ₄} {F : Functor C D} {G : Functor B C} {H : Functor A B} {J : Functor A D} → F F∘ (G F∘ H) => J → (F F∘ G) F∘ H => J
+F∘-assocl-pre {B = B} α .η = α .η
+F∘-assocl-pre {B = B} α .is-natural = α .is-natural
+
+F∘-assocr-pre : ∀ {o₁ ℓ₁ o₂ ℓ₂ o₃ ℓ₃ o₄ ℓ₄} {A : Precategory o₁ ℓ₁} {B : Precategory o₂ ℓ₂} {C : Precategory o₃ ℓ₃} {D : Precategory o₄ ℓ₄} {F : Functor C D} {G : Functor B C} {H : Functor A B} {J : Functor A D} → (F F∘ G) F∘ H => J → F F∘ (G F∘ H) => J
+F∘-assocr-pre {B = B} α .η = α .η
+F∘-assocr-pre {B = B} α .is-natural = α .is-natural
+
 module
   _ {o ℓ o' ℓ' o'' ℓ''}
     {C : Precategory o ℓ} {D : Precategory o' ℓ'} {E : Precategory o'' ℓ''}

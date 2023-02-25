@@ -6,12 +6,16 @@ open import Cat.Instances.Shape.Terminal
 open import Cat.Functor.Conservative
 open import Cat.Functor.Equivalence
 open import Cat.Diagram.Limit.Base
+open import Cat.Instances.Functor
+open import Cat.Functor.Compose
+open import Cat.Instances.Shape.Terminal
 open import Cat.Diagram.Terminal
 open import Cat.Functor.Kan.Base
 open import Cat.Diagram.Monad
 open import Cat.Prelude
 
 import Cat.Reasoning
+import Cat.Functor.Reasoning as FR
 ```
 -->
 
@@ -143,6 +147,74 @@ show that the projection maps $\psi_j : (\lim_j UF(j)) \to UF(j)$ extend
 to algebra homomorphisms.
 
 ```agda
+  Forget-lift-ran : ∀ {o₂ ℓ₂} {D : Precategory o₂ ℓ₂} {G : Functor J D} → Ran G (Forget C M F∘ F) → Ran G F
+  Forget-lift-ran {D = D} {G = G} ran-over = record { Ext = Ext-alg ; eps = eps-alg ; has-ran = has-ran-alg }
+    where
+      open Functor
+      open _=>_
+      open Ran ran-over
+      module MR = FR M.M
+
+      Ext-ν : M.M F∘ Ext => Ext
+      Ext-ν = σ cone
+        where
+          cone : (M.M F∘ Ext) F∘ G => Forget C M F∘ F
+          cone .η j = F.F₀ j .snd .ν C.∘ M.M₁ (eps .η j)
+          cone .is-natural _ _ f = C.extendr ((M.M ▸ eps) .is-natural _ _ f) ∙ C.pushl (sym (F.F₁ f .commutes))
+
+      Ext-ν-unit : F∘-eliml-pre (Ext-ν ∘nt (M.unit ◂ Ext)) ≡ idnt
+      Ext-ν-unit = σ-uniq₂ eps eq (Nat-path λ _ → sym (C.idr _))
+        where
+          eq : eps ≡ eps ∘nt (F∘-eliml-pre (Ext-ν ∘nt (M.unit ◂ Ext)) ◂ G)
+          eq = Nat-path λ j → C.insertl (F.F₀ j .snd .ν-unit) ∙ C.pushr (M.unit .is-natural _ _ _) ∙ C.pushl (sym σ-comm ηₚ j)
+
+      Ext-ν-mult : Ext-ν ∘nt (M.M ▸ Ext-ν) ≡ Ext-ν ∘nt F∘-assocr-pre (M.mult ◂ Ext)
+      Ext-ν-mult = σ-uniq₂ cone refl eq
+        where
+          cone : (M.M F∘ M.M F∘ Ext) F∘ G => Forget C M F∘ F
+          cone = eps ∘nt ((Ext-ν ∘nt (M.M ▸ Ext-ν)) ◂ G)
+
+          eq : cone ≡ eps ∘nt ((Ext-ν ∘nt F∘-assocr-pre (M.mult ◂ Ext)) ◂ G)
+          eq = Nat-path λ j → C.pulll (σ-comm ηₚ j) ∙ MR.pullr (σ-comm ηₚ j) ∙ ap (_ C.∘_) (MR.F-∘ _ _) ∙ C.pulll (F.F₀ j .snd .ν-mult) ∙ C.extendr (M.mult .is-natural _ _ _) ∙ sym (C.pulll (σ-comm ηₚ j))
+
+      Ext-alg : Functor D (Eilenberg-Moore C M)
+      Ext-alg .F₀ d .fst = Ext.F₀ d
+      Ext-alg .F₀ d .snd .ν = Ext-ν .η d
+      Ext-alg .F₀ d .snd .ν-unit = Ext-ν-unit ηₚ d
+      Ext-alg .F₀ d .snd .ν-mult = Ext-ν-mult ηₚ d
+      Ext-alg .F₁ f .morphism = Ext .F₁ f
+      Ext-alg .F₁ f .commutes = sym (Ext-ν .is-natural _ _ f)
+      Ext-alg .F-id = Algebra-hom-path C (Ext .F-id)
+      Ext-alg .F-∘ _ _ = Algebra-hom-path C (Ext .F-∘ _ _)
+
+      eps-alg : Ext-alg F∘ G => F
+      eps-alg .η j .morphism = eps .η j
+      eps-alg .η j .commutes = σ-comm ηₚ j
+      eps-alg .is-natural _ _ _ = Algebra-hom-path C (eps .is-natural _ _ _)
+
+      universal : {X : Functor D (Eilenberg-Moore C M)} → X F∘ G => F → Forget C M F∘ X => Ext
+      universal c = σ (F∘-assocl-pre (Forget C M ▸ c))
+
+      universal-alg : {X : Functor D (Eilenberg-Moore C M)} → (c : X F∘ G => F) → F∘-assocr-pre (universal c ∘nt (ν-nat C M ◂ X)) ≡ Ext-ν ∘nt (M.M ▸ universal c)
+      universal-alg {X} c = σ-uniq₂ cone refl eq
+        where
+          cone : (M.M F∘ Forget C M F∘ X) F∘ G => Forget C M F∘ F
+          cone = eps ∘nt (F∘-assocr-pre (universal c ∘nt (ν-nat C M ◂ X)) ◂ G)
+
+          eq : cone ≡ eps ∘nt ((Ext-ν ∘nt (M.M ▸ universal c)) ◂ G)
+          eq = Nat-path λ j → C.pulll (σ-comm ηₚ j) ∙ c .η j .commutes ∙ sym (MR.pullr (σ-comm ηₚ j)) ∙ sym (C.pulll (σ-comm ηₚ j))
+
+      has-ran-alg : is-ran G F Ext-alg eps-alg
+      has-ran-alg .is-ran.σ c .η d .morphism = universal c .η d
+      has-ran-alg .is-ran.σ c .η d .commutes = universal-alg c ηₚ d
+      has-ran-alg .is-ran.σ c .is-natural _ _ f = Algebra-hom-path C (universal c .is-natural _ _ f)
+      has-ran-alg .is-ran.σ-comm {β = c} = Nat-path λ j → Algebra-hom-path C (σ-comm ηₚ j)
+      has-ran-alg .is-ran.σ-uniq {X} {σ' = σ'} eq = Nat-path λ j → Algebra-hom-path C (σ-uniq {σ' = σ'-forget} (Nat-path λ j → ap (λ n → n .η j .morphism) eq) ηₚ j)
+        where
+          σ'-forget : Forget C M F∘ X => Ext
+          σ'-forget .η = (Forget C M ▸ σ') .η
+          σ'-forget .is-natural = (Forget C M ▸ σ') .is-natural
+
   Forget-lift-limit : Limit (Forget C M F∘ F) → Limit F
   Forget-lift-limit lim-over = to-limit $ to-is-limit $ make-algebra-limit
     (Limit.has-limit lim-over) apex-algebra (λ j → lim-over.factors _ _)
