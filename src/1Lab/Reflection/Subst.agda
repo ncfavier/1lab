@@ -11,8 +11,8 @@ data Subst : Type where
   ids        : Subst
   _∷_        : Term → Subst → Subst
   wk         : Nat → Subst → Subst
-  lift       : Nat → Subst → Subst
   strengthen : Nat → Subst → Subst
+  lift       : Nat → Subst → Subst
 
 infixr 20 _∷_
 
@@ -20,6 +20,11 @@ wkS : Nat → Subst → Subst
 wkS zero ρ = ρ
 wkS n (wk x ρ) = wk (n + x) ρ
 wkS n ρ        = wk n ρ
+
+strengthenS : Nat → Subst → Subst
+strengthenS zero ρ = ρ
+strengthenS n (strengthen x ρ) = strengthen (n + x) ρ
+strengthenS n ρ                = strengthen n ρ
 
 liftS : Nat → Subst → Subst
 liftS zero ρ       = ρ
@@ -42,7 +47,17 @@ singletonS n u = map (λ i → var i []) (count (n - 1)) ++# u ∷ (raiseS n)
   where
     count : Nat → List Nat
     count zero = []
-    count (suc n) = 1 ∷ map suc (count n)
+    count (suc n) = 0 ∷ map suc (count n)
+
+--     Γ ⊢ ρ : Δ
+-- -----------------
+-- Δ ⊢ invertS ρ : Г
+invertS : Subst → Subst
+invertS ids = ids
+invertS (_ ∷ s) = wkS 1 (invertS s)
+invertS (wk n s) = strengthenS n (invertS s)
+invertS (strengthen n s) = wkS n (invertS s)
+invertS (lift n s) = liftS n (invertS s)
 
 {-# TERMINATING #-}
 subst-tm  : Subst → Term → Maybe Term
@@ -66,7 +81,7 @@ apply-tm* tm (x ∷ xs) = do
 lookup-tm : (σ : Subst) (i : Nat) → Maybe Term
 lookup-tm ids i = pure $ var i []
 lookup-tm (wk n ids) i = pure $ var (i + n) []
-lookup-tm (wk n ρ) i = lookup-tm ρ i >>= subst-tm (raiseS n)
+lookup-tm (wk n ρ) i = lookup-tm ρ i >>= raise n
 lookup-tm (x ∷ ρ) i with (i == 0)
 … | true  = pure x
 … | false = lookup-tm ρ (i - 1)

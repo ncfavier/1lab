@@ -290,6 +290,7 @@ postulate
   getContext       : TC Telescope
   extendContext    : ∀ {a} {A : Type a} → String → Arg Term → TC A → TC A
   inContext        : ∀ {a} {A : Type a} → Telescope → TC A → TC A
+  inTopContext     : ∀ {a} {A : Type a} → Telescope → TC A → TC A
   freshName        : String → TC Name
   declareDef       : Arg Name → Term → TC ⊤
   declarePostulate : Arg Name → Term → TC ⊤
@@ -410,6 +411,7 @@ postulate
 {-# BUILTIN AGDATCMGETCONTEXT                 getContext                 #-}
 {-# BUILTIN AGDATCMEXTENDCONTEXT              extendContext              #-}
 {-# BUILTIN AGDATCMINCONTEXT                  inContext                  #-}
+{-# BUILTIN AGDATCMINTOPCONTEXT               inTopContext               #-}
 {-# BUILTIN AGDATCMFRESHNAME                  freshName                  #-}
 {-# BUILTIN AGDATCMDECLAREDEF                 declareDef                 #-}
 {-# BUILTIN AGDATCMDECLAREPOSTULATE           declarePostulate           #-}
