@@ -236,5 +236,53 @@ base-change-square-ni {σ = σ} {δ = δ} {γ = γ} {τ = τ} p =
   ni .eta∘inv x = from-pathp $ base-change-square-inv p x
   ni .inv∘eta x = from-pathp $ base-change-square-inv (sym p) x
   ni .natural x y f = sym $ Fib.over-fibre (base-change-square-natural p f)
+
+open import Cat.Bi.Base
+open import Cat.Bi.Instances.Discrete
+
+open Pseudofunctor
+open Lax-functor
+open _=>_
+
+module B^op = Cat.Reasoning (B ^op)
+
+Base-change : ∀ {a b} → Functor (Locally-discrete (B ^op) .Prebicategory.Hom a b) Cat[ Fibre E a , Fibre E b ]
+Base-change = Disc-adjunct base-change
+
+lemma : ∀ {a d} {x} {f g : Hom d a} (p : f ≡ g) → has-lift.lifting g x ∘' Base-change .F₁ p .η x ≡[ idr _ ∙ sym p ] has-lift.lifting f x
+lemma {x = x} = J (λ g p → has-lift.lifting g x ∘' Base-change .F₁ p .η x ≡[ idr _ ∙ sym p ] has-lift.lifting _ x) (elimr' refl (Regularity.precise! refl))
+
+Fibres : Pseudofunctor (Locally-discrete (B ^op)) (Cat o' ℓ')
+Fibres .lax .P₀ = Fibre E
+Fibres .lax .P₁ = Base-change
+Fibres .lax .compositor = Disc-natural₂ λ (f , g) → base-change-comp g f .Mor.from
+Fibres .lax .unitor = base-change-id .Mor.from
+Fibres .lax .hexagon {a} {b} {c} {d} f g h = Nat-path λ x →
+  has-lift.uniquep₂ ((h ∘ g) ∘ f) x _ refl _ _ _
+    (Fib.pulllf (lemma (assoc h g f))
+    ∙[] Fib.pulllf (has-lift.commutesv (h ∘ (g ∘ f)) x _)
+    ∙[] (refl⟩∘'⟨ Fib.eliml (base-change (g ∘ f) .F-id))
+    ∙[] extendr[] _ (has-lift.commutesv (g ∘ f) _ _))
+    (Fib.pulllf (has-lift.commutesv ((h ∘ g) ∘ f) x _)
+    ∙[] (refl⟩∘'⟨ Fib.idr _) ∙[] (refl⟩∘'⟨ Fib.idr _)
+    ∙[] extendr[] id-comm (has-lift.commutesp f _ _ _)
+    ∙[] (has-lift.commutesv (h ∘ g) x _ ⟩∘'⟨refl))
+Fibres .lax .right-unit {a} {b} f = Nat-path λ x →
+  has-lift.uniquep₂ f x _ refl _ _ _
+    (Fib.pulllf (lemma (idl f))
+    ∙[] Fib.pulllf (has-lift.commutesv (id ∘ f) x _)
+    ∙[] (refl⟩∘'⟨ Fib.idr _)
+    ∙[] extendr[] id-comm (has-lift.commutesp f _ _ _)
+    ∙[] (has-lift.commutesv id _ id' ⟩∘'⟨refl))
+    (idr' _ ∙[] symP (idl' _))
+Fibres .lax .left-unit {a} {b} f = Nat-path λ x →
+  has-lift.uniquep₂ f x _ refl refl _ _
+    (Fib.pulllf (lemma (idr f))
+    ∙[] Fib.pulllf (has-lift.commutesv (f ∘ id) x _)
+    ∙[] (refl⟩∘'⟨ Fib.eliml (base-change id .F-id))
+    ∙[] pullr[] _ (has-lift.commutesv id _ id'))
+    refl
+Fibres .unitor-inv = Mor.iso→invertible _ (Mor._Iso⁻¹ _ base-change-id)
+Fibres .compositor-inv f g = Mor.iso→invertible _ (Mor._Iso⁻¹ _ (base-change-comp g f))
 ```
 -->

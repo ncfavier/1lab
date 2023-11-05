@@ -11,14 +11,15 @@ import Cat.Reasoning
 -->
 
 ```agda
-module Cat.Bi.Instances.Discrete {o ℓ} (C : Precategory o ℓ) where
+module Cat.Bi.Instances.Discrete where
 ```
 
 <!--
 ```agda
-private module C = Cat.Reasoning C
-open Prebicategory
-open Functor
+module _ {o ℓ} (C : Precategory o ℓ) where
+  private module C = Cat.Reasoning C
+  open Prebicategory
+  open Functor
 ```
 -->
 
@@ -31,36 +32,39 @@ the Hom-sets of $\cC$.
 [discrete categories]: Cat.Instances.Discrete.html
 
 ```agda
-{-# TERMINATING #-}
-Locally-discrete : Prebicategory o ℓ ℓ
-Locally-discrete .Ob = C.Ob
-Locally-discrete .Hom x y = Disc' (el (C.Hom x y) (C.Hom-set x y))
-Locally-discrete .id = C.id
-Locally-discrete .compose .F₀ (f , g) = f C.∘ g
-Locally-discrete .compose .F₁ (p , q) = ap₂ C._∘_ p q
-Locally-discrete .compose .F-id = refl
-Locally-discrete .compose .F-∘ f g = C.Hom-set _ _ _ _ _ _
-Locally-discrete .unitor-l = to-natural-iso ni where
-  ni : make-natural-iso _ _
-  ni .make-natural-iso.eta x = sym (C.idl x)
-  ni .make-natural-iso.inv x = C.idl x
-  ni .make-natural-iso.eta∘inv x = ∙-invr (C.idl x)
-  ni .make-natural-iso.inv∘eta x = ∙-invl (C.idl x)
-  ni .make-natural-iso.natural x y f = C.Hom-set _ _ _ _ _ _
-Locally-discrete .unitor-r = to-natural-iso ni where
-  ni : make-natural-iso _ _
-  ni .make-natural-iso.eta x = sym (C.idr x)
-  ni .make-natural-iso.inv x = C.idr x
-  ni .make-natural-iso.eta∘inv x = ∙-invr (C.idr x)
-  ni .make-natural-iso.inv∘eta x = ∙-invl (C.idr x)
-  ni .make-natural-iso.natural x y f = C.Hom-set _ _ _ _ _ _
-Locally-discrete .associator = to-natural-iso ni where
-  ni : make-natural-iso _ _
-  ni .make-natural-iso.eta x = sym (C.assoc _ _ _)
-  ni .make-natural-iso.inv x = C.assoc _ _ _
-  ni .make-natural-iso.eta∘inv x = ∙-invr (C.assoc _ _ _)
-  ni .make-natural-iso.inv∘eta x = ∙-invl (C.assoc _ _ _)
-  ni .make-natural-iso.natural x y f = C.Hom-set _ _ _ _ _ _
-Locally-discrete .triangle f g = C.Hom-set _ _ _ _ _ _
-Locally-discrete .pentagon f g h i = C.Hom-set _ _ _ _ _ _
+  {-# TERMINATING #-}
+  Locally-discrete : Prebicategory o ℓ ℓ
+  Locally-discrete .Ob = C.Ob
+  Locally-discrete .Hom x y = Disc' (el (C.Hom x y) (C.Hom-set x y))
+  Locally-discrete .id = C.id
+  Locally-discrete .compose .F₀ (f , g) = f C.∘ g
+  Locally-discrete .compose .F₁ (p , q) = ap₂ C._∘_ p q
+  Locally-discrete .compose .F-id = refl
+  Locally-discrete .compose .F-∘ f g = C.Hom-set _ _ _ _ _ _
+  Locally-discrete .unitor-l = to-natural-iso ni where
+    ni : make-natural-iso _ _
+    ni .make-natural-iso.eta x = sym (C.idl x)
+    ni .make-natural-iso.inv x = C.idl x
+    ni .make-natural-iso.eta∘inv x = ∙-invr (C.idl x)
+    ni .make-natural-iso.inv∘eta x = ∙-invl (C.idl x)
+    ni .make-natural-iso.natural x y f = C.Hom-set _ _ _ _ _ _
+  Locally-discrete .unitor-r = to-natural-iso ni where
+    ni : make-natural-iso _ _
+    ni .make-natural-iso.eta x = sym (C.idr x)
+    ni .make-natural-iso.inv x = C.idr x
+    ni .make-natural-iso.eta∘inv x = ∙-invr (C.idr x)
+    ni .make-natural-iso.inv∘eta x = ∙-invl (C.idr x)
+    ni .make-natural-iso.natural x y f = C.Hom-set _ _ _ _ _ _
+  Locally-discrete .associator = to-natural-iso ni where
+    ni : make-natural-iso _ _
+    ni .make-natural-iso.eta x = sym (C.assoc _ _ _)
+    ni .make-natural-iso.inv x = C.assoc _ _ _
+    ni .make-natural-iso.eta∘inv x = ∙-invr (C.assoc _ _ _)
+    ni .make-natural-iso.inv∘eta x = ∙-invl (C.assoc _ _ _)
+    ni .make-natural-iso.natural x y f = C.Hom-set _ _ _ _ _ _
+  Locally-discrete .triangle f g = C.Hom-set _ _ _ _ _ _
+  Locally-discrete .pentagon f g h i = C.Hom-set _ _ _ _ _ _
+
+-- Locally-discrete-diagram
+--   ∀ {o ℓ o′ ℓ′} {C : Precategory o ℓ} {D : Prebicategory o′ ℓ′}
 ```
