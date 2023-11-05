@@ -32,7 +32,7 @@ jobs:
       - name: Check that imports are sorted
         if: github.event_name == 'pull_request'
         run: |
-          support/sort-imports.hs > /dev/null
+          nix run -f . sort-imports
           if ! git diff --quiet; then
             echo 'Imports are not sorted. Please run `support/sort-imports.hs`.'
             exit 1
