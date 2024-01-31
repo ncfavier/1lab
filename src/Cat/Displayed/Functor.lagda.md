@@ -608,10 +608,14 @@ module _
     open CR B
     module ℰ = Displayed ℰ
     module ℱ = Displayed ℱ
+    open DR ℱ
     open Vertical-functor
 
     lvl : Level
     lvl = ob ⊔ ℓb ⊔ oe ⊔ ℓe ⊔ ℓf
+
+    variable
+      F' G' H' : Vertical-functor ℰ ℱ
 
   infix 20 _=>↓_
   infix 20 _=>f↓_
@@ -628,6 +632,29 @@ module _
         → η' y' ℱ.∘' F' .F₁' f' ℱ.≡[ id-comm-sym ] G' .F₁' f' ℱ.∘' η' x'
 ```
 
+<!--
+```agda
+  open _=>↓_
+
+  =>↓-path
+    : {α' β' : F' =>↓ G'}
+    → (∀ {x} x' → α' .η' {x} x' ≡ β' .η' {x} x')
+    → α' ≡ β'
+  =>↓-path q i .η' x' = q x' i
+  =>↓-path {F'} {G'} {α'} {β'} q i .is-natural' x' y' f' =
+    is-set→squarep (λ _ _ → hlevel 2)
+      (λ i → q y' i ℱ.∘' F' .F₁' f')
+      (α' .is-natural' x' y' f')
+      (β' .is-natural' x' y' f')
+      (λ i → G' .F₁' f' ℱ.∘' q x' i)
+      i
+
+  =>↓-is-set : is-set (F' =>↓ G')
+  =>↓-is-set = Iso→is-hlevel 2 eqv (hlevel 2)
+    where unquoteDecl eqv = declare-record-iso eqv (quote _=>↓_)
+```
+-->
+
 This notion of natural transformation is also the correct one for
 fibred vertical functors, as there is no higher structure that needs
 to be preserved.
@@ -636,4 +663,40 @@ to be preserved.
   _=>f↓_ : (F' G' : Vertical-fibred-functor ℰ ℱ) → Type _
   F' =>f↓ G' = F' .vert =>↓ G' .vert
     where open Vertical-fibred-functor
+
+  id=>↓ : F' =>↓ F'
+  id=>↓ .η' _ = ℱ.id'
+  id=>↓ .is-natural' i j f = ℱ.idl' _ ℱ.∙[] symP (ℱ.idr' _)
+
+  _∘=>↓_ : G' =>↓ H' → F' =>↓ G' → F' =>↓ H'
+  (α' ∘=>↓ β') .η' i = hom[ idl _ ] (α' .η' i ℱ.∘' β' .η' i)
+  _∘=>↓_ {G' = G'} {H' = H'} {F' = F'} α' β' .is-natural' i j f' = cast[] $
+    hom[] (α' .η' j ∘' β' .η' j) ∘' F' .F₁' f' ≡[]⟨ unwrapl _ ⟩
+    (α' .η' j ∘' β' .η' j) ∘' F' .F₁' f'       ≡[]⟨ pullr[] _ (β' .is-natural' i j f') ⟩
+    α' .η' j ∘' G' .F₁' f' ∘' β' .η' i         ≡[]⟨ extendl[] _ (α' .is-natural' i j f') ⟩
+    H' .F₁' f' ∘' (α' .η' i ∘' β' .η' i)       ≡[]⟨ wrapr _ ⟩
+    H' .F₁' f' ∘' hom[] (α' .η' i ∘' β' .η' i) ∎
+    where open Displayed ℱ
+
+  Vertical-functors : Precategory _ _
+  Vertical-functors .Precategory.Ob = Vertical-functor ℰ ℱ
+  Vertical-functors .Precategory.Hom = _=>↓_
+  Vertical-functors .Precategory.Hom-set _ _ = =>↓-is-set
+  Vertical-functors .Precategory.id = id=>↓
+  Vertical-functors .Precategory._∘_ = _∘=>↓_
+  Vertical-functors .Precategory.idr _ = =>↓-path λ _ → idr[]
+  Vertical-functors .Precategory.idl _ = =>↓-path λ _ → idl[]
+  Vertical-functors .Precategory.assoc _ _ _ = =>↓-path λ _ → ap hom[] $
+    cast[] (unwrapr _ ℱ.∙[] ℱ.assoc' _ _ _ ℱ.∙[] wrapl _)
+
+  Vertical-fibred-functors : Precategory _ _
+  Vertical-fibred-functors .Precategory.Ob = Vertical-fibred-functor ℰ ℱ
+  Vertical-fibred-functors .Precategory.Hom = _=>f↓_
+  Vertical-fibred-functors .Precategory.Hom-set _ _ = =>↓-is-set
+  Vertical-fibred-functors .Precategory.id = id=>↓
+  Vertical-fibred-functors .Precategory._∘_ = _∘=>↓_
+  Vertical-fibred-functors .Precategory.idr _ = =>↓-path λ _ → idr[]
+  Vertical-fibred-functors .Precategory.idl _ = =>↓-path λ _ → idl[]
+  Vertical-fibred-functors .Precategory.assoc _ _ _ = =>↓-path λ _ → ap hom[] $
+    cast[] (unwrapr _ ℱ.∙[] ℱ.assoc' _ _ _ ℱ.∙[] wrapl _)
 ```
