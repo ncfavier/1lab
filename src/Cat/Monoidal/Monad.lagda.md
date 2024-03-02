@@ -280,16 +280,16 @@ reader; they are entirely monotonous.
       M₁ (α→ _ _ _) ∘ φ ∘ (η _ ⊗₁ id)                          ≡˘⟨ refl⟩∘⟨ refl⟩∘⟨ ◀.collapse unit-φ ⟩
       M₁ (α→ _ _ _) ∘ φ ∘ (φ ⊗₁ id) ∘ ((η _ ⊗₁ η _) ⊗₁ id)     ≡⟨ extendl3 M-α→ ⟩
       φ ∘ (id ⊗₁ φ) ∘ α→ _ _ _ ∘ ((η _ ⊗₁ η _) ⊗₁ id)          ≡⟨ refl⟩∘⟨ refl⟩∘⟨ associator .Isoⁿ.to ._=>_.is-natural _ _ _ ⟩
-      φ ∘ (id ⊗₁ φ) ∘ (η _ ⊗₁ (η _ ⊗₁ id)) ∘ α→ _ _ _          ≡⟨ refl⟩∘⟨ ⊗.pulll (Σ-pathp (idl _) refl) ⟩
-      φ ∘ (η _ ⊗₁ (φ ∘ (η _ ⊗₁ id))) ∘ α→ _ _ _                ≡⟨ pushr (⊗.pushl (Σ-pathp (sym (idr _)) (sym (idl _)))) ⟩
+      φ ∘ (id ⊗₁ φ) ∘ (η _ ⊗₁ (η _ ⊗₁ id)) ∘ α→ _ _ _          ≡⟨ refl⟩∘⟨ ⊗.pulll (idl _ ,ₚ refl) ⟩
+      φ ∘ (η _ ⊗₁ (φ ∘ (η _ ⊗₁ id))) ∘ α→ _ _ _                ≡⟨ pushr (⊗.pushl (sym (idr _) ,ₚ sym (idl _))) ⟩
       (φ ∘ (η _ ⊗₁ id)) ∘ (id ⊗₁ (φ ∘ (η _ ⊗₁ id))) ∘ α→ _ _ _ ∎
     l .left-strength-η =
-      (φ ∘ (η _ ⊗₁ id)) ∘ (id ⊗₁ η _) ≡⟨ pullr (⊗.collapse (Σ-pathp (idr _) (idl _))) ⟩
+      (φ ∘ (η _ ⊗₁ id)) ∘ (id ⊗₁ η _) ≡⟨ pullr (⊗.collapse (idr _ ,ₚ idl _)) ⟩
       φ ∘ (η _ ⊗₁ η _)                ≡⟨ unit-φ ⟩
       η _                             ∎
     l .left-strength-μ =
-      (φ ∘ (η _ ⊗₁ id)) ∘ (id ⊗₁ μ _)                      ≡⟨ pullr (⊗.collapse (Σ-pathp (idr _) (idl _))) ⟩
-      φ ∘ (η _ ⊗₁ μ _)                                     ≡˘⟨ refl⟩∘⟨ ⊗.collapse3 (Σ-pathp (cancell left-ident) (elimr (eliml M-id))) ⟩
+      (φ ∘ (η _ ⊗₁ id)) ∘ (id ⊗₁ μ _)                      ≡⟨ pullr (⊗.collapse (idr _ ,ₚ idl _)) ⟩
+      φ ∘ (η _ ⊗₁ μ _)                                     ≡˘⟨ refl⟩∘⟨ ⊗.collapse3 (cancell left-ident ,ₚ elimr (eliml M-id)) ⟩
       φ ∘ (μ _ ⊗₁ μ _) ∘ (M₁ (η _) ⊗₁ M₁ id) ∘ (η _ ⊗₁ id) ≡⟨ pulll mult-φ ⟩
       (μ _ ∘ M₁ φ ∘ φ) ∘ (M₁ (η _) ⊗₁ M₁ id) ∘ (η _ ⊗₁ id) ≡⟨ pullr (pullr (extendl (φ.is-natural _ _ _))) ⟩
       μ _ ∘ M₁ φ ∘ M₁ (η _ ⊗₁ id) ∘ φ ∘ (η _ ⊗₁ id)        ≡⟨ refl⟩∘⟨ M.pulll refl ⟩
@@ -367,10 +367,10 @@ associator.
 
 ```agda
       s .strength-α→ =
-        M₁ (α→ _ _ _) ∘ (φ ∘ (id ⊗₁ η _)) ∘ ((φ ∘ (η _ ⊗₁ id)) ⊗₁ id) ≡⟨ refl⟩∘⟨ pullr (⊗.weave (Σ-pathp (idl _) id-comm)) ⟩
+        M₁ (α→ _ _ _) ∘ (φ ∘ (id ⊗₁ η _)) ∘ ((φ ∘ (η _ ⊗₁ id)) ⊗₁ id) ≡⟨ refl⟩∘⟨ pullr (⊗.weave (idl _ ,ₚ id-comm)) ⟩
         M₁ (α→ _ _ _) ∘ φ ∘ (φ ⊗₁ id) ∘ ((η _ ⊗₁ id) ⊗₁ η _)          ≡⟨ extendl3 M-α→ ⟩
         φ ∘ (id ⊗₁ φ) ∘ α→ _ _ _ ∘ ((η _ ⊗₁ id) ⊗₁ η _)               ≡⟨ refl⟩∘⟨ refl⟩∘⟨ associator .Isoⁿ.to ._=>_.is-natural _ _ _ ⟩
-        φ ∘ (id ⊗₁ φ) ∘ (η _ ⊗₁ (id ⊗₁ η _)) ∘ α→ _ _ _               ≡⟨ pushr (extendl (⊗.weave (Σ-pathp id-comm-sym (sym (idl _))))) ⟩
+        φ ∘ (id ⊗₁ φ) ∘ (η _ ⊗₁ (id ⊗₁ η _)) ∘ α→ _ _ _               ≡⟨ pushr (extendl (⊗.weave (id-comm-sym ,ₚ sym (idl _)))) ⟩
         (φ ∘ (η _ ⊗₁ id)) ∘ (id ⊗₁ (φ ∘ (id ⊗₁ η _))) ∘ α→ _ _ _      ∎
 ```
 </details>
@@ -410,17 +410,17 @@ of the following diagram; the other direction is completely symmetric.
         left≡φ : left-φ s ≡ M-mult
         left≡φ = ext λ (A , B) →
           μ _ ∘ M₁ (φ ∘ (η _ ⊗₁ id)) ∘ φ ∘ (id ⊗₁ η _)       ≡⟨ refl⟩∘⟨ M.popr (extendl (sym (φ.is-natural _ _ _))) ⟩
-          μ _ ∘ M₁ φ ∘ φ ∘ (M₁ (η _) ⊗₁ M₁ id) ∘ (id ⊗₁ η _) ≡⟨ pushr (pushr (refl⟩∘⟨ ⊗.collapse (Σ-pathp (elimr refl) (M.eliml refl)))) ⟩
+          μ _ ∘ M₁ φ ∘ φ ∘ (M₁ (η _) ⊗₁ M₁ id) ∘ (id ⊗₁ η _) ≡⟨ pushr (pushr (refl⟩∘⟨ ⊗.collapse (elimr refl ,ₚ M.eliml refl))) ⟩
           (μ _ ∘ M₁ φ ∘ φ) ∘ (M₁ (η _) ⊗₁ η _)               ≡˘⟨ pulll mult-φ ⟩
-          φ ∘ (μ _ ⊗₁ μ _) ∘ (M₁ (η _) ⊗₁ η _)               ≡⟨ elimr (⊗.annihilate (Σ-pathp left-ident right-ident)) ⟩
+          φ ∘ (μ _ ⊗₁ μ _) ∘ (M₁ (η _) ⊗₁ η _)               ≡⟨ elimr (⊗.annihilate (left-ident ,ₚ right-ident)) ⟩
           φ                                                  ∎
 
         right≡φ : right-φ s ≡ M-mult
         right≡φ = ext λ (A , B) →
           μ _ ∘ M₁ (φ ∘ (id ⊗₁ η _)) ∘ φ ∘ (η _ ⊗₁ id)       ≡⟨ refl⟩∘⟨ M.popr (extendl (sym (φ.is-natural _ _ _))) ⟩
-          μ _ ∘ M₁ φ ∘ φ ∘ (M₁ id ⊗₁ M₁ (η _)) ∘ (η _ ⊗₁ id) ≡⟨ pushr (pushr (refl⟩∘⟨ ⊗.collapse (Σ-pathp (M.eliml refl) (elimr refl)))) ⟩
+          μ _ ∘ M₁ φ ∘ φ ∘ (M₁ id ⊗₁ M₁ (η _)) ∘ (η _ ⊗₁ id) ≡⟨ pushr (pushr (refl⟩∘⟨ ⊗.collapse (M.eliml refl ,ₚ elimr refl))) ⟩
           (μ _ ∘ M₁ φ ∘ φ) ∘ (η _ ⊗₁ M₁ (η _))               ≡˘⟨ pulll mult-φ ⟩
-          φ ∘ (μ _ ⊗₁ μ _) ∘ (η _ ⊗₁ M₁ (η _))               ≡⟨ elimr (⊗.annihilate (Σ-pathp right-ident left-ident)) ⟩
+          φ ∘ (μ _ ⊗₁ μ _) ∘ (η _ ⊗₁ M₁ (η _))               ≡⟨ elimr (⊗.annihilate (right-ident ,ₚ left-ident)) ⟩
           φ                                                  ∎
 
         s-comm : is-commutative-strength s
@@ -478,7 +478,7 @@ The `unit-φ`{.Agda} coherence is not very interesting.
 
 ```agda
       m .unit-φ =
-        (μ _ ∘ M₁ σ ∘ τ) ∘ (η _ ⊗₁ η _)            ≡⟨ pullr (pullr (refl⟩∘⟨ ⊗.expand (Σ-pathp (intror refl) (introl refl)))) ⟩
+        (μ _ ∘ M₁ σ ∘ τ) ∘ (η _ ⊗₁ η _)            ≡⟨ pullr (pullr (refl⟩∘⟨ ⊗.expand (intror refl ,ₚ introl refl))) ⟩
         μ _ ∘ M₁ σ ∘ τ ∘ (η _ ⊗₁ id) ∘ (id ⊗₁ η _) ≡⟨ refl⟩∘⟨ refl⟩∘⟨ pulll right-strength-η ⟩
         μ _ ∘ M₁ σ ∘ η _ ∘ (id ⊗₁ η _)             ≡˘⟨ refl⟩∘⟨ extendl (unit.is-natural _ _ _) ⟩
         μ _ ∘ η _ ∘ σ ∘ (id ⊗₁ η _)                ≡⟨ cancell right-ident ⟩
@@ -541,7 +541,7 @@ followed by $\mu$.
 
 ```agda
       m .mult-φ =
-        (μ _ ∘ M₁ σ ∘ τ) ∘ (μ _ ⊗₁ μ _)                        ≡⟨ refl⟩∘⟨ ⊗.expand (Σ-pathp (M.introl refl) (intror refl)) ⟩
+        (μ _ ∘ M₁ σ ∘ τ) ∘ (μ _ ⊗₁ μ _)                        ≡⟨ refl⟩∘⟨ ⊗.expand (M.introl refl ,ₚ intror refl) ⟩
         (μ _ ∘ M₁ σ ∘ τ) ∘ (M₁ id ⊗₁ μ _) ∘ (μ _ ⊗₁ id)        ≡⟨ pullr (pullr (extendl (τ.is-natural _ _ _))) ⟩
         μ _ ∘ M₁ σ ∘ M₁ (id ⊗₁ μ _) ∘ τ ∘ (μ _ ⊗₁ id)          ≡⟨ refl⟩∘⟨ refl⟩∘⟨ refl⟩∘⟨ right-strength-μ ⟩
         μ _ ∘ M₁ σ ∘ M₁ (id ⊗₁ μ _) ∘ μ _ ∘ M₁ τ ∘ τ           ≡⟨ refl⟩∘⟨ M.pulll (left-strength-μ ∙ assoc _ _ _) ⟩

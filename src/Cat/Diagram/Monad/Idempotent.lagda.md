@@ -261,7 +261,7 @@ The proof is by chasing the following slightly wonky diagram.
         μ _ ∘ M₁ σ ∘ μ _ ∘ M₁ (τ ∘ δ) ∘ η _                              ≡⟨ refl⟩∘⟨ refl⟩∘⟨ refl⟩∘⟨ refl⟩∘⟨ idempotent→η≡Mη idem _ ⟩
         μ _ ∘ M₁ σ ∘ μ _ ∘ M₁ (τ ∘ δ) ∘ M₁ (η _)                         ≡⟨ refl⟩∘⟨ refl⟩∘⟨ refl⟩∘⟨ M.pushl refl ⟩
         μ _ ∘ M₁ σ ∘ μ _ ∘ M₁ τ ∘ M₁ δ ∘ M₁ (η _)                        ≡⟨ refl⟩∘⟨ refl⟩∘⟨ refl⟩∘⟨ refl⟩∘⟨ M.weave (δ.is-natural _ _ _) ⟩
-        μ _ ∘ M₁ σ ∘ μ _ ∘ M₁ τ ∘ M₁ (η _ ⊗₁ η _) ∘ M₁ δ                 ≡⟨ refl⟩∘⟨ refl⟩∘⟨ refl⟩∘⟨ refl⟩∘⟨ M.pushl (⊗.expand (Σ-pathp (sym (idr _)) (sym (idl _)))) ⟩
+        μ _ ∘ M₁ σ ∘ μ _ ∘ M₁ τ ∘ M₁ (η _ ⊗₁ η _) ∘ M₁ δ                 ≡⟨ refl⟩∘⟨ refl⟩∘⟨ refl⟩∘⟨ refl⟩∘⟨ M.pushl (⊗.expand (sym (idr _) ,ₚ sym (idl _))) ⟩
         μ _ ∘ M₁ σ ∘ μ _ ∘ M₁ τ ∘ M₁ (η _ ⊗₁ id) ∘ M₁ (id ⊗₁ η _) ∘ M₁ δ ≡⟨ refl⟩∘⟨ refl⟩∘⟨ refl⟩∘⟨ M.pulll right-strength-η ⟩
         μ _ ∘ M₁ σ ∘ μ _ ∘ M₁ (η _) ∘ M₁ (id ⊗₁ η _) ∘ M₁ δ              ≡⟨ refl⟩∘⟨ refl⟩∘⟨ cancell left-ident ⟩
         μ _ ∘ M₁ σ ∘ M₁ (id ⊗₁ η _) ∘ M₁ δ                               ≡⟨ refl⟩∘⟨ M.pulll left-strength-η ⟩
