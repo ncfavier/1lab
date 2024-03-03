@@ -2,9 +2,9 @@
 ```agda
 open import 1Lab.Path
 
+open import Cat.Functor.Base using (module F-iso)
 open import Cat.Base
 
-import Cat.Functor.Base
 import Cat.Reasoning
 ```
 -->
@@ -20,7 +20,7 @@ private
   module 𝒞 = Cat.Reasoning 𝒞
   module 𝒟 = Cat.Reasoning 𝒟
 open Functor F public
-open Cat.Functor.Base.F-iso F public
+open F-iso F public
 ```
 
 <!--
