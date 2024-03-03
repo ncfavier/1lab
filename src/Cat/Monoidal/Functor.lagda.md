@@ -13,21 +13,21 @@ import Cat.Reasoning
 -->
 
 ```agda
-module Cat.Monoidal.Functor {oc ℓc od ℓd}
-  {C : Precategory oc ℓc} (Cᵐ : Monoidal-category C)
-  {D : Precategory od ℓd} (Dᵐ : Monoidal-category D)
-  where
+module Cat.Monoidal.Functor where
 ```
 
 # Monoidal functors {defines="monoidal-functor lax-monoidal-functor oplax-monoidal-functor strong-monoidal-functor"}
 
 <!--
 ```agda
-open Cat.Reasoning D
-
-private
-  module C = Monoidal-category Cᵐ
-  module D = Monoidal-category Dᵐ
+module _ {oc ℓc od ℓd}
+  {C : Precategory oc ℓc} (Cᵐ : Monoidal-category C)
+  {D : Precategory od ℓd} (Dᵐ : Monoidal-category D)
+  where
+  open Cat.Reasoning D
+  private
+    module C = Monoidal-category Cᵐ
+    module D = Monoidal-category Dᵐ
 ```
 -->
 
@@ -56,46 +56,46 @@ functor $F$: this consists of the aforementioned morphisms, as well
 as some coherence conditions similar to the ones for a [[lax functor]].
 
 ```agda
-record Lax-monoidal-functor-on (F : Functor C D) : Type (oc ⊔ ℓc ⊔ od ⊔ ℓd) where
-  private module F = Cat.Functor.Reasoning F
+  record Lax-monoidal-functor-on (F : Functor C D) : Type (oc ⊔ ℓc ⊔ od ⊔ ℓd) where
+    private module F = Cat.Functor.Reasoning F
 
-  field
-    ε : Hom D.Unit (F.₀ C.Unit)
-    F-mult : D.-⊗- F∘ (F F× F) => F F∘ C.-⊗-
+    field
+      ε : Hom D.Unit (F.₀ C.Unit)
+      F-mult : D.-⊗- F∘ (F F× F) => F F∘ C.-⊗-
 
-  module φ = _=>_ F-mult
+    module φ = _=>_ F-mult
 
-  φ : ∀ {A B} → Hom (F.₀ A D.⊗ F.₀ B) (F.₀ (A C.⊗ B))
-  φ = φ.η _
+    φ : ∀ {A B} → Hom (F.₀ A D.⊗ F.₀ B) (F.₀ (A C.⊗ B))
+    φ = φ.η _
 
-  field
-    F-α→ : ∀ {A B C}
-      → F.₁ (C.α→ A B C) ∘ φ ∘ (φ D.⊗₁ id) ≡ φ ∘ (id D.⊗₁ φ) ∘ D.α→ _ _ _
-    F-λ← : ∀ {A} → F.₁ (C.λ← {A}) ∘ φ ∘ (ε D.⊗₁ id) ≡ D.λ←
-    F-ρ← : ∀ {A} → F.₁ (C.ρ← {A}) ∘ φ ∘ (id D.⊗₁ ε) ≡ D.ρ←
+    field
+      F-α→ : ∀ {A B C}
+        → F.₁ (C.α→ A B C) ∘ φ ∘ (φ D.⊗₁ id) ≡ φ ∘ (id D.⊗₁ φ) ∘ D.α→ _ _ _
+      F-λ← : ∀ {A} → F.₁ (C.λ← {A}) ∘ φ ∘ (ε D.⊗₁ id) ≡ D.λ←
+      F-ρ← : ∀ {A} → F.₁ (C.ρ← {A}) ∘ φ ∘ (id D.⊗₁ ε) ≡ D.ρ←
 ```
 
 <!--
 ```agda
-  F-α← : ∀ {A B C}
-    → F.₁ (C.α← A B C) ∘ φ ∘ (id D.⊗₁ φ) ≡ φ ∘ (φ D.⊗₁ id) ∘ D.α← _ _ _
-  F-α← = swizzle (sym (F-α→ ∙ assoc _ _ _)) (D.α≅ .invl) (F.F-map-iso C.α≅ .invr)
-    ∙ sym (assoc _ _ _)
+    F-α← : ∀ {A B C}
+      → F.₁ (C.α← A B C) ∘ φ ∘ (id D.⊗₁ φ) ≡ φ ∘ (φ D.⊗₁ id) ∘ D.α← _ _ _
+    F-α← = swizzle (sym (F-α→ ∙ assoc _ _ _)) (D.α≅ .invl) (F.F-map-iso C.α≅ .invr)
+      ∙ sym (assoc _ _ _)
 
-private unquoteDecl eqv = declare-record-iso eqv (quote Lax-monoidal-functor-on)
-Lax-monoidal-functor-on-path
-  : ∀ {F} {l l' : Lax-monoidal-functor-on F}
-  → l .Lax-monoidal-functor-on.ε ≡ l' .Lax-monoidal-functor-on.ε
-  → l .Lax-monoidal-functor-on.F-mult ≡ l' .Lax-monoidal-functor-on.F-mult
-  → l ≡ l'
-Lax-monoidal-functor-on-path p q = Iso.injective eqv
-  (Σ-pathp p (Σ-prop-pathp (λ _ _ → hlevel 1) q))
+  private unquoteDecl eqv = declare-record-iso eqv (quote Lax-monoidal-functor-on)
+  Lax-monoidal-functor-on-path
+    : ∀ {F} {l l' : Lax-monoidal-functor-on F}
+    → l .Lax-monoidal-functor-on.ε ≡ l' .Lax-monoidal-functor-on.ε
+    → l .Lax-monoidal-functor-on.F-mult ≡ l' .Lax-monoidal-functor-on.F-mult
+    → l ≡ l'
+  Lax-monoidal-functor-on-path p q = Iso.injective eqv
+    (Σ-pathp p (Σ-prop-pathp (λ _ _ → hlevel 1) q))
 ```
 -->
 
 ```agda
-Lax-monoidal-functor : Type (oc ⊔ ℓc ⊔ od ⊔ ℓd)
-Lax-monoidal-functor = Σ (Functor C D) Lax-monoidal-functor-on
+  Lax-monoidal-functor : Type (oc ⊔ ℓc ⊔ od ⊔ ℓd)
+  Lax-monoidal-functor = Σ (Functor C D) Lax-monoidal-functor-on
 ```
 
 A **monoidal functor**, or **strong monoidal functor**[^strong], is
@@ -106,18 +106,18 @@ then simply a lax monoidal functor whose structure morphisms are
 functor, in the sense of a monoidal functor equipped with a [[strength]].
 
 ```agda
-record Monoidal-functor-on (F : Functor C D) : Type (oc ⊔ ℓc ⊔ od ⊔ ℓd) where
-  field
-    lax : Lax-monoidal-functor-on F
+  record Monoidal-functor-on (F : Functor C D) : Type (oc ⊔ ℓc ⊔ od ⊔ ℓd) where
+    field
+      lax : Lax-monoidal-functor-on F
 
-  open Lax-monoidal-functor-on lax public
+    open Lax-monoidal-functor-on lax public
 
-  field
-    ε-inv : is-invertible ε
-    F-mult-inv : is-invertibleⁿ F-mult
+    field
+      ε-inv : is-invertible ε
+      F-mult-inv : is-invertibleⁿ F-mult
 
-Monoidal-functor : Type (oc ⊔ ℓc ⊔ od ⊔ ℓd)
-Monoidal-functor = Σ (Functor C D) Monoidal-functor-on
+  Monoidal-functor : Type (oc ⊔ ℓc ⊔ od ⊔ ℓd)
+  Monoidal-functor = Σ (Functor C D) Monoidal-functor-on
 ```
 
 ## Braided and symmetric monoidal functors {defines="braided-monoidal-functor symmetric-monoidal-functor"}
@@ -139,17 +139,20 @@ yielding the notion of a **braided monoidal functor**.
 
 <!--
 ```agda
-module _
+module _ {oc ℓc od ℓd}
+  {C : Precategory oc ℓc} {Cᵐ : Monoidal-category C}
+  {D : Precategory od ℓd} {Dᵐ : Monoidal-category D}
   (Cᵇ : Braided-monoidal Cᵐ)
   (Dᵇ : Braided-monoidal Dᵐ)
   where
+  open Cat.Reasoning D
   module Cᵇ = Braided-monoidal Cᵇ
   module Dᵇ = Braided-monoidal Dᵇ
 ```
 -->
 
 ```agda
-  is-braided-functor : Lax-monoidal-functor → Type (oc ⊔ ℓd)
+  is-braided-functor : Lax-monoidal-functor Cᵐ Dᵐ → Type (oc ⊔ ℓd)
   is-braided-functor (F , lax) = ∀ {A B} → φ ∘ Dᵇ.β→ ≡ F.₁ Cᵇ.β→ ∘ φ {A} {B}
     where
       module F = Functor F
@@ -162,7 +165,9 @@ preserve.
 
 <!--
 ```agda
-module _
+module _ {oc ℓc od ℓd}
+  {C : Precategory oc ℓc} {Cᵐ : Monoidal-category C}
+  {D : Precategory od ℓd} {Dᵐ : Monoidal-category D}
   (Cˢ : Symmetric-monoidal Cᵐ)
   (Dˢ : Symmetric-monoidal Dᵐ)
   where
@@ -172,7 +177,7 @@ module _
 -->
 
 ```agda
-  is-symmetric-functor : Lax-monoidal-functor → Type (oc ⊔ ℓd)
+  is-symmetric-functor : Lax-monoidal-functor Cᵐ Dᵐ → Type (oc ⊔ ℓd)
   is-symmetric-functor = is-braided-functor Cᵇ Dᵇ
 ```
 
@@ -195,17 +200,20 @@ functor that makes the following diagram commute:
 
 <!--
 ```agda
-module _
+module _ {oc ℓc od ℓd}
+  {C : Precategory oc ℓc} {Cᵐ : Monoidal-category C}
+  {D : Precategory od ℓd} {Dᵐ : Monoidal-category D}
   (Cᵈ : Diagonals Cᵐ)
   (Dᵈ : Diagonals Dᵐ)
   where
+  open Cat.Reasoning D
   module Cᵈ = Diagonals Cᵈ
   module Dᵈ = Diagonals Dᵈ
 ```
 -->
 
 ```agda
-  is-diagonal-functor : Lax-monoidal-functor → Type (oc ⊔ ℓd)
+  is-diagonal-functor : Lax-monoidal-functor Cᵐ Dᵐ → Type (oc ⊔ ℓd)
   is-diagonal-functor (F , lax) = ∀ {A} → φ ∘ Dᵈ.δ ≡ F.₁ (Cᵈ.δ {A})
     where
       module F = Functor F
@@ -254,19 +262,36 @@ diagrams commute.
 
 <!--
 ```agda
-module _ ((F , F-monoidal) (G , G-monoidal) : Lax-monoidal-functor) where
-  module FM = Lax-monoidal-functor-on F-monoidal
-  module GM = Lax-monoidal-functor-on G-monoidal
-  open _=>_
+module _ {oc ℓc od ℓd}
+  {C : Precategory oc ℓc} {Cᵐ : Monoidal-category C}
+  {D : Precategory od ℓd} {Dᵐ : Monoidal-category D}
+  where
+  open Cat.Reasoning D
+  private
+    module C = Monoidal-category Cᵐ
+    module D = Monoidal-category Dᵐ
+  module _ ((F , F-monoidal) (G , G-monoidal) : Lax-monoidal-functor Cᵐ Dᵐ) where
+    module Fᵐ = Lax-monoidal-functor-on F-monoidal
+    module Gᵐ = Lax-monoidal-functor-on G-monoidal
+    open _=>_
 ```
 -->
 
 ```agda
-  record is-monoidal-transformation (α : F => G) : Type (oc ⊔ ℓc ⊔ ℓd) where
-    field
-      nat-ε : α .η C.Unit ∘ FM.ε ≡ GM.ε
-      nat-φ : ∀ {A B} → α .η _ ∘ FM.φ {A} {B} ≡ GM.φ ∘ (α .η _ D.⊗₁ α .η _)
+    record is-monoidal-transformation (α : F => G) : Type (oc ⊔ ℓc ⊔ ℓd) where
+      field
+        nat-ε : α .η C.Unit ∘ Fᵐ.ε ≡ Gᵐ.ε
+        nat-φ : ∀ {A B} → α .η _ ∘ Fᵐ.φ {A} {B} ≡ Gᵐ.φ ∘ (α .η _ D.⊗₁ α .η _)
 ```
+
+<!--
+```agda
+  private unquoteDecl nat-eqv = declare-record-iso nat-eqv (quote is-monoidal-transformation)
+  instance
+    H-Level-is-monoidal-transformation : ∀ {F G α k} → H-Level (is-monoidal-transformation F G α) (suc k)
+    H-Level-is-monoidal-transformation = prop-instance (Iso→is-hlevel 1 nat-eqv (hlevel 1))
+```
+-->
 
 Note that, since monoidal categories can be thought of as one-object
 [[bicategories]], we may expect to also have [[modifications]] between
