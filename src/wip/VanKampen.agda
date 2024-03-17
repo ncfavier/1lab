@@ -1,6 +1,6 @@
+{-# OPTIONS --lossy-unification #-}
 open import Cat.Displayed.Cartesian.Indexing
 open import Cat.Displayed.Instances.Identity
-open import Cat.Functor.Naturality
 open import Cat.Displayed.Instances.Pullback
 open import Cat.Diagram.Pullback.Properties
 open import Cat.Displayed.Instances.Slice
@@ -8,9 +8,11 @@ open import Cat.Displayed.Cartesian.Weak
 open import Cat.Instances.Functor.Limits
 open import Cat.Functor.FullSubcategory
 open import Cat.Diagram.Colimit.Base
+open import Cat.Functor.Conservative
 open import Cat.Displayed.Cartesian
 open import Cat.Functor.Adjoint.Hom
 open import Cat.Functor.Equivalence
+open import Cat.Functor.Naturality
 open import Cat.Functor.Properties
 open import Cat.Displayed.Functor
 open import Cat.Diagram.Pullback
@@ -24,6 +26,8 @@ open import Cat.Displayed.Base
 open import Cat.Functor.Final
 open import Cat.Functor.Base
 open import Cat.Prelude
+
+open import wip.SliceColimits
 
 import Cat.Displayed.Reasoning
 import Cat.Displayed.Morphism
@@ -246,16 +250,18 @@ module _ {oj ℓj oc ℓc}
   open Vertical-fibred-functor
   open Functor
   open _=>_
+  module E' = Cat.Reasoning (Slice Cat[ J , C ] G)
+  module JC = Cat.Reasoning Cat[ J , C ]
 
   is-equifibered : ∀ {o ℓ o' ℓ'} {C : Precategory o ℓ} {D : Precategory o' ℓ'} {F G : Functor C D} → F => G → Type _
   is-equifibered {C = C} {D} {F = F} {G} α = ∀ {x y} (f : C .Precategory.Hom x y) → is-pullback D (F .F₁ f) (α .η y) (α .η x) (G .F₁ f)
 
+  Eq : E'.Ob → Type _
+  Eq (cut α) = is-equifibered α
   Equifibered : Precategory _ _
-  Equifibered = Restrict {C = Slice Cat[ J , C ] G} λ (cut α) → is-equifibered α
+  Equifibered = Restrict {C = Slice Cat[ J , C ] G} Eq
 
   module E = Cat.Reasoning Equifibered
-  module E' = Cat.Reasoning (Slice Cat[ J , C ] G)
-  module JC = Cat.Reasoning Cat[ J , C ]
 
   {-
   Comp : Functor (Cartesian-sections S∘G) Equifibered
@@ -342,6 +348,19 @@ module _ {oj ℓj oc ℓc}
   thing A .F₁ g .commutes = pullr (A .object .map .is-natural _ _ g) ∙ pulll (eta .is-natural _ _ g ∙ idl _)
   thing A .F-id = ext (A .object .domain .F-id)
   thing A .F-∘ g h = ext (A .object .domain .F-∘ _ _)
+  {-# TERMINATING #-}
+  Cst-in : ∀ {A B} → (E.Hom A (Cst .F₀ B)) ≃ (thing A => Const B)
+  Cst-in {A} {B} = Iso→Equiv is where
+    open is-iso
+    is : Iso (E.Hom A (Cst .F₀ B)) (thing A => Const B)
+    is .fst h .η j .map = pb _ _ .Pullback.p₁ ∘ h .map .η j
+    is .fst h .η j .commutes = extendl (pb _ _ .Pullback.square) ∙ (refl⟩∘⟨ h .commutes ηₚ j)
+    is .fst h .is-natural _ _ g = ext (pullr (h .map .is-natural _ _ g) ∙ pulll (pb _ _ .Pullback.p₁∘universal) ∙ sym (idl _))
+    is .snd .inv h .map .η j = pb _ _ .Pullback.universal (h .η j .commutes)
+    is .snd .inv h .map .is-natural _ _ g = Pullback.unique₂ (pb _ _) {p = (refl⟩∘⟨ pulll (pb _ _ .Pullback.p₁∘universal)) ∙ extendl (h .η _ .commutes) ∙ (refl⟩∘⟨ pushl (sym (pb _ _ .Pullback.p₂∘universal)))} refl refl (pulll (pb _ _ .Pullback.p₁∘universal) ∙ pb _ _ .Pullback.p₁∘universal ∙ sym (unext (h .is-natural _ _ g) ∙ idl _) ∙ pushl (sym (pb _ _ .Pullback.p₁∘universal))) (pulll (pb _ _ .Pullback.p₂∘universal) ∙ pullr (pb _ _ .Pullback.p₂∘universal) ∙ sym (A .object .map .is-natural _ _ g) ∙ pushl (sym (pb _ _ .Pullback.p₂∘universal)))
+    is .snd .inv h .commutes = ext λ j → pb _ _ .Pullback.p₂∘universal
+    is .snd .rinv h = ext λ j → pb _ _ .Pullback.p₁∘universal
+    is .snd .linv h = ext λ j → sym (pb _ _ .Pullback.unique refl (h .commutes ηₚ j))
 
   is-van-kampen : Type (oj ⊔ ℓj ⊔ oc ⊔ ℓc)
   is-van-kampen = is-equivalence Cst
@@ -349,19 +368,6 @@ module _ {oj ℓj oc ℓc}
     Co : Functor Equifibered (Slice C X)
     Co = vk .is-equivalence.F⁻¹
 
-    {-# TERMINATING #-}
-    Cst-in : ∀ {A B} → (E.Hom A (Cst .F₀ B)) ≃ (thing A => Const B)
-    Cst-in {A} {B} = Iso→Equiv is where
-      open is-iso
-      is : Iso (E.Hom A (Cst .F₀ B)) (thing A => Const B)
-      is .fst h .η j .map = pb _ _ .Pullback.p₁ ∘ h .map .η j
-      is .fst h .η j .commutes = extendl (pb _ _ .Pullback.square) ∙ (refl⟩∘⟨ h .commutes ηₚ j)
-      is .fst h .is-natural _ _ g = ext (pullr (h .map .is-natural _ _ g) ∙ pulll (pb _ _ .Pullback.p₁∘universal) ∙ sym (idl _))
-      is .snd .inv h .map .η j = pb _ _ .Pullback.universal (h .η j .commutes)
-      is .snd .inv h .map .is-natural _ _ g = Pullback.unique₂ (pb _ _) {p = (refl⟩∘⟨ pulll (pb _ _ .Pullback.p₁∘universal)) ∙ extendl (h .η _ .commutes) ∙ (refl⟩∘⟨ pushl (sym (pb _ _ .Pullback.p₂∘universal)))} refl refl (pulll (pb _ _ .Pullback.p₁∘universal) ∙ pb _ _ .Pullback.p₁∘universal ∙ sym (unext (h .is-natural _ _ g) ∙ idl _) ∙ pushl (sym (pb _ _ .Pullback.p₁∘universal))) (pulll (pb _ _ .Pullback.p₂∘universal) ∙ pullr (pb _ _ .Pullback.p₂∘universal) ∙ sym (A .object .map .is-natural _ _ g) ∙ pushl (sym (pb _ _ .Pullback.p₂∘universal)))
-      is .snd .inv h .commutes = ext λ j → pb _ _ .Pullback.p₂∘universal
-      is .snd .rinv h = ext λ j → pb _ _ .Pullback.p₁∘universal
-      is .snd .linv h = ext λ j → sym (pb _ _ .Pullback.unique refl (h .commutes ηₚ j))
     VK-iso : ∀ {A B} → C/X.Hom (Co .F₀ A) B ≃ E.Hom A (Cst .F₀ B)
     VK-iso = _ , L-adjunct-is-equiv (is-equivalence.F⁻¹⊣F vk)
     Co-out : ∀ {A B} → C/X.Hom (Co .F₀ A) B ≃ (thing A => Const B)
@@ -381,11 +387,6 @@ module _ {oj ℓj oc ℓc}
   module _ (F : Functor J C) (α : F => G) (eq : is-equifibered α) where
     promote : Functor J C/X
     promote = thing (restrict (cut α) eq)
-    -- promote .F₀ j = cut (eta .η j ∘ α .η j)
-    -- promote .F₁ f .map = F .F₁ f
-    -- promote .F₁ f .commutes = pullr (α .is-natural _ _ f) ∙ pulll (eta .is-natural _ _ f ∙ idl _)
-    -- promote .F-id = ext (F .F-id)
-    -- promote .F-∘ f g = ext (F .F-∘ f g)
 
     whatevs : ∀ Y (f : Hom Y X) (β : F => Const Y) (_ : eta ∘nt α ≡ const-nt f ∘nt β) → promote => Const (cut f)
     whatevs Y f β com .η j .map = β .η j
@@ -396,11 +397,7 @@ module _ {oj ℓj oc ℓc}
       open is-van-kampen vk
 
       whatever : promote => Const (Co .F₀ (restrict (cut α) eq))
-      -- whatever = Equiv.to Cst-in (is-equivalence.counit⁻¹ vk .η (restrict (cut α) eq))
       whatever = Equiv.to Co-out C/X.id
-      -- whatever .η j .map = pb _ _ .Pullback.p₁ ∘ is-equivalence.counit⁻¹ vk .η (restrict (cut α) eq) .map .η j
-      -- whatever .η j .commutes = extendl (pb _ _ .Pullback.square) ∙ (refl⟩∘⟨ is-equivalence.counit⁻¹ vk .η (restrict (cut α) eq) .commutes ηₚ j)
-      -- whatever .is-natural _ _ g = ext {!   !}
 
       Co-is-colimit : is-colimit promote (Co .F₀ (restrict (cut α) eq)) whatever
       Co-is-colimit = to-is-colimitp mk refl where
@@ -410,24 +407,7 @@ module _ {oj ℓj oc ℓc}
         mk .commutes g = whatever .is-natural _ _ g ∙ C/X.idl _
         mk .universal eps comm = Equiv.from Co-out (NT eps λ _ _ h → ext (ap map (comm h) ∙ sym (idl _)))
         mk .factors {j} eps comm = (sym (Co-out-natural C/X.id (mk .universal eps comm)) ηₚ j) ∙ ap (λ x → Co-out .fst x .η j) (C/X.idr _) ∙ Equiv.ε Co-out _ ηₚ j
-        mk .unique eps comm u fac = {!   !}
-        {-
-        cocone
-          : thing AB → const (Co AB)
-          = e id
-        universal
-          : (thing AB → const C) → Co AB → C
-          = e⁻¹
-        factors
-          : universal f ∘ cocone j ≡ f j
-          : const (e⁻¹ f) ∘ e id ≡ f
-          = const (e⁻¹ f) ∘ e id
-          ≡ e (e⁻¹ f)
-          ≡ f
-        unique
-          : const u ∘ e id ≡ f → u ≡ e⁻¹ f
-          = adjunct ?
-        -}
+        mk .unique eps comm u fac = Equiv.adjunctl Co-out (ap (Co-out .fst) (sym (C/X.idr _)) ∙ Co-out-natural C/X.id u ∙ ext λ j → unext (fac j))
 
   is-van-kampen'' : Type (oj ⊔ ℓj ⊔ oc ⊔ ℓc)
   is-van-kampen'' =
@@ -436,61 +416,43 @@ module _ {oj ℓj oc ℓc}
     → (β : F => Const Y) (com : eta ∘nt α ≡ const-nt f ∘nt β)
     → (∀ j → is-pullback C (β .η j) f (α .η j) (eta .η j)) ≃ is-colimit (promote F α eq) (cut f) (whatevs F α eq Y f β com)
 
-  {-
-  module _ (co : (G : Functor J C) → Colimit G) (Xco : is-colimit G X eta) (vk : is-van-kampen) where
-    module X = is-colimit Xco
-    Co : Functor Equifibered (Slice C X)
-    Co .F₀ α = cut {domain = coapex} (universal (λ j → eta .η j ∘ α .object .map .η j) (λ f → pullr (α .object .map .is-natural _ _ f) ·· extendl (eta .is-natural _ _ f) ·· idl _))
-      where
-        open Colimit (co (α .object .domain))
-    Co .F₁ = {!   !}
-    Co .F-id = {!   !}
-    Co .F-∘ = {!   !}
-
-    open _⊣_
-    adj : Co ⊣ Cst
-    adj = hom-iso-inv→adjoints
-      (λ f → record
-        { map = co _ .Colimit.universal (λ j → {! f .map .η j !}) {!   !}
-        ; commutes = {!   !}
-        })
-      {!   !}
-      {!   !}
-    -}
-    {-
-    Co x → y ≃ x → Cst y
-    -}
-
-    -- co' : (α : Equifibered .Precategory.Ob) → Colimit (α .object .domain)
-    -- co' α = to-colimit (to-is-colimit mk) where
-    --   open make-is-colimit
-    --   mk : make-is-colimit (α .object .domain) (Cst⁻¹ .F₀ α .domain)
-    --   mk .ψ j = pb _ (eta .η j) .Pullback.p₁ ∘ vk .is-equivalence.counit-iso α .E.is-invertible.inv .map .η j
-    --   mk .commutes f = {!   !}
-    --   mk .universal eps comm = {!   !}
-    --   mk .factors = {!   !}
-    --   mk .unique = {!   !}
-
-  toVK : is-van-kampen → is-van-kampen'
-  toVK vk Y f F α eq β com = i ∙e ii ∙e wut ∙e iii ∙e colim-slice where
+  module _ (colims : (A : E.Ob) → Colimit (A .object .domain)) (vk : is-van-kampen) Y (f : Hom Y X) (F : Functor J C) (α : F => G) (eq : is-equifibered α) (β : F => Const Y) (com : eta ∘nt α ≡ const-nt f ∘nt β) where
+  -- toVK : is-van-kampen → is-van-kampen'
+  -- toVK vk Y f F α eq β com = i ∙e ii ∙e wut ∙e iii ∙e colim-slice where
     open is-van-kampen vk
-    h : thing (restrict (cut α) eq) => Const (cut f)
+    A : E.Ob
+    A = restrict (cut α) eq
+    h : thing A => Const (cut f)
+    what : Forget-slice F∘ thing A ≡ F
+    what = Functor-path (λ _ → refl) (λ _ → refl)
     h = whatevs F α eq Y f β com
-    h' : E.Hom (restrict (cut α) eq) (Cst .F₀ (cut f))
+    h' : E.Hom A (Cst .F₀ (cut f))
     h' = Equiv.from Cst-in h
-    i : (∀ j → is-pullback C (β .η j) f (α .η j) (eta .η j)) ≃ E.is-invertible {a = restrict (cut α) eq} {Cst .F₀ (cut f)} h'
-    i = Π-cod≃ (λ j → pullback-unique (pb _ _ .Pullback.has-is-pb) (sym (com ηₚ j)) e⁻¹) ∙e {!   !}
-    ii : E.is-invertible {a = restrict (cut α) eq} {Cst .F₀ (cut f)} h' ≃ C/X.is-invertible (Equiv.from (VK-iso {A = restrict (cut α) eq}) h')
-    ii = {! R-adjunct preserves isos  !}
-    h'' = Co-is-colimit F α eq vk .is-colimit.universal (λ j → h .η j) λ g → ext (β .is-natural _ _ g ∙ idl _)
-    wut : C/X.is-invertible (Equiv.from (VK-iso {A = restrict (cut α) eq}) h') ≃ C/X.is-invertible h''
-    wut = {!   !} -- SLOW: path→equiv (ap C/X.is-invertible (ap (Equiv.from (Co-out {restrict (cut α) eq} {cut f})) trivial!))
-    iii : C/X.is-invertible h'' ≃ is-colimit (promote F α eq) (cut f) (whatevs F α eq Y f β com)
-    iii = prop-ext! (λ inv → is-invertible→is-colimitp {K = Const _} (Co-is-colimit F α eq vk) _ (λ g → ext (β .is-natural _ _ g ∙ idl _)) refl inv) {!   !}
-    colim-slice : is-colimit (promote F α eq) (cut f) (whatevs F α eq Y f β com) ≃ is-colimit F Y β
-    colim-slice = {!   !}
+    i : (∀ j → is-pullback C (β .η j) f (α .η j) (eta .η j)) ≃ E.is-invertible {a = A} {Cst .F₀ (cut f)} h'
+    i =
+      (∀ j → is-pullback C (β .η j) f (α .η j) (eta .η j)) ≃⟨ Π-cod≃ (λ j → pullback-unique (pb _ _ .Pullback.has-is-pb) (sym (com ηₚ j)) e⁻¹) ⟩
+      (∀ j → is-invertible (h' .map .η j))                 ≃⟨ prop-ext (hlevel 1) (hlevel 1) (invertible→invertibleⁿ (h' .map)) is-invertibleⁿ→is-invertible ⟩
+      is-invertibleⁿ (h' .map)                             ≃˘⟨ conservative→equiv {F = Forget-slice} Forget-slice-is-conservative ⟩
+      E'.is-invertible h'                                  ≃˘⟨ conservative→equiv {F = Forget-full-subcat} (is-ff→is-conservative {F = Forget-full-subcat} is-fully-faithful-Forget-full-subcat) ⟩
+      E.is-invertible h'                                   ≃∎
 
-{-
-eta is colimiting:
-Hom(X, Y) ≃ Hom_C/X(id, fst) = Nat(Δ id, Δ fst) ≃ F ⇒ Δ Y
--}
+    ii : E.is-invertible {a = A} {Cst .F₀ (cut f)} h'
+       ≃ C/X.is-invertible (Equiv.from (VK-iso {A = A}) h')
+    ii = R-adjunct-preserves-invertible Co (is-equivalence.inverse-equivalence vk) h'
+
+    h'' = Co-is-colimit F α eq vk .is-colimit.universal (λ j → h .η j) λ g → ext (β .is-natural _ _ g ∙ idl _)
+    wut : C/X.is-invertible (Equiv.from (VK-iso {A = A}) h') ≃ C/X.is-invertible h''
+    wut = path→equiv (ap C/X.is-invertible (ap (Equiv.from (Co-out {A} {cut f})) (ext λ _ → refl)))
+    iii : C/X.is-invertible h'' ≃ is-colimit (promote F α eq) (cut f) (whatevs F α eq Y f β com)
+    iii = prop-ext (hlevel 1) (hlevel 1)
+      (λ inv → is-invertible→is-colimitp {K = Const _} (Co-is-colimit F α eq vk) _ (λ g → ext (β .is-natural _ _ g ∙ idl _)) refl inv)
+      iii'
+      where
+      iii' : is-colimit (promote F α eq) (cut f) (whatevs F α eq Y f β com) → C/X.is-invertible h''
+      iii' col = colimits→invertiblep col (Co-is-colimit F α eq vk) (Co-is-colimit F α eq vk .is-colimit.factors _ λ g → ext (β .is-natural _ _ g ∙ idl _))
+    colim-path : ∀ {K : Ob} {D D' : Functor J C} {eta : D => Const K} {eta' : D' => Const K} (p : D ≡ D') (peta : PathP (λ i → p i => Const K) eta eta') → is-colimit D K eta ≡ is-colimit D' K eta'
+    colim-path = {!   !}
+    colim-slice : is-colimit (promote F α eq) (cut f) (whatevs F α eq Y f β com) ≃ is-colimit F Y β
+    colim-slice = prop-ext (hlevel 1) (hlevel 1)
+      (Forget-slice-preserves (thing A)) (Forget-slice-reflects (thing A))
+      ∙e path→equiv {! colim-path ? ?  !}

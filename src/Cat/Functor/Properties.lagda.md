@@ -110,9 +110,9 @@ module _ {C : Precategory o h} {D : Precategory o₁ h₁} where
 
   is-ff→is-conservative
     : {F : Functor C D} → is-fully-faithful F
-    → ∀ {X Y} (f : C.Hom X Y) → Dm.is-invertible (F .F₁ f)
+    → ∀ {X Y} {f : C.Hom X Y} → Dm.is-invertible (F .F₁ f)
     → Cm.is-invertible f
-  is-ff→is-conservative {F = F} ff f isinv = i where
+  is-ff→is-conservative {F = F} ff {f = f} isinv = i where
     open Cm.is-invertible
     open Cm.Inverses
 ```
@@ -159,7 +159,7 @@ the domain category to serve as an inverse for $f$:
     D-inv' .Dm.is-invertible.inverses =
       subst (λ e → Dm.Inverses e from) (sym (equiv→counit ff _)) inverses
 
-    open Cm.is-invertible (is-ff→is-conservative {F = F} ff (equiv→inverse ff to) D-inv')
+    open Cm.is-invertible (is-ff→is-conservative {F = F} ff D-inv')
 
     im' : _ Cm.≅ _
     im' .to   = equiv→inverse ff to

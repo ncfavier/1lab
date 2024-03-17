@@ -618,6 +618,14 @@ module
     is-equivalence→is-ff
   is-equivalence→is-precat-iso c-cat d-cat .has-is-iso =
     is-cat-equivalence→equiv-on-objects c-cat d-cat eqv
+
+  R-adjunct-preserves-invertible
+    : ∀ {a b} (f : C.Hom a (e.F⁻¹ .F₀ b))
+    → C.is-invertible f ≃ D.is-invertible (R-adjunct e.F⊣F⁻¹ f)
+  R-adjunct-preserves-invertible f = prop-ext!
+    (λ inv → D.invertible-∘ (e.counit-iso _) (F.F-map-invertible inv))
+    (λ inv → is-ff→is-conservative {F = F} is-equivalence→is-ff
+      (D.invertible-cancelr (e.counit-iso _) inv))
 ```
 -->
 

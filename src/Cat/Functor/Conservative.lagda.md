@@ -87,3 +87,12 @@ module _ {F : Functor C D} (conservative : is-conservative F) where
             (λ j → D.pulll (lim.factors _ _) ∙ F.collapse (L-lim.factors _ _))
             (λ j → D.idr _))
 ```
+
+<!--
+```agda
+  conservative→equiv :
+    ∀ {A B} {f : C .Hom A B}
+    → C.is-invertible f ≃ D.is-invertible (F .F₁ f)
+  conservative→equiv = prop-ext! F.F-map-invertible conservative
+```
+-->

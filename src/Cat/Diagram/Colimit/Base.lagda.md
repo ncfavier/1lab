@@ -427,7 +427,7 @@ module _ {o₁ h₁ o₂ h₂ : _} {J : Precategory o₁ h₁} {C : Precategory 
 
 Furthermore, if the universal map is invertible, then that means its
 domain is _also_ a colimit of the diagram. This also follows from a
-[general theorem of Kan extensions], though some golfin is required to
+[general theorem of Kan extensions], though some golfing is required to
 obtain the correct inverse definitionally.
 
 [general theorem of Kan extensions]: Cat.Functor.Kan.Unique.html#is-invertible→is-lan

@@ -1,11 +1,13 @@
 <!--
 ```agda
 open import Cat.Diagram.Limit.Finite
+open import Cat.Functor.Conservative
 open import Cat.Functor.Properties
 open import Cat.Instances.Discrete
 open import Cat.Diagram.Pullback
 open import Cat.Diagram.Terminal
 open import Cat.Diagram.Product
+open import Cat.Functor.Adjoint
 open import Cat.Functor.Base
 open import Cat.Prelude
 
@@ -190,6 +192,49 @@ commutativity for $g \circ f$).
   precat .idl f = ext (C.idl _)
   precat .assoc f g h = ext (C.assoc _ _ _)
 ```
+
+There is an evident projection functor from $\cC/C$ to $\cC$ that only
+remembers the domains.
+
+<!--
+```agda
+module _ {o ℓ} {C : Precategory o ℓ} {c} where
+  open /-Hom
+  open /-Obj
+  private
+    module C = Cat.Reasoning C
+    module C/c = Cat.Reasoning (Slice C c)
+```
+-->
+
+```agda
+  Forget-slice : Functor (Slice C c) C
+  Forget-slice .F₀ o = o .domain
+  Forget-slice .F₁ f = f .map
+  Forget-slice .F-id = refl
+  Forget-slice .F-∘ _ _ = refl
+```
+
+Furthermore, this forgetful functor is easily seen to be [[faithful]]
+and [[conservative]]: if $f$ is a morphism in $\cC/C$ whose "horizontal"
+map has an inverse $f^{-1}$ in $\cC$, then $f^{-1}$ clearly also makes
+the triangle commute, so that $f$ is invertible in $\cC/C$.
+
+```agda
+  Forget-slice-is-faithful : is-faithful Forget-slice
+  Forget-slice-is-faithful p = ext p
+
+  Forget-slice-is-conservative : is-conservative Forget-slice
+  Forget-slice-is-conservative {f = f} i =
+    C/c.make-invertible f⁻¹ (ext i.invl) (ext i.invr)
+    where
+      module i = C.is-invertible i
+      f⁻¹ : /-Hom _ _
+      f⁻¹ .map = i.inv
+      f⁻¹ .commutes = C.rswizzle (sym (f .commutes)) i.invl
+```
+
+TODO monadic?
 
 ## Finite limits
 
@@ -691,4 +736,25 @@ the fibre over $h$ would correspondingly be isomorphic to $A \times \top
       (idr _ ∙ Product.unique (prod _ _) _ refl refl)
       (idr _))
     where open Pullback (pb (constant-family .F₀ A .map) h)
+```
+
+TODO
+
+```agda
+  Forget⊣constant-family : Forget-slice ⊣ constant-family
+  Forget⊣constant-family ._⊣_.unit .η X .map = ⟨ id , X .map ⟩
+  Forget⊣constant-family ._⊣_.unit .η X .commutes = π₂∘⟨⟩
+  Forget⊣constant-family ._⊣_.unit .is-natural _ _ f = ext (unique₂
+    (pulll π₁∘⟨⟩ ∙ id-comm-sym)
+    (pulll π₂∘⟨⟩ ∙ f .commutes)
+    (pulll π₁∘⟨⟩ ∙ pullr π₁∘⟨⟩)
+    (pulll π₂∘⟨⟩ ∙ π₂∘⟨⟩))
+  Forget⊣constant-family ._⊣_.counit .η x = π₁
+  Forget⊣constant-family ._⊣_.counit .is-natural _ _ f = π₁∘⟨⟩
+  Forget⊣constant-family ._⊣_.zig = π₁∘⟨⟩
+  Forget⊣constant-family ._⊣_.zag = ext (unique₂
+    (pulll π₁∘⟨⟩ ∙ pullr π₁∘⟨⟩)
+    (pulll π₂∘⟨⟩ ∙ π₂∘⟨⟩)
+    refl
+    (idr _))
 ```
