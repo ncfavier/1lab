@@ -306,9 +306,10 @@ module Colimit
     import Cat.Reasoning J as J
     import Cat.Reasoning C as C
     module Diagram = Functor D
-    open Lan L
     open Functor
     open _=>_
+
+  open Lan L public
 ```
 -->
 
@@ -539,12 +540,10 @@ module _ {o₁ h₁ o₂ h₂ : _} {J : Precategory o₁ h₁} {C : Precategory 
 ```
 
 
-# Preservation of colimits
+# Preservation and reflection of colimits {defines="preserved-colimit reflected-colimit"}
 
-The definitions here are the same idea as [preservation of limits], just
-dualised.
-
-[preservation of limits]: Cat.Diagram.Limit.Base.html#preservation-of-limits
+The definitions here are the same idea as [[preservation of
+limits|preserved limit]], just dualised.
 
 <!--
 ```agda

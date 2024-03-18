@@ -6,7 +6,9 @@ open import Cat.Diagram.Pullback.Properties
 open import Cat.Displayed.Instances.Slice
 open import Cat.Displayed.Cartesian.Weak
 open import Cat.Instances.Functor.Limits
+open import Cat.Instances.Shape.Terminal
 open import Cat.Functor.FullSubcategory
+open import Cat.Instances.Slice.Colimit
 open import Cat.Diagram.Colimit.Base
 open import Cat.Functor.Conservative
 open import Cat.Displayed.Cartesian
@@ -26,8 +28,6 @@ open import Cat.Displayed.Base
 open import Cat.Functor.Final
 open import Cat.Functor.Base
 open import Cat.Prelude
-
-open import wip.SliceColimits
 
 import Cat.Displayed.Reasoning
 import Cat.Displayed.Morphism
@@ -423,7 +423,7 @@ module _ {oj ℓj oc ℓc}
     A : E.Ob
     A = restrict (cut α) eq
     h : thing A => Const (cut f)
-    what : Forget-slice F∘ thing A ≡ F
+    what : Forget/ F∘ thing A ≡ F
     what = Functor-path (λ _ → refl) (λ _ → refl)
     h = whatevs F α eq Y f β com
     h' : E.Hom A (Cst .F₀ (cut f))
@@ -432,7 +432,7 @@ module _ {oj ℓj oc ℓc}
     i =
       (∀ j → is-pullback C (β .η j) f (α .η j) (eta .η j)) ≃⟨ Π-cod≃ (λ j → pullback-unique (pb _ _ .Pullback.has-is-pb) (sym (com ηₚ j)) e⁻¹) ⟩
       (∀ j → is-invertible (h' .map .η j))                 ≃⟨ prop-ext (hlevel 1) (hlevel 1) (invertible→invertibleⁿ (h' .map)) is-invertibleⁿ→is-invertible ⟩
-      is-invertibleⁿ (h' .map)                             ≃˘⟨ conservative→equiv {F = Forget-slice} Forget-slice-is-conservative ⟩
+      is-invertibleⁿ (h' .map)                             ≃˘⟨ conservative→equiv {F = Forget/} Forget/-is-conservative ⟩
       E'.is-invertible h'                                  ≃˘⟨ conservative→equiv {F = Forget-full-subcat} (is-ff→is-conservative {F = Forget-full-subcat} is-fully-faithful-Forget-full-subcat) ⟩
       E.is-invertible h'                                   ≃∎
 
@@ -450,9 +450,7 @@ module _ {oj ℓj oc ℓc}
       where
       iii' : is-colimit (promote F α eq) (cut f) (whatevs F α eq Y f β com) → C/X.is-invertible h''
       iii' col = colimits→invertiblep col (Co-is-colimit F α eq vk) (Co-is-colimit F α eq vk .is-colimit.factors _ λ g → ext (β .is-natural _ _ g ∙ idl _))
-    colim-path : ∀ {K : Ob} {D D' : Functor J C} {eta : D => Const K} {eta' : D' => Const K} (p : D ≡ D') (peta : PathP (λ i → p i => Const K) eta eta') → is-colimit D K eta ≡ is-colimit D' K eta'
-    colim-path = {!   !}
     colim-slice : is-colimit (promote F α eq) (cut f) (whatevs F α eq Y f β com) ≃ is-colimit F Y β
     colim-slice = prop-ext (hlevel 1) (hlevel 1)
-      (Forget-slice-preserves (thing A)) (Forget-slice-reflects (thing A))
-      ∙e path→equiv {! colim-path ? ?  !}
+      (Forget/-preserves-colimits (thing A) (subst Colimit (sym what) (colims A))) (Forget/-reflects-colimits (thing A))
+      ∙e path→equiv (ap₃ (is-lan !F) what (Functor-path (λ _ → refl) (λ _ → refl)) (Nat-pathp _ _ λ _ → refl))

@@ -2,6 +2,7 @@
 ```agda
 open import Cat.Functor.Naturality
 open import Cat.Functor.Univalence
+open import Cat.Instances.Functor
 open import Cat.Functor.Kan.Base
 open import Cat.Functor.Compose
 open import Cat.Functor.Base
@@ -46,7 +47,7 @@ of $F$ along $p$".
 ```agda
 private variable
   o ℓ : Level
-  C C' D : Precategory o ℓ
+  C C' D E : Precategory o ℓ
 
 module
   Lan-unique
@@ -278,7 +279,7 @@ which is propositionally equal to the whiskering:
     : (p-iso : p ≅ⁿ p')
     → (F-iso : F ≅ⁿ F')
     → (G-iso : G ≅ⁿ G')
-    → ((Isoⁿ.to G-iso ◆ Isoⁿ.to p-iso) ∘nt eps ∘nt Isoⁿ.from F-iso) ≡ eps'
+    → (Isoⁿ.to G-iso ◆ Isoⁿ.to p-iso) ∘nt eps ∘nt Isoⁿ.from F-iso ≡ eps'
     → is-lan p F G eps
     → is-lan p' F' G' eps'
 ```
@@ -294,6 +295,32 @@ which is propositionally equal to the whiskering:
     where open Isoⁿ
 ```
 -->
+
+As a consequence of uniqueness, if a functor preserves a given Kan
+extension, then it preserves *all* extensions for the same diagram.
+
+```agda
+preserves-lan→preserves-all
+  : ∀ (H : Functor D E) {p : Functor C C'} {F : Functor C D}
+  → ∀ {G} {eta : F => G F∘ p} (lan : is-lan p F G eta)
+  → preserves-lan H lan
+  → ∀ {G'} {eta' : F => G' F∘ p} (lan' : is-lan p F G' eta')
+  → preserves-lan H lan'
+preserves-lan→preserves-all {E = E} {C' = C'} H lan pres {G'} lan' =
+  natural-isos→is-lan idni idni
+    (F∘-iso-r One.unique)
+    (ext λ c →
+      (H.₁ (G'.₁ C'.id) E.∘ H.₁ _) E.∘ H.₁ _ E.∘ E.id ≡⟨ E.pullr (H.pulll (One.unit ηₚ c)) ⟩
+      H.₁ (G'.₁ C'.id) E.∘ H.₁ _ E.∘ E.id             ≡⟨ H.eliml G'.F-id ∙ E.idr _ ⟩
+      H.₁ _                                           ∎)
+    pres
+  where
+    module C' = Cat.Reasoning C'
+    module E = Cat.Reasoning E
+    module H = Cat.Functor.Reasoning H
+    module G' = Cat.Functor.Reasoning G'
+    module One = Lan-unique lan lan'
+```
 
 ## Into univalent categories
 
@@ -511,7 +538,7 @@ module _
     : (p-iso : p ≅ⁿ p')
     → (F-iso : F ≅ⁿ F')
     → (G-iso : G ≅ⁿ G')
-    → (Isoⁿ.to F-iso ∘nt eps ∘nt (Isoⁿ.from G-iso ◆ Isoⁿ.from p-iso)) ≡ eps'
+    → Isoⁿ.to F-iso ∘nt eps ∘nt (Isoⁿ.from G-iso ◆ Isoⁿ.from p-iso) ≡ eps'
     → is-ran p F G eps
     → is-ran p' F' G' eps'
   natural-isos→is-ran p-iso F-iso G-iso p ran =
@@ -521,6 +548,27 @@ module _
         F-iso)
       G-iso)
     (ext λ c → sym (D.assoc _ _ _) ·· ap₂ D._∘_ refl (sym $ D.assoc _ _ _) ·· p ηₚ _)
+
+preserves-ran→preserves-all
+  : ∀ (H : Functor D E) {p : Functor C C'} {F : Functor C D}
+  → ∀ {G} {eps : G F∘ p => F} (ran : is-ran p F G eps)
+  → preserves-ran H ran
+  → ∀ {G'} {eps' : G' F∘ p => F} (ran' : is-ran p F G' eps')
+  → preserves-ran H ran'
+preserves-ran→preserves-all {E = E} {C' = C'} H {G = G} ran pres ran' =
+  natural-isos→is-ran idni idni
+    (F∘-iso-r One.unique)
+    (ext λ c →
+      E.id E.∘ H.₁ _ E.∘ H.₁ (G.₁ C'.id) E.∘ H.₁ _ ≡⟨ E.idl _ ∙ (E.refl⟩∘⟨ H.eliml G.F-id) ⟩
+      H.₁ _ E.∘ H.₁ _                              ≡⟨ H.collapse (One.counit ηₚ c) ⟩
+      H.₁ _                                        ∎)
+    pres
+  where
+    module C' = Cat.Reasoning C'
+    module E = Cat.Reasoning E
+    module H = Cat.Functor.Reasoning H
+    module G = Cat.Functor.Reasoning G
+    module One = Ran-unique ran ran'
 
 Ran-is-prop
   : ∀ {p : Functor C C'} {F : Functor C D} → is-category D → is-prop (Ran p F)

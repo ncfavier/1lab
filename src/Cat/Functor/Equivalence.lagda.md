@@ -626,6 +626,28 @@ module
     (λ inv → D.invertible-∘ (e.counit-iso _) (F.F-map-invertible inv))
     (λ inv → is-ff→is-conservative {F = F} is-equivalence→is-ff
       (D.invertible-cancelr (e.counit-iso _) inv))
+
+module
+  _ {o ℓ o' ℓ'} {C : Precategory o ℓ} {D : Precategory o' ℓ'}
+    (L : Functor C D) (R : Functor D C) (L⊣R : L ⊣ R)
+  where
+  private
+    module C = Cat.Reasoning C
+    module D = Cat.Reasoning D
+    module L = Fr L
+    module R = Fr R
+  foo : (∀ {a b} (f : C.Hom a (R .F₀ b)) (g : D.Hom (L .F₀ a) b)
+    → R-adjunct L⊣R f ≡ g
+    → C.is-invertible f ≃ D.is-invertible g)
+    → is-equivalence L
+  foo e .F⁻¹ = R
+  foo e .F⊣F⁻¹ = L⊣R
+  foo e .unit-iso c = C.invertible-cancelr
+    (R.F-map-invertible D.id-invertible)
+    (Equiv.from (e _ D.id (R-L-adjunct L⊣R D.id)) D.id-invertible)
+  foo e .counit-iso d = D.invertible-cancell
+    (L.F-map-invertible C.id-invertible)
+    (Equiv.to (e C.id _ refl) C.id-invertible)
 ```
 -->
 

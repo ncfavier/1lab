@@ -717,6 +717,17 @@ ap₂
   → (p : x ≡ y) (q : PathP (λ i → B (p i)) α β)
   → PathP (λ i → C (p i) (q i)) (f x α) (f y β)
 ap₂ f p q i = f (p i) (q i)
+
+ap₃ : ∀ {a b c d} {A : Type a} {B : A → Type b} {C : (a : A) → B a → Type c} {D : (a : A) (b : B a) (c : C a b) → Type d}
+      (f : (a : A) (b : B a) (c : C a b) → D a b c)
+      {a a' : A} {b : B a} {b' : B a'} {c : C a b} {c' : C a' b'}
+    → (p : a ≡ a')
+    → (q : PathP (λ i → B (p i)) b b')
+    → (r : PathP (λ i → C (p i) (q i)) c c')
+    → PathP (λ i → D (p i) (q i) (r i))
+            (f a b c)
+            (f a' b' c')
+ap₃ f p q r i = f (p i) (q i) (r i)
 ```
 -->
 
