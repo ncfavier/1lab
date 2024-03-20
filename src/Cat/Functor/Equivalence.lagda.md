@@ -579,6 +579,18 @@ unquoteDecl H-Level-is-precat-iso = declare-record-hlevel 1 H-Level-is-precat-is
 
 module
   _ {o ℓ o' ℓ'} {C : Precategory o ℓ} {D : Precategory o' ℓ'}
+    {L : Functor C D} {R : Functor D C} (L⊣R : L ⊣ R)
+  where
+  private
+    module C = Cat.Reasoning C
+    module D = Cat.Reasoning D
+
+  preserves-invertibility : Type (o ⊔ ℓ ⊔ o' ⊔ ℓ')
+  preserves-invertibility = ∀ {a b} →
+    D.is-invertible ≃[ adjunct-hom-equiv L⊣R {a} {b} ] C.is-invertible
+
+module
+  _ {o ℓ o' ℓ'} {C : Precategory o ℓ} {D : Precategory o' ℓ'}
     (F : Functor C D) (eqv : is-equivalence F)
   where
   private
@@ -586,6 +598,7 @@ module
     module C = Cat.Reasoning C
     module D = Cat.Reasoning D
     module F = Fr F
+    module F⁻¹ = Fr e.F⁻¹
 
   is-equivalence→is-ff : is-fully-faithful F
   is-equivalence→is-ff = is-iso→is-equiv λ where
@@ -619,13 +632,11 @@ module
   is-equivalence→is-precat-iso c-cat d-cat .has-is-iso =
     is-cat-equivalence→equiv-on-objects c-cat d-cat eqv
 
-  R-adjunct-preserves-invertible
-    : ∀ {a b} (f : C.Hom a (e.F⁻¹ .F₀ b))
-    → C.is-invertible f ≃ D.is-invertible (R-adjunct e.F⊣F⁻¹ f)
-  R-adjunct-preserves-invertible f = prop-ext!
-    (λ inv → D.invertible-∘ (e.counit-iso _) (F.F-map-invertible inv))
-    (λ inv → is-ff→is-conservative {F = F} is-equivalence→is-ff
-      (D.invertible-cancelr (e.counit-iso _) inv))
+  equivalence→preserves-invertibility : preserves-invertibility e.F⊣F⁻¹
+  equivalence→preserves-invertibility = prop-over-ext (adjunct-hom-equiv e.F⊣F⁻¹)
+    (hlevel 1) (hlevel 1)
+    (λ f inv → C.invertible-∘ (F⁻¹.F-map-invertible inv) (e.unit-iso _))
+    (λ f inv → D.invertible-∘ (e.counit-iso _) (F.F-map-invertible inv))
 
 module
   _ {o ℓ o' ℓ'} {C : Precategory o ℓ} {D : Precategory o' ℓ'}
@@ -636,18 +647,17 @@ module
     module D = Cat.Reasoning D
     module L = Fr L
     module R = Fr R
-  foo : (∀ {a b} (f : C.Hom a (R .F₀ b)) (g : D.Hom (L .F₀ a) b)
-    → R-adjunct L⊣R f ≡ g
-    → C.is-invertible f ≃ D.is-invertible g)
-    → is-equivalence L
-  foo e .F⁻¹ = R
-  foo e .F⊣F⁻¹ = L⊣R
-  foo e .unit-iso c = C.invertible-cancelr
+
+  preserves-invertibility→equivalence
+    : preserves-invertibility L⊣R → is-equivalence L
+  preserves-invertibility→equivalence e .F⁻¹ = R
+  preserves-invertibility→equivalence e .F⊣F⁻¹ = L⊣R
+  preserves-invertibility→equivalence e .unit-iso c = C.invertible-cancelr
     (R.F-map-invertible D.id-invertible)
-    (Equiv.from (e _ D.id (R-L-adjunct L⊣R D.id)) D.id-invertible)
-  foo e .counit-iso d = D.invertible-cancell
+    (Equiv.to (e D.id _ refl) D.id-invertible)
+  preserves-invertibility→equivalence e .counit-iso d = D.invertible-cancell
     (L.F-map-invertible C.id-invertible)
-    (Equiv.to (e C.id _ refl) C.id-invertible)
+    (Equiv.from (e _ _ (L-R-adjunct L⊣R _)) C.id-invertible)
 ```
 -->
 

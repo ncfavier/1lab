@@ -364,12 +364,13 @@ module _ {oj ℓj oc ℓc}
 
   is-van-kampen : Type (oj ⊔ ℓj ⊔ oc ⊔ ℓc)
   is-van-kampen = is-equivalence Cst
+
   module is-van-kampen (vk : is-van-kampen) where
     Co : Functor Equifibered (Slice C X)
     Co = vk .is-equivalence.F⁻¹
 
     VK-iso : ∀ {A B} → C/X.Hom (Co .F₀ A) B ≃ E.Hom A (Cst .F₀ B)
-    VK-iso = _ , L-adjunct-is-equiv (is-equivalence.F⁻¹⊣F vk)
+    VK-iso = adjunct-hom-equiv (is-equivalence.F⁻¹⊣F vk)
     Co-out : ∀ {A B} → C/X.Hom (Co .F₀ A) B ≃ (thing A => Const B)
     Co-out {A} {B} = VK-iso ∙e Cst-in
     Co-out-natural : ∀ {A B B'} (f : C/X.Hom (Co .F₀ A) B) (h : C/X.Hom B B')
@@ -438,7 +439,7 @@ module _ {oj ℓj oc ℓc}
 
     ii : E.is-invertible {a = A} {Cst .F₀ (cut f)} h'
        ≃ C/X.is-invertible (Equiv.from (VK-iso {A = A}) h')
-    ii = R-adjunct-preserves-invertible Co (is-equivalence.inverse-equivalence vk) h'
+    ii = equivalence→preserves-invertibility Co (is-equivalence.inverse-equivalence vk) (Equiv.from VK-iso h') h' (Equiv.ε (VK-iso {A = A}) h') e⁻¹
 
     h'' = Co-is-colimit F α eq vk .is-colimit.universal (λ j → h .η j) λ g → ext (β .is-natural _ _ g ∙ idl _)
     wut : C/X.is-invertible (Equiv.from (VK-iso {A = A}) h') ≃ C/X.is-invertible h''
