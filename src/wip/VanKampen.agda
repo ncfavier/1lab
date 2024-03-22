@@ -253,8 +253,8 @@ module _ {oj ℓj oc ℓc}
   module E' = Cat.Reasoning (Slice Cat[ J , C ] G)
   module JC = Cat.Reasoning Cat[ J , C ]
 
-  is-equifibered : ∀ {o ℓ o' ℓ'} {C : Precategory o ℓ} {D : Precategory o' ℓ'} {F G : Functor C D} → F => G → Type _
-  is-equifibered {C = C} {D} {F = F} {G} α = ∀ {x y} (f : C .Precategory.Hom x y) → is-pullback D (F .F₁ f) (α .η y) (α .η x) (G .F₁ f)
+  -- is-equifibered : ∀ {o ℓ o' ℓ'} {C : Precategory o ℓ} {D : Precategory o' ℓ'} {F G : Functor C D} → F => G → Type _
+  -- is-equifibered {C = C} {D} {F = F} {G} α = ∀ {x y} (f : C .Precategory.Hom x y) → is-pullback D (F .F₁ f) (α .η y) (α .η x) (G .F₁ f)
 
   Eq : E'.Ob → Type _
   Eq (cut α) = is-equifibered α
@@ -455,3 +455,5 @@ module _ {oj ℓj oc ℓc}
     colim-slice = prop-ext (hlevel 1) (hlevel 1)
       (Forget/-preserves-colimits (thing A) (subst Colimit (sym what) (colims A))) (Forget/-reflects-colimits (thing A))
       ∙e path→equiv (ap₃ (is-lan !F) what (Functor-path (λ _ → refl) (λ _ → refl)) (Nat-pathp _ _ λ _ → refl))
+
+-- https://q.uiver.app/#q=WzAsMTgsWzAsMSwiQSciXSxbMCwyLCJBIl0sWzEsMiwiWCJdLFsyLDIsIkIiXSxbMiwxLCJCJyJdLFsxLDEsIkEnIFxcb3BsdXMgQiciXSxbMSwwLCJYJyJdLFsyLDAsIlgnIFxcdGltZXNfWCBCIl0sWzAsMCwiWCdcXHRpbWVzX1ggQSJdLFs0LDIsIkEiXSxbNSwyLCJCIl0sWzYsMiwiWCJdLFs2LDEsIkEnXFxidWxsZXQgQiciXSxbNCwxLCJBJyJdLFs1LDEsIkInIl0sWzYsMCwiWCciXSxbNSwwLCJYJyBcXHRpbWVzX1ggQiJdLFs0LDAsIlgnIFxcdGltZXNfWCBBIl0sWzAsMSwiXFxhbHBoYSIsMl0sWzEsMiwiXFxrYXBwYSIsMl0sWzMsMiwiXFxrYXBwYSJdLFs0LDMsIlxcYWxwaGEiXSxbNSwyLCJcXHRleHR7Q299KFxcYWxwaGEpIl0sWzUsNiwiXFxzaW0iLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbNCw3XSxbMCw4LCJcXHNpbSJdLFs5LDEwXSxbMTAsMTFdLFsxMiwxMV0sWzEzLDldLFsxNCwxMF0sWzEyLDE1XSxbMTMsMTRdLFsxMywxMCwiIiwxLHsic3R5bGUiOnsibmFtZSI6ImNvcm5lciJ9fV0sWzE0LDE2XSxbMTMsMTddLFsxNywxNl0sWzE3LDEwLCIiLDEseyJzdHlsZSI6eyJuYW1lIjoiY29ybmVyIn19XSxbMCw1XSxbOCw2XSxbMCw2LCJcXGJldGEiXV0=

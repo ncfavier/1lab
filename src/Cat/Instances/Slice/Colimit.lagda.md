@@ -35,6 +35,23 @@ colimit in $\cC$ (where $U$ is the `Forget/`{.Agda}ful functor $\cC/c
 - and that $U$ [[reflects|reflected colimit]] colimits of $F$.
 
 In summary, we say that $U$ *creates* the colimits that exist in $\cC$.
+To understand why the assumption that the colimit exists in $\cC$ is
+necessary, consider the case where $\cC$ is a [[poset]], and we're
+interested in computing [[bottom elements]] ([[initial objects]]).
+Note that the existence of a bottom element in $\cC/c$ only means that
+there is a least element *that is less than $c$*, but does not imply
+the existence of a global bottom element. For example, the poset
+pictured below has an initial object $a$ in the slice over $c$, but
+no global initial object.
+
+~~~{.quiver}
+\[\begin{tikzcd}
+  c & d \\
+  a & b
+  \arrow[from=2-1, to=1-1]
+  \arrow[from=2-2, to=1-2]
+\end{tikzcd}\]
+~~~
 
 <!--
 ```agda
@@ -56,7 +73,7 @@ module
 ```
 -->
 
-To gain intuition, let's consider the case of coproducts, as in the
+Back to the categorical case, let's consider the case of coproducts, as in the
 diagram below. We are given a binary diagram $a \to c \ot b$ in $\cC/c$
 and a colimiting cocone $a \to a + b \ot b$ in $\cC$.
 

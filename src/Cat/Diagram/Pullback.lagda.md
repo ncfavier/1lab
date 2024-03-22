@@ -209,3 +209,18 @@ module _ {o ℓ} (C : Precategory o ℓ) where
     ∀ {p A B X} (f : Hom A B) (g : Hom X B) {f⁺ : Hom p X} {p2}
     → P f → is-pullback C f⁺ g p2 f → P f⁺
 ```
+
+```agda
+  invertible-is-pullback-stable : is-pullback-stable is-invertible
+  invertible-is-pullback-stable f g inv pb = make-invertible
+    (pb.universal {p₁' = id} {p₂' = f.inv ∘ g} (idr _ ∙ insertl f.invl))
+    pb.p₁∘universal
+    (pb.unique₂ {p = pb.square}
+      (pulll pb.p₁∘universal ∙ idl _)
+      (pulll pb.p₂∘universal ·· pullr pb.square ·· cancell f.invr)
+      (idr _)
+      (idr _))
+    where
+      module pb = is-pullback pb
+      module f = is-invertible inv
+```

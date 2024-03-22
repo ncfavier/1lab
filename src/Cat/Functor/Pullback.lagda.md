@@ -26,6 +26,7 @@ open is-pullback
 open Pullback
 open Initial
 open Functor
+open _=>_
 open /-Obj
 open /-Hom
 ```
@@ -34,7 +35,7 @@ open /-Hom
 # Base change {defines="pullback-functor"}
 
 Let $\cC$ be a category with all [[pullbacks]], and $f : Y \to X$ a
-morphism in $\cC$. Then we have a functor $f* : \cC/X \to \cC/Y$, called
+morphism in $\cC$. Then we have a functor $f^* : \cC/X \to \cC/Y$, called
 the **base change**, where the action on objects is given by pulling
 back along $f$.
 
@@ -131,7 +132,6 @@ module _ {X Y : Ob} (f : Hom Y X) where
   Σf .F-∘ f g = trivial!
 
   open _⊣_
-  open _=>_
 ```
 
 <!--
@@ -212,4 +212,30 @@ module _ (pullbacks : ∀ {X Y Z} f g → Pullback C {X} {Y} {Z} f g) {X Y : Ob}
       (pulll pb.p₂∘universal ∙ pb'.p₂∘universal))) where
     module pb = Pullback (pullbacks (B .map) f)
     module pb' = Pullback (pullbacks (f ∘ pb.p₂) f)
+```
+
+## Equifibered natural transformations {defines="equifibered cartesian-natural-transformation"}
+
+A [[natural transformation]] $F \To G$ is called **equifibered**, or
+**cartesian**, if each of its naturality squares is a [[pullback]]:
+
+~~~{.quiver}
+\[\begin{tikzcd}
+  Fa & Fb \\
+  Ga & Gb
+  \arrow["Ff", from=1-1, to=1-2]
+  \arrow["{\alpha_a}"', from=1-1, to=2-1]
+  \arrow["Gf"', from=2-1, to=2-2]
+  \arrow["{\alpha_b}", from=1-2, to=2-2]
+  \arrow["\lrcorner"{anchor=center, pos=0.125}, draw=none, from=1-1, to=2-2]
+\end{tikzcd}\]
+~~~
+
+```agda
+is-equifibered
+  : ∀ {oj ℓj} {J : Precategory oj ℓj} {F G : Functor J C}
+  → F => G → Type _
+is-equifibered {J = J} {F} {G} α =
+  ∀ {x y} (f : J .Precategory.Hom x y)
+  → is-pullback C (F .F₁ f) (α .η y) (α .η x) (G .F₁ f)
 ```
