@@ -59,6 +59,34 @@ let
     labHaskellPackages.Agda.data
     labHaskellPackages.pandoc.data
   ]);
+
+  _1lab-agda = (pkgs.agdaPackages.override {
+    inherit (pkgs.labHaskellPackages) Agda;
+  }).mkDerivation {
+    pname = "1lab";
+    version = "unstable";
+    src = ./.;
+    postPatch = ''
+      # We don't need anything in support; avoid installing LICENSE.agda
+      rm -rf support
+
+      # Remove verbosity options as they make Agda take longer and use more memory.
+      shopt -s globstar extglob
+      files=(src/**/*.@(agda|lagda.md))
+      sed -Ei '/OPTIONS/s/ -v ?[^ #]+//g' "''${files[@]}"
+
+      # Generate all-pages manually instead of building the build script.
+      mkdir -p _build
+      for f in "''${files[@]}"; do
+        f=''${f#src/} f=''${f%%.*} f=''${f//\//.}
+        echo "open import $f"
+      done > _build/all-pages.agda
+    '';
+    libraryName = "1lab";
+    libraryFile = "1lab.agda-lib";
+    everythingFile = "_build/all-pages.agda";
+    meta = {};
+  };
 in
   pkgs.stdenv.mkDerivation rec {
     name = "1lab";
@@ -94,7 +122,7 @@ in
     '';
 
     passthru = {
-      inherit deps shakefile sort-imports;
+      inherit deps shakefile sort-imports _1lab-agda;
       texlive = our-texlive;
       ghc = our-ghc;
     };
