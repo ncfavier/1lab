@@ -125,5 +125,6 @@ in
       inherit deps shakefile sort-imports _1lab-agda;
       texlive = our-texlive;
       ghc = our-ghc;
+      Agda = pkgs.labHaskellPackages.Agda;
     };
   }
