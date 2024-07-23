@@ -1,5 +1,6 @@
 <!--
 ```agda
+open import Cat.Instances.Product
 open import Cat.Prelude
 ```
 -->
@@ -140,4 +141,30 @@ module Binary-coproducts (all-coproducts : has-coproducts) where
 
   _⊕₁_ : ∀ {a b x y} → Hom a x → Hom b y → Hom (a ⊕₀ b) (x ⊕₀ y)
   f ⊕₁ g = [ in₀ ∘ f , in₁ ∘ g ]
+
+  ⊕-functor : Functor (C ×ᶜ C) C
+  ⊕-functor .F₀ (a , b) = a ⊕₀ b
+  ⊕-functor .F₁ (f , g) = f ⊕₁ g
+  ⊕-functor .F-id = sym $ []-unique id id-comm-sym id-comm-sym
+  ⊕-functor .F-∘ (f , g) (h , i) =
+    sym $ []-unique (f ⊕₁ g ∘ h ⊕₁ i)
+      (pullr in₀∘[] ∙ extendl in₀∘[])
+      (pullr in₁∘[] ∙ extendl in₁∘[])
+
+  ∇ : ∀ {a} → Hom (a ⊕₀ a) a
+  ∇ = [ id , id ]
+
+  coswap : ∀ {a b} → Hom (a ⊕₀ b) (b ⊕₀ a)
+  coswap = [ in₁ , in₀ ]
+
+  ⊕-assoc : ∀ {a b c} → Hom (a ⊕₀ (b ⊕₀ c)) ((a ⊕₀ b) ⊕₀ c)
+  ⊕-assoc = [ in₀ ∘ in₀ , [ in₀ ∘ in₁ , in₁ ] ]
+
+  ∇-coswap : ∀ {a} → ∇ ∘ coswap ≡ ∇ {a}
+  ∇-coswap = []-unique _ (pullr in₀∘[] ∙ in₁∘[]) (pullr in₁∘[] ∙ in₀∘[])
+
+  ∇-natural : is-natural-transformation (⊕-functor F∘ Cat⟨ Id , Id ⟩) Id λ _ → ∇
+  ∇-natural x y f = unique₂
+    _ (pullr in₀∘[] ∙ cancell in₀∘[]) (pullr in₁∘[] ∙ cancell in₁∘[])
+    _ (cancelr in₀∘[]) (cancelr in₁∘[])
 ```

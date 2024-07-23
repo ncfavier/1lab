@@ -265,6 +265,9 @@ We also define a handful of common morphisms.
 
   swap : Hom (a ⊗₀ b) (b ⊗₀ a)
   swap = ⟨ π₂ , π₁ ⟩
+
+  ×-assoc : Hom (a ⊗₀ (b ⊗₀ c)) ((a ⊗₀ b) ⊗₀ c)
+  ×-assoc = ⟨ ⟨ π₁ , π₁ ∘ π₂ ⟩ , π₂ ∘ π₂ ⟩
 ```
 
 <!--
@@ -299,6 +302,19 @@ We also define a handful of common morphisms.
     → g ∘ is-invertible.inv ⟨⟩-inv ≡ π₂
   π₂-inv {f = f} {g = g} ⟨⟩-inv =
     pushl (sym π₂∘⟨⟩) ∙ elimr (is-invertible.invl ⟨⟩-inv)
+
+  swap-natural
+    : ∀ {A B C D} ((f , g) : Hom A C × Hom B D)
+    → (g ⊗₁ f) ∘ swap ≡ swap ∘ (f ⊗₁ g)
+  swap-natural (f , g) =
+    (g ⊗₁ f) ∘ swap                       ≡⟨ ⟨⟩∘ _ ⟩
+    ⟨ (g ∘ π₁) ∘ swap , (f ∘ π₂) ∘ swap ⟩ ≡⟨ ap₂ ⟨_,_⟩ (pullr π₁∘⟨⟩) (pullr π₂∘⟨⟩) ⟩
+    ⟨ g ∘ π₂ , f ∘ π₁ ⟩                   ≡˘⟨ ap₂ ⟨_,_⟩ π₂∘⟨⟩ π₁∘⟨⟩ ⟩
+    ⟨ π₂ ∘ (f ⊗₁ g) , π₁ ∘ (f ⊗₁ g) ⟩     ≡˘⟨ ⟨⟩∘ _ ⟩
+    swap ∘ (f ⊗₁ g)                       ∎
+
+  swap-δ : ∀ {A} → swap ∘ δ ≡ δ {A}
+  swap-δ = ⟨⟩-unique _ (pulll π₁∘⟨⟩ ∙ π₂∘⟨⟩) (pulll π₂∘⟨⟩ ∙ π₁∘⟨⟩)
 ```
 -->
 

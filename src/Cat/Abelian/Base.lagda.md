@@ -181,7 +181,7 @@ module _ where
     sym (f .preserves .is-group-hom.pres-⋆ _ _)
 ```
 
-# Additive categories
+## Additive categories
 
 An $\Ab$-category is **additive** when its underlying category has a
 [[terminal object]] and finite [[products]]; By the yoga above, this
@@ -277,7 +277,7 @@ desired equation. Check it out:
           (elimr refl)
 ```
 
-# Pre-abelian & abelian categories
+## Pre-abelian & abelian categories
 
 An additive category is **pre-abelian** when it additionally has
 [kernels] and cokernels, hence binary [[equalisers]] and [coequalisers]
