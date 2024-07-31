@@ -129,6 +129,17 @@ _nt×_ α β .is-natural (c , d) (c' , d') (f , g) = Σ-pathp
 <!--
 ```agda
 {-# DISPLAY F×.func F G = F F× G #-}
+
+module _ {oc ℓc od ℓd} {C : Precategory oc ℓc} {D : Precategory od ℓd} where
+  private
+    module C = Cat.Reasoning C
+    module D = Cat.Reasoning D
+    module C*D = Cat.Reasoning (C ×ᶜ D)
+
+  _,iso_ : ∀ {a b c d} → a C.≅ b → c D.≅ d → (a , c) C*D.≅ (b , d)
+  _,iso_ a≅b c≅d = C*D.make-iso
+    (a≅b .C.to , c≅d .D.to) (a≅b .C.from , c≅d .D.from)
+    (a≅b .C.invl ,ₚ c≅d .D.invl) (a≅b .C.invr ,ₚ c≅d .D.invr)
 ```
 -->
 
