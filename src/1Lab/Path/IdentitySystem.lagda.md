@@ -82,7 +82,7 @@ IdsJ-refl {R = R} {r = r} {a = a} ids P x =
   transport (λ i → P (ids .to-path (r a) i) (ids .to-path-over (r a) i)) x ≡⟨⟩
   subst P' (λ i → ids .to-path (r a) i , ids .to-path-over (r a) i) x      ≡⟨ ap (λ e → subst P' e x) lemma ⟩
   subst P' refl x                                                          ≡⟨ transport-refl x ⟩
-  x ∎
+  x                                                                        ∎
   where
     P' : Σ _ (R a) → Type _
     P' (b , r) = P b r
@@ -117,9 +117,10 @@ to-path-over-refl {a = a} ids = ap (ap snd) $ to-path-refl-coh ids a
 -->
 
 Note that for any $(R, r)$, the type of identity system data on $(R, r)$
-is a proposition. This is because it is exactly equivalent to the type
+is a [[proposition]]. This is because it is exactly equivalent to the type
 $\sum_a (R a)$ being contractible for every $a$, which is a proposition
-by standard results.
+by standard results. One direction is `is-contr-ΣR`{.Agda}; we prove
+the converse direction now.
 
 ```agda
 contr→identity-system
@@ -174,6 +175,126 @@ identity-system-gives-path {R = R} {r = r} ids =
           ( ap from (to-path-refl ids)
           ∙ transport-refl _ )
 ```
+
+## Based identity systems {defines="based-identity-system"}
+
+It is sometimes useful to characterise the *based* identity type at
+a point $a : A$, i.e. the family $a \is -$, instead of the whole
+binary family of paths $- \equiv -$. To that end, we introduce a unary
+variant of identity systems called **based identity systems**.
+
+```agda
+record
+  is-based-identity-system {ℓ ℓ'} {A : Type ℓ}
+    (a : A)
+    (C : A → Type ℓ')
+    (refl : C a)
+    : Type (ℓ ⊔ ℓ')
+  where
+  no-eta-equality
+  field
+    to-based-path : ∀ {b} → C b → a ≡ b
+    to-based-path-over
+      : ∀ {b} (p : C b)
+      → PathP (λ i → C (to-based-path p i)) refl p
+
+  is-contr-ΣC : is-contr (Σ A C)
+  is-contr-ΣC .centre         = _ , refl
+  is-contr-ΣC .paths x i .fst = to-based-path (x .snd) i
+  is-contr-ΣC .paths x i .snd = to-based-path-over (x .snd) i
+
+open is-based-identity-system public
+```
+
+As previously, the data of a based identity system at $a : A$ is
+precisely what is required to implement *based* path induction at $a$.
+
+```agda
+IdsJ-based
+  : ∀ {ℓ ℓ' ℓ''} {A : Type ℓ} {a : A} {C : A → Type ℓ'} {r : C a}
+  → is-based-identity-system a C r
+  → (P : ∀ b → C b → Type ℓ'')
+  → P a r
+  → ∀ {b} s → P b s
+IdsJ-based ids P pr s = transport
+  (λ i → P (ids .to-based-path s i) (ids .to-based-path-over s i)) pr
+```
+
+<!--
+```agda
+IdsJ-based-refl
+  : ∀ {ℓ ℓ' ℓ''} {A : Type ℓ} {a : A} {C : A → Type ℓ'} {r : C a}
+  → (ids : is-based-identity-system a C r)
+  → (P : ∀ b → C b → Type ℓ'')
+  → (x : P a r)
+  → IdsJ-based ids P x r ≡ x
+IdsJ-based-refl {C = C} {r = r} ids P x =
+  transport (λ i → P (ids .to-based-path r i) (ids .to-based-path-over r i)) x ≡⟨⟩
+  subst P' (λ i → ids .to-based-path r i , ids .to-based-path-over r i) x      ≡⟨ ap (λ e → subst P' e x) lemma ⟩
+  subst P' refl x                                                              ≡⟨ transport-refl x ⟩
+  x                                                                            ∎
+  where
+    P' : Σ _ C → Type _
+    P' (b , c) = P b c
+
+    lemma : Σ-pathp (ids .to-based-path r) (ids .to-based-path-over r) ≡ refl
+    lemma = is-contr→is-set (is-contr-ΣC ids) _ _ _ _
+
+to-based-path-refl-coh
+  : ∀ {ℓ ℓ'} {A : Type ℓ} {a : A} {C : A → Type ℓ'} {r : C a}
+  → (ids : is-based-identity-system a C r)
+  → (Σ-pathp (ids .to-based-path r) (ids .to-based-path-over r)) ≡ refl
+to-based-path-refl-coh {r = r} ids =
+  is-contr→is-set (is-contr-ΣC ids) _ _
+    (Σ-pathp (ids .to-based-path r) (ids .to-based-path-over r))
+    refl
+
+to-based-path-refl
+  : ∀ {ℓ ℓ'} {A : Type ℓ} {a : A} {C : A → Type ℓ'} {r : C a}
+  → (ids : is-based-identity-system a C r)
+  → ids .to-based-path r ≡ refl
+to-based-path-refl ids = ap (ap fst) $ to-based-path-refl-coh ids
+
+to-based-path-over-refl
+  : ∀ {ℓ ℓ'} {A : Type ℓ} {a : A} {C : A → Type ℓ'} {r : C a}
+  → (ids : is-based-identity-system a C r)
+  → PathP (λ i → PathP (λ j → C (to-based-path-refl ids i j)) r r)
+      (ids .to-based-path-over r)
+      refl
+to-based-path-over-refl ids = ap (ap snd) $ to-based-path-refl-coh ids
+
+contr→based-identity-system
+  : ∀ {ℓ ℓ'} {A : Type ℓ} {a : A} {C : A → Type ℓ'} {r : C a}
+  → is-contr (Σ _ C)
+  → is-based-identity-system a C r
+contr→based-identity-system {a = a} {C = C} {r} c = ids where
+  paths' : ∀ (p : Σ _ C) → (a , r) ≡ p
+  paths' _ = is-contr→is-prop c _ _
+
+  ids : is-based-identity-system a C r
+  ids .to-based-path p = ap fst (paths' (_ , p))
+  ids .to-based-path-over p = ap snd (paths' (_ , p))
+
+based-identity-system-gives-path
+  : ∀ {ℓ ℓ'} {A : Type ℓ} {a : A} {C : A → Type ℓ'} {r : C a}
+  → is-based-identity-system a C r
+  → ∀ {b} → C b ≃ (a ≡ b)
+based-identity-system-gives-path {a = a} {C = C} {r = r} ids =
+  Iso→Equiv (ids .to-based-path , iso from ri li) where
+    from : ∀ {b} → a ≡ b → C b
+    from p = subst C p r
+
+    ri : ∀ {b} → is-right-inverse (from {b}) (ids .to-based-path)
+    ri = J (λ y p → ids .to-based-path (from p) ≡ p)
+           ( ap (ids .to-based-path) (transport-refl _)
+           ∙ to-based-path-refl ids)
+
+    li : ∀ {b} → is-left-inverse (from {b}) (ids .to-based-path)
+    li = IdsJ-based ids (λ y p → from (ids .to-based-path p) ≡ p)
+                        ( ap from (to-based-path-refl ids)
+                        ∙ transport-refl _)
+```
+-->
 
 ## In subtypes
 
