@@ -90,8 +90,7 @@ module _ {oj ou hj hu} {J : Precategory oj hj} {U : Precategory ou hu} where
 ```agda
   ff→reflects-lan
     : ∀ {p : Functor J U} {G : Functor J C} {H : Functor U C} {eta : G => H F∘ p}
-    → (lan : is-lan p (F F∘ G) (F F∘ H) (nat-assoc-to (F ▸ eta)))
-    → reflects-lan F lan
+    → reflects-lan eta F
   ff→reflects-lan lan .σ eta = unwhisker (lan .σ (nat-assoc-to (F ▸ eta)))
   ff→reflects-lan lan .σ-comm = ext λ j → F.whackl (lan .σ-comm ηₚ j)
   ff→reflects-lan lan .σ-uniq {σ' = σ'} com = ext λ u → sym $ F.adjunctl $ sym $
@@ -99,8 +98,7 @@ module _ {oj ou hj hu} {J : Precategory oj hj} {U : Precategory ou hu} where
 
   ff→reflects-ran
     : ∀ {p : Functor J U} {G : Functor J C} {H : Functor U C} {eps : H F∘ p => G}
-    → (ran : is-ran p (F F∘ G) (F F∘ H) (nat-assoc-from (F ▸ eps)))
-    → reflects-ran F ran
+    → reflects-ran eps F
   ff→reflects-ran ran .σ eps = unwhisker (ran .σ (nat-assoc-from (F ▸ eps)))
   ff→reflects-ran ran .σ-comm = ext λ j → F.whackr (ran .σ-comm ηₚ j)
   ff→reflects-ran ran .σ-uniq {σ' = σ'} com = ext λ u → sym $ F.adjunctl $ sym $

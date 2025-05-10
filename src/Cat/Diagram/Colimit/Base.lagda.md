@@ -560,8 +560,7 @@ module _ {J : Precategory o₁ h₁} {C : Precategory o₂ h₂} {D : Precategor
   reflects-colimit : Type _
   reflects-colimit =
     ∀ {K : Functor ⊤Cat C} {eta : Diagram => K F∘ !F}
-    → (lan : is-lan !F (F F∘ Diagram) (F F∘ K) (nat-assoc-to (F ▸ eta)))
-    → reflects-lan F lan
+    → reflects-lan eta F
 ```
 
 <!--

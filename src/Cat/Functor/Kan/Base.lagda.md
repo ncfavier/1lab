@@ -321,12 +321,15 @@ extension of $HF$ along $p$. We say that $H$ reflects this Kan extension
 if $G, \eta$ is a also a left extension of $F$ along $p$.
 
 ```agda
+module _
+  {p : Functor C C'} {F : Functor C D} {G : Functor C' D} (eta : F => G F∘ p) where
+
   reflects-lan
     : (H : Functor D E)
-    → is-lan p (H F∘ F) (H F∘ G) (nat-assoc-to (H ▸ eta))
     → Type _
-  reflects-lan _ _ =
-    is-lan p F G eta
+  reflects-lan H =
+      is-lan p (H F∘ F) (H F∘ G) (nat-assoc-to (H ▸ eta))
+    → is-lan p F G eta
 ```
 
 <!--
@@ -347,12 +350,15 @@ We can define dual notions for right Kan extensions as well.
   is-absolute-ran ran =
     {o ℓ : Level} {E : Precategory o ℓ} (H : Functor D E) → preserves-ran H ran
 
+module _
+  {p : Functor C C'} {F : Functor C D} {G : Functor C' D} (eps : G F∘ p => F) where
+
   reflects-ran
     : (H : Functor D E)
-    → is-ran p (H F∘ F) (H F∘ G) (nat-assoc-from (H ▸ eps))
     → Type _
-  reflects-ran _ _ =
-    is-ran p F G eps
+  reflects-ran H =
+      is-ran p (H F∘ F) (H F∘ G) (nat-assoc-from (H ▸ eps))
+    → is-ran p F G eps
 ```
 
 <!--

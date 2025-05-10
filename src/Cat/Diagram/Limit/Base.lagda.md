@@ -699,8 +699,7 @@ if we _already_ had a limiting cone to begin with!
   reflects-limit : Type _
   reflects-limit =
     ∀ {K : Functor ⊤Cat C} {eps : K F∘ !F => Diagram}
-    → (ran : is-ran !F (F F∘ Diagram) (F F∘ K) (nat-assoc-from (F ▸ eps)))
-    → reflects-ran F ran
+    → reflects-ran eps F
 ```
 
 <!--
