@@ -316,32 +316,6 @@ module _
 ```
 -->
 
-As a consequence of uniqueness, if a functor preserves a given Kan
-extension, then it preserves *all* extensions for the same diagram.
-
-```agda
-preserves-lan→preserves-all
-  : ∀ (H : Functor D E) {p : Functor C C'} {F : Functor C D}
-  → ∀ {G} {eta : F => G F∘ p} (lan : is-lan p F G eta)
-  → preserves-lan H lan
-  → ∀ {G'} {eta' : F => G' F∘ p} (lan' : is-lan p F G' eta')
-  → preserves-lan H lan'
-preserves-lan→preserves-all {E = E} {C' = C'} H lan pres {G'} lan' =
-  natural-isos→is-lan idni idni
-    (F∘-iso-r One.unique)
-    (ext λ c →
-      (H.₁ (G'.₁ C'.id) E.∘ H.₁ _) E.∘ H.₁ _ E.∘ E.id ≡⟨ E.pullr (H.pulll (One.unit ηₚ c)) ⟩
-      H.₁ (G'.₁ C'.id) E.∘ H.₁ _ E.∘ E.id             ≡⟨ H.eliml G'.F-id ∙ E.idr _ ⟩
-      H.₁ _                                           ∎)
-    pres
-  where
-    module C' = Cat.Reasoning C'
-    module E = Cat.Reasoning E
-    module H = Cat.Functor.Reasoning H
-    module G' = Cat.Functor.Reasoning G'
-    module One = Lan-unique lan lan'
-```
-
 ## Into univalent categories
 
 As traditional with universal constructions, if $F : \cC \to \cD$ takes
@@ -587,27 +561,6 @@ module _
     (natural-isos→is-ran p-iso F-iso G-iso q)
     (natural-isos→is-ran (p-iso ni⁻¹) (F-iso ni⁻¹) (G-iso ni⁻¹)
       (lswizzle (rswizzle (sym q ∙ assoc _ _ _) (◆.annihilate (G-iso .Isoⁿ.invr ,ₚ p-iso .Isoⁿ.invr))) (F-iso .Isoⁿ.invr)))
-
-preserves-ran→preserves-all
-  : ∀ (H : Functor D E) {p : Functor C C'} {F : Functor C D}
-  → ∀ {G} {eps : G F∘ p => F} (ran : is-ran p F G eps)
-  → preserves-ran H ran
-  → ∀ {G'} {eps' : G' F∘ p => F} (ran' : is-ran p F G' eps')
-  → preserves-ran H ran'
-preserves-ran→preserves-all {E = E} {C' = C'} H {G = G} ran pres ran' =
-  natural-isos→is-ran idni idni
-    (F∘-iso-r One.unique)
-    (ext λ c →
-      E.id E.∘ H.₁ _ E.∘ H.₁ (G.₁ C'.id) E.∘ H.₁ _ ≡⟨ E.idl _ ∙ (E.refl⟩∘⟨ H.eliml G.F-id) ⟩
-      H.₁ _ E.∘ H.₁ _                              ≡⟨ H.collapse (One.counit ηₚ c) ⟩
-      H.₁ _                                        ∎)
-    pres
-  where
-    module C' = Cat.Reasoning C'
-    module E = Cat.Reasoning E
-    module H = Cat.Functor.Reasoning H
-    module G = Cat.Functor.Reasoning G
-    module One = Ran-unique ran ran'
 
 Ran-is-prop
   : ∀ {p : Functor C C'} {F : Functor C D} → is-category D → is-prop (Ran p F)

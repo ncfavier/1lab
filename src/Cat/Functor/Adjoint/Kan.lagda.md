@@ -67,13 +67,11 @@ module
     {F : Functor C D}
     {G : Functor C' D}
     {eta : F => G F∘ p}
-    (lan : is-lan p F G eta)
     {L : Functor D A} {R : Functor A D}
     (adj : L ⊣ R)
   where
   private
     open _⊣_ adj
-    module l = is-lan lan
     open is-lan
     open _=>_
     module A = Cr A
@@ -94,12 +92,14 @@ module
 -->
 
 ```agda
-  left-adjoint→left-extension : preserves-lan L lan
-  left-adjoint→left-extension = pres where
+  left-adjoint→left-extension : preserves-lan eta L
+  left-adjoint→left-extension lan = pres where
 ```
 
 <!--
 ```agda
+    module l = is-lan lan
+
     fixup : ∀ {M : Functor C' A} → (LF => M F∘ p) → F => (R F∘ M) F∘ p
     fixup α .η x = L-adjunct adj (α .η x)
     fixup {M = M} α .is-natural x y f =
@@ -185,18 +185,18 @@ module
   _ {oc ℓc oc' ℓc' od ℓd oa ℓa}
     {C : Precategory oc ℓc} {C' : Precategory oc' ℓc'} {D : Precategory od ℓd}
     {A : Precategory oa ℓa} {p : Functor C C'} {F : Functor C D} {G : Functor C' D}
-    {eps : G F∘ p => F} (ran : is-ran p F G eps) {L : Functor A D} {R : Functor D A}
+    {eps : G F∘ p => F} {L : Functor A D} {R : Functor D A}
     (adj : L ⊣ R)
   where
 ```
 -->
 
 ```agda
-  right-adjoint→right-extension : preserves-ran R ran
-  right-adjoint→right-extension = fixed where
+  right-adjoint→right-extension : preserves-ran eps R
+  right-adjoint→right-extension ran = fixed where
     pres-lan = left-adjoint→left-extension
-      (is-ran→is-co-lan _ _ ran)
       (opposite-adjunction adj)
+      (is-ran→is-co-lan _ _ ran)
 
     module p = is-lan pres-lan
     open is-ran

@@ -682,8 +682,7 @@ object! Any limit is as good as any other.
   preserves-limit : Type _
   preserves-limit =
     ∀ {K : Functor ⊤Cat C} {eps : K F∘ !F => Diagram}
-    → (lim : is-ran !F Diagram K eps)
-    → preserves-ran F lim
+    → preserves-ran eps F
 ```
 
 ## Reflection of limits {defines="reflected-limit"}

@@ -292,14 +292,15 @@ universal! If this diagram _is_ a left Kan extension, we say that $H$
 <!--
 ```agda
 module _
-  {p : Functor C C'} {F : Functor C D} {G : Functor C' D} {eta : F => G F∘ p} where
+  {p : Functor C C'} {F : Functor C D} {G : Functor C' D} (eta : F => G F∘ p) where
 ```
 -->
 
 ```agda
-  preserves-lan : (H : Functor D E) → is-lan p F G eta → Type _
-  preserves-lan H _ =
-    is-lan p (H F∘ F) (H F∘ G) (nat-assoc-to (H ▸ eta))
+  preserves-lan : (H : Functor D E) → Type _
+  preserves-lan H =
+      is-lan p F G eta
+    → is-lan p (H F∘ F) (H F∘ G) (nat-assoc-to (H ▸ eta))
 ```
 
 In the diagram above, the 2-cell is simply the whiskering $H\eta$.
@@ -311,9 +312,9 @@ functors out of $D$. An important class of examples is given by [[adjoint
 functors|adjoints are kan extensions]].
 
 ```agda
-  is-absolute-lan : is-lan p F G eta → Typeω
-  is-absolute-lan lan =
-    {o ℓ : Level} {E : Precategory o ℓ} (H : Functor D E) → preserves-lan H lan
+  is-absolute-lan : Typeω
+  is-absolute-lan =
+    {o ℓ : Level} {E : Precategory o ℓ} (H : Functor D E) → preserves-lan H
 ```
 
 It may also be the case that $(HG, H\eta)$ is already a left kan
@@ -321,9 +322,6 @@ extension of $HF$ along $p$. We say that $H$ reflects this Kan extension
 if $G, \eta$ is a also a left extension of $F$ along $p$.
 
 ```agda
-module _
-  {p : Functor C C'} {F : Functor C D} {G : Functor C' D} (eta : F => G F∘ p) where
-
   reflects-lan
     : (H : Functor D E)
     → Type _
@@ -335,23 +333,21 @@ module _
 <!--
 ```agda
 module _
-  {p : Functor C C'} {F : Functor C D} {G : Functor C' D} {eps : G F∘ p => F} where
+  {p : Functor C C'} {F : Functor C D} {G : Functor C' D} (eps : G F∘ p => F) where
 ```
 -->
 
 We can define dual notions for right Kan extensions as well.
 
 ```agda
-  preserves-ran : (H : Functor D E) → is-ran p F G eps → Type _
-  preserves-ran H _ =
-    is-ran p (H F∘ F) (H F∘ G) (nat-assoc-from (H ▸ eps))
+  preserves-ran : (H : Functor D E) → Type _
+  preserves-ran H =
+      is-ran p F G eps
+    → is-ran p (H F∘ F) (H F∘ G) (nat-assoc-from (H ▸ eps))
 
-  is-absolute-ran : is-ran p F G eps → Typeω
-  is-absolute-ran ran =
-    {o ℓ : Level} {E : Precategory o ℓ} (H : Functor D E) → preserves-ran H ran
-
-module _
-  {p : Functor C C'} {F : Functor C D} {G : Functor C' D} (eps : G F∘ p => F) where
+  is-absolute-ran : Typeω
+  is-absolute-ran =
+    {o ℓ : Level} {E : Precategory o ℓ} (H : Functor D E) → preserves-ran H
 
   reflects-ran
     : (H : Functor D E)

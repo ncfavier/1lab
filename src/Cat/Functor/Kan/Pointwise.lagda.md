@@ -71,12 +71,12 @@ module _
 
 ```agda
   is-pointwise-lan : ∀ {eta : G => E F∘ F} → is-lan F G E eta → Type _
-  is-pointwise-lan lan =
-    ∀ (x : D.Ob) → preserves-lan (Functor.op (Hom-into D x)) lan
+  is-pointwise-lan {eta} lan =
+    ∀ (x : D.Ob) → preserves-lan eta (Functor.op (Hom-into D x))
 
   is-pointwise-ran : ∀ {eps : E F∘ F => G} → is-ran F G E eps → Type _
-  is-pointwise-ran ran =
-    ∀ (x : D.Ob) → preserves-ran (Hom-from D x) ran
+  is-pointwise-ran {eps} ran =
+    ∀ (x : D.Ob) → preserves-ran eps (Hom-from D x)
 ```
 
 Absolute Kan extensions are trivially pointwise, since they are
@@ -86,14 +86,14 @@ preserved by *all* functors.
   absolute-lan→pointwise
     : {eta : G => E F∘ F}
     → {lan : is-lan F G E eta}
-    → is-absolute-lan lan
+    → is-absolute-lan eta
     → is-pointwise-lan lan
   absolute-lan→pointwise abs _ = abs _
 
   absolute-ran→pointwise
     : {eps : E F∘ F => G}
     → {ran : is-ran F G E eps}
-    → is-absolute-ran ran
+    → is-absolute-ran eps
     → is-pointwise-ran ran
   absolute-ran→pointwise abs _ = abs _
 ```
@@ -121,13 +121,13 @@ As noted earlier, limits and colimits are pointwise Kan extensions.
     : {eps : Const x => Dia}
     → (lim : is-limit Dia x eps)
     → is-pointwise-ran lim
-  limit→pointwise lim x = Hom-from-preserves-limits x lim
+  limit→pointwise lim x _ = Hom-from-preserves-limits x lim
 
   colimit→pointwise
     : {eta : Dia => Const x}
     → (colim : is-colimit Dia x eta)
     → is-pointwise-lan colim
-  colimit→pointwise colim x = よ-reverses-colimits x colim
+  colimit→pointwise colim x _ = よ-reverses-colimits x colim
 ```
 
 ## Computing pointwise extensions
@@ -341,8 +341,8 @@ end up being off by a bunch of natural isomorphisms.
     → (colimits : is-cocomplete ℓ ℓ D)
     → (H : Functor D E)
     → is-cocontinuous ℓ ℓ H
-    → preserves-lan H (Lan.has-lan (cocomplete→lan F G colimits))
-  preserves-colimits→preserves-pointwise-lan {E = E} colimits H cocont =
+    → preserves-lan (Lan.eta (cocomplete→lan F G colimits)) H
+  preserves-colimits→preserves-pointwise-lan {E = E} colimits H cocont lan =
     natural-isos→is-lan idni idni HF'-cohere fixup $
       comma-colimits→lan.has-lan F (H F∘ G) H-↓colim
     where
@@ -447,7 +447,7 @@ module _
     open ↓Hom
     open _=>_
     module lan = is-lan lan
-    module pointwise d = is-lan (pointwise d)
+    module pointwise d = is-lan (pointwise d lan)
     open is-lan
 ```
 -->

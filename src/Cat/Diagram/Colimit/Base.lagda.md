@@ -554,8 +554,7 @@ module _ {J : Precategory o₁ h₁} {C : Precategory o₂ h₂} {D : Precategor
   preserves-colimit : Type _
   preserves-colimit =
      ∀ {K : Functor ⊤Cat C} {eta : Diagram => K F∘ !F}
-     → (colim : is-lan !F Diagram K eta)
-     → preserves-lan F colim
+     → preserves-lan eta F
 
   reflects-colimit : Type _
   reflects-colimit =

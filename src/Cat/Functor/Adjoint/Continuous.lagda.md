@@ -57,12 +57,12 @@ extensions].
   right-adjoint-is-continuous
     : ∀ {os ℓs} → is-continuous os ℓs R
   right-adjoint-is-continuous lim =
-    right-adjoint→right-extension lim L⊣R
+    right-adjoint→right-extension L⊣R lim
 
   left-adjoint-is-cocontinuous
     : ∀ {os ℓs} → is-cocontinuous os ℓs L
   left-adjoint-is-cocontinuous colim =
-    left-adjoint→left-extension colim L⊣R
+    left-adjoint→left-extension L⊣R colim
 
   module _ {od ℓd} {J : Precategory od ℓd} where
     right-adjoint-limit : ∀ {F : Functor J D} → Limit F → Limit (R F∘ F)
