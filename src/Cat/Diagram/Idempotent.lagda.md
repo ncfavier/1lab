@@ -1,5 +1,7 @@
 <!--
 ```agda
+open import Cat.Diagram.Limit.Finite
+open import Cat.Diagram.Equaliser
 open import Cat.Prelude
 ```
 -->
@@ -81,4 +83,17 @@ envelope] of $\cC$.
 ```agda
 is-idempotent-complete : Type _
 is-idempotent-complete = ∀ {A} (f : Hom A A) → is-idempotent f → is-split f
+
+finitely-complete→idempotent-complete : Finitely-complete C → is-idempotent-complete
+finitely-complete→idempotent-complete fin e i = s where
+  open Finitely-complete fin
+  module Eq = Equaliser (equalisers e id)
+
+  open is-split
+  s : is-split e
+  s .F = Eq.apex
+  s .project = Eq.universal (i ∙ sym (idl _))
+  s .inject = Eq.equ
+  s .p∘i = Eq.unique₂ Eq.equal (pulll Eq.factors ·· Eq.equal ·· idl _) (idr _)
+  s .i∘p = Eq.factors
 ```
