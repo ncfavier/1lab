@@ -54,6 +54,18 @@ right-hand-sides agree.
     unique₂ p q r = unique {p = p} q ∙ sym (unique r)
 ```
 
+<!--
+```agda
+    equaliser-univ
+      : ∀ {O} → Hom O E ≃ Σ (Hom O A) λ h → f ∘ h ≡ g ∘ h
+    equaliser-univ .fst h = equ ∘ h , extendl equal
+    equaliser-univ .snd = is-iso→is-equiv λ where
+      .is-iso.from (h , α) → universal α
+      .is-iso.rinv _ → Σ-prop-pathp! factors
+      .is-iso.linv _ → sym (unique refl)
+```
+-->
+
 We can visualise the situation using the commutative diagram below:
 
 ~~~{.quiver}

@@ -278,6 +278,13 @@ Furthermore, these equivalences are natural.
 
 <!--
 ```agda
+  L-adjunct-ap
+    : ∀ {a b c}
+    → {f : C.Hom a b} {g : D.Hom (L.₀ b) c} {h : D.Hom (L.₀ a) c}
+    → g D.∘ L.₁ f ≡ h
+    → L-adjunct g C.∘ f ≡ L-adjunct h
+  L-adjunct-ap p = sym (L-adjunct-naturall _ _) ∙ ap L-adjunct p
+
   R-adjunct-ap
     : ∀ {a b c}
     → {f : D.Hom b c} {g : C.Hom a (R.₀ b)} {h : C.Hom a (R.₀ c)}
