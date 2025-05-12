@@ -1,7 +1,11 @@
+open import Cat.CartesianClosed.Locally
 open import Cat.Functor.Adjoint.Compose
 open import Cat.Diagram.Colimit.Cocone
+open import Cat.Diagram.Limit.Finite
 open import Cat.Functor.Adjoint.Hom
 open import Cat.Diagram.Equaliser
+open import Cat.Diagram.Pullback
+open import Cat.Diagram.Terminal
 open import Cat.Functor.Constant
 open import Cat.Diagram.Product
 open import Cat.Functor.Adjoint
@@ -32,10 +36,16 @@ module _
     module D = Cat.Reasoning D
     module F = Cat.Functor.Reasoning F
 
-  compose-Forget/ : (G : Functor (Slice C B) D) → F ⊣ G → Forget/ F∘ F ⊣ G F∘ constant-family prod
+  compose-Forget/
+    : (G : Functor (Slice C B) D)
+    → F ⊣ G
+    → Forget/ F∘ F ⊣ G F∘ constant-family prod
   compose-Forget/ G F⊣G = LF⊣GR F⊣G (Forget⊣constant-family prod)
 
-  lift-Forget/ : (G' : Functor C D) → Forget/ F∘ F ⊣ G' → Σ (Functor (Slice C B) D) λ G → F ⊣ G
+  lift-Forget/
+    : (G' : Functor C D)
+    → Forget/ F∘ F ⊣ G'
+    → Σ (Functor (Slice C B) D) λ G → F ⊣ G
   lift-Forget/ G' UF⊣G' = G , F⊣G where
     module G' = Cat.Functor.Reasoning G'
     module UF⊣G' = _⊣_ UF⊣G'
@@ -77,3 +87,24 @@ module _
           .is-iso.linv _ → ext refl
         eqv : ∀ {x : D.Ob} {y : C/B.Ob} → C/B.Hom (F.₀ x) y ≃ D.Hom x (G.₀ y)
         eqv = Slice-hom-equiv ∙e Σ-ap (adjunct-hom-equiv UF⊣G') (λ f → ap-equiv (adjunct-hom-equiv UF⊣G') ∙e ∙-pre-equiv (sym (L-adjunct-naturalr UF⊣G' _ _)) ∙e ∙-post-equiv (sym (σ .commutes _))) ∙e equaliser.equaliser-univ _ _ e⁻¹
+
+module _
+    {o ℓ} {C : Precategory o ℓ} {A B} (p : C .Precategory.Hom A B)
+    (prod : has-products C) (pullbacks : has-pullbacks C)
+  where
+
+  private
+    module C = Cat.Reasoning C
+    module lex/ {b} = Finitely-complete (Slice-lex {b = b} pullbacks)
+
+    prod/ : ∀ {a} → has-products (Slice C a)
+    prod/ = Slice-products pullbacks
+
+    terminal/ : ∀ {a} → Terminal (Slice C a)
+    terminal/ = Slice-terminal-object
+
+  open import Cat.Diagram.Exponential
+  open import Cat.Functor.Pullback
+
+  exp→pi : (∀ x → Exponential (Slice C B) prod/ terminal/ (cut p) x) → Σ (Functor (Slice C A) (Slice C B)) λ G → Base-change pullbacks p ⊣ G
+  exp→pi cart = lift-Forget/ prod lex/.equalisers (Base-change pullbacks p) {!   !} (adjoint-natural-isol {! Slice-product-functor ? ?  !} {!   !})
