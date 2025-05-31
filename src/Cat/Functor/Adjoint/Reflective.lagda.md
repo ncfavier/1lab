@@ -194,7 +194,7 @@ is.
   comp-seso (ob , alg) = F.₀ ob , isom where
     Fo→o : Algebra-hom (R∘L adj) (Comp.₀ (F.₀ ob)) (ob , alg)
     Fo→o .hom = alg .ν
-    Fo→o .preserves = sym (alg .ν-mult)
+    Fo→o .preserves = alg .ν-mult
 
     o→Fo : Algebra-hom (R∘L adj) (ob , alg) (Comp.₀ (F.₀ ob))
     o→Fo .hom = unit.η _
