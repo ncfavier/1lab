@@ -257,3 +257,26 @@ fibres of $P \mono A$ over $A(f)(x)$.
       in inc (it , prf)
   in Ω-ua to from
 ```
+
+```agda
+open import Cat.Groupoid
+open import Cat.Instances.Presheaf.Colimits
+open import Cat.Diagram.Coproduct
+open import Data.Sum
+
+-- If PSh ℓ C is boolean, then C is a pregroupoid. (Also, LEM holds!)
+
+boolean-PSh→pregroupoid : is-boolean (PSh-initial ℓ C) (prop→is-subterminal-PSh _) PSh-omega → is-pregroupoid C
+boolean-PSh→pregroupoid bool = λ f → ∥-∥-out! do
+  make-section g sec ← go f
+  make-section f' sec' ← go g
+  pure {!    !}
+  where
+    open is-coproduct bool
+    module P = Cat (PSh ℓ C)
+    is = +-Unique (PSh ℓ C) (record { has-is-coproduct = bool }) (PSh-coproducts _ C ⊤PSh ⊤PSh)
+    go : ∀ {x y} (f : Hom x y) → is-split-epic f
+    go f using sv ← map→sieve {C = C} f with is .P.to .η _ sv | is .P.invr ηₚ _ $ₚ sv
+    ... | inl x | y = rec! (λ g inv → inc (make-section g inv)) (transport (ap (id ∈_) y) tt)
+    ... | inr x | y = rec! (λ ()) (transport (sym (ap (f ∈_) y)) (inc (id , idr _)))
+```

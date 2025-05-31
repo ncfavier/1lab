@@ -383,6 +383,8 @@ Sub-products {y} pb a b = prod where
   prod .Product.has-is-product .is-product.unique _ _ = prop!
 ```
 
+TODO: terminal object (move ⊤ₘ from Reasoning here)
+
 ## Univalence
 
 Since identity of $m, n : \Sub(y)$ is given by identity of the

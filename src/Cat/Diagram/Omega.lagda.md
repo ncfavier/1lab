@@ -360,3 +360,30 @@ module props {o ℓ} {C : Precategory o ℓ} (pb : has-pullbacks C) (so : Subobj
     } .snd))
 ```
 -->
+
+```agda
+open import Cat.Diagram.Initial
+open import Cat.Diagram.Subterminal
+module _ {o ℓ} {C : Precategory o ℓ} (init : Initial C) (init-subterminal : is-subterminal C (init .Initial.bot)) where
+  open Cat.Reasoning C
+  open Subobjs C
+  open Initial init
+  private variable
+    X : Ob
+  ⊥ₘ : Subobject X
+  ⊥ₘ .domain = bot
+  ⊥ₘ .map = ¡
+  ⊥ₘ .monic f g _ = init-subterminal _ f g
+
+module _ {o ℓ} {C : Precategory o ℓ} (init : Initial C) (init-subterminal : is-subterminal C (init .Initial.bot)) (so : Subobject-classifier C) where
+  open import Cat.Diagram.Coproduct
+  open Cat.Reasoning C
+  open Subobjs C
+  open Subobject-classifier so
+
+  untrue : Hom (true .domain) Ω
+  untrue = name (⊥ₘ init init-subterminal)
+
+  is-boolean : Type _
+  is-boolean = is-coproduct C (true .map) untrue
+```
