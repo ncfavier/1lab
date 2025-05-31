@@ -1,6 +1,7 @@
 <!--
 ```agda
 open import Cat.Instances.Sets.Cocomplete using (Sets-initial)
+open import Cat.Diagram.Initial.Strict
 open import Cat.Diagram.Initial
 open import Cat.Instances.Sets using (Sets^op-is-category)
 open import Cat.Morphism
