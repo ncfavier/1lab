@@ -63,7 +63,19 @@ predicates; we therefore write $\phi \vdash_\Gamma \psi$.
     ℙ : Displayed B o' ℓ'
 
   module ℙ = Displayed ℙ
+  module ℙR = Disp ℙ
 ```
+
+<!--
+```agda
+  field
+    ℙ-fix : ∀ {X} {x y : ℙ.Ob[ X ]} → ℙ.Hom[ id ∘ id ] x y → ℙ.Hom[ id ] x y
+    ℙ-coh : ∀ {X} {x y : ℙ.Ob[ X ]} (f : ℙ.Hom[ id ∘ id ] x y) → ℙ-fix f ≡ ℙR.hom[ idl id ] f
+
+  ℙ[_] : Ob → Precategory _ _
+  ℙ[ x ] = Fibre' ℙ x ℙ-fix ℙ-coh
+```
+-->
 
 However, having an entire _category_ of predicates is hard to make
 well-behaved: that would lend itself more to an interpretation of
@@ -74,7 +86,7 @@ $\bP$:
 ```agda
   field
     has-is-thin    : ∀ {x y} {f : Hom x y} x' y' → is-prop (ℙ.Hom[ f ] x' y')
-    has-univalence : ∀ x → is-category (Fibre ℙ x)
+    has-univalence : ∀ x → is-category ℙ[ x ]
 ```
 
 First, the entailment relation $\phi \vdash_\Gamma \psi$ must be a
@@ -88,7 +100,7 @@ concisely, this means that every fibre $\bP(\Gamma)$ is a [[poset]]:
 
 ```agda
   ≤-Poset : ∀ {x : Ob} → Poset o' ℓ'
-  ≤-Poset {x = x} = thin→poset (Fibre ℙ x) has-is-thin (has-univalence x)
+  ≤-Poset {x = x} = thin→poset ℙ[ x ] has-is-thin (has-univalence x)
 ```
 
 Next, each fibre $\bP(\Gamma)$ must be [[finitely complete]]. The binary
@@ -98,8 +110,8 @@ limit suffice to have full finite completeness.
 
 ```agda
   field
-    fibrewise-meet : ∀ {x} x' y' → Product (Fibre ℙ x) x' y'
-    fibrewise-top  : ∀ x → Terminal (Fibre ℙ x)
+    fibrewise-meet : ∀ {x} x' y' → Product ℙ[ x ] x' y'
+    fibrewise-top  : ∀ x → Terminal ℙ[ x ]
 ```
 
 Everything we have so far is fine, but it only allows us to talk about

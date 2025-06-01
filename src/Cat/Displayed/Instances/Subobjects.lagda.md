@@ -9,6 +9,7 @@ open import Cat.Displayed.Univalence
 open import Cat.Displayed.Cartesian
 open import Cat.Instances.Functor
 open import Cat.Diagram.Pullback
+open import Cat.Diagram.Terminal
 open import Cat.Diagram.Product
 open import Cat.Displayed.Fibre
 open import Cat.Displayed.Base
@@ -304,7 +305,8 @@ private
 
 ```agda
 Sub : Ob → Precategory (o ⊔ ℓ) ℓ
-unquoteDef Sub = define-copattern Sub (λ y → Fibre' Subobjects y re coh)
+-- unquoteDef Sub = define-copattern Sub (λ y → Fibre' Subobjects y re coh)
+Sub y = Fibre' Subobjects y re coh
 
 module Sub {y} = Cr (Sub y)
 ```
@@ -348,6 +350,21 @@ Sub-path {a = a} {b = b} p q i .monic {c} =
 -->
 
 ## Fibrewise cartesian structure
+
+```agda
+⊤ₘ : ∀ {y} → Subobject y
+⊤ₘ .domain = _
+⊤ₘ .map    = id
+⊤ₘ .monic  = id-monic
+
+opaque
+  !ₘ : ∀ {y} {m : Subobject y} → m ≤ₘ ⊤ₘ
+  !ₘ {m = m} = record { map = m .map ; sq = refl }
+
+Sub-terminal : ∀ {y} → Terminal (Sub y)
+Sub-terminal .Terminal.top = ⊤ₘ
+Sub-terminal .Terminal.has⊤ m = contr !ₘ λ _ → prop!
+```
 
 Since products in slice categories are given by pullbacks, and pullbacks
 preserve monomorphisms, if $\cB$ has pullbacks, then $\Sub(y)$ has

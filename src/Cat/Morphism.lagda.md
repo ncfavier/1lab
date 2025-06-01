@@ -36,6 +36,9 @@ morphism.
 is-monic : Hom a b → Type _
 is-monic {a = a} f = ∀ {c} → (g h : Hom c a) → f ∘ g ≡ f ∘ h → g ≡ h
 
+Mono : ∀ {a b} → Hom a b → Ω
+Mono x = elΩ (is-monic x)
+
 is-monic-is-prop : ∀ {a b} (f : Hom a b) → is-prop (is-monic f)
 is-monic-is-prop f x y i {c} g h p = Hom-set _ _ _ _ (x g h p) (y g h p) i
 

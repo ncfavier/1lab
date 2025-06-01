@@ -7,6 +7,7 @@ open import Cat.Diagram.Coequaliser
 open import Cat.Morphism.Strong.Epi
 open import Cat.Diagram.Pullback
 open import Cat.Diagram.Product
+open import Cat.Diagram.Image
 open import Cat.Prelude
 
 import Cat.Reasoning as Cr
@@ -44,19 +45,13 @@ open Functor
 
 module _ {o ℓ} (𝒞 : Precategory o ℓ) where
   private module C = Cr 𝒞
-
-  StrongEpi : ∀ {a b} → C.Hom a b → Ω
-  StrongEpi x = elΩ (is-strong-epi 𝒞 x)
-
-  Mono : ∀ {a b} → C.Hom a b → Ω
-  Mono x = elΩ (C.is-monic x)
 ```
 -->
 
 ```agda
   record is-regular : Type (o ⊔ ℓ) where
     field
-      factor : ∀ {a b} (f : C.Hom a b) → Factorisation 𝒞 StrongEpi Mono f
+      factor : ∀ {a b} (f : C.Hom a b) → Factorisation 𝒞 (StrongEpi 𝒞) C.Mono f
       stable : is-pullback-stable 𝒞 (is-strong-epi 𝒞)
       has-is-lex : Finitely-complete 𝒞
 
@@ -71,6 +66,9 @@ provided factorisations: Letting $f : A \to B$ be a map and $A \epi X
 latter two names have a placeholder for the morphism we are factoring.
 
 ```agda
+    image[_] : ∀ {x y} (f : C.Hom x y) → Image 𝒞 f
+    image[ f ] = strong-epi-mono→image 𝒞 f (factor f)
+
     im[_] : ∀ {a b} (f : C.Hom a b) → C.Ob
     im[ f ] = factor f .Factorisation.mediating
 
@@ -220,7 +218,7 @@ $$.
 
 
 ```agda
-      dgh : Factorisation 𝒞 StrongEpi Mono ⟨ f , c ⟩
+      dgh : Factorisation 𝒞 (StrongEpi 𝒞) Mono ⟨ f , c ⟩
       dgh = r.factor ⟨ f , c ⟩
       module dgh = Factorisation dgh
         renaming (mediating to D ; forget to gh ; mediate to d)

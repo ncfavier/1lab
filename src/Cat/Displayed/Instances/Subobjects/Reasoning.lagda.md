@@ -68,18 +68,10 @@ open with-pullbacks pb renaming (pullback-subobject to infixr 35 _^*_) public
 ^*-assoc .from     = Ix.^*-comp-to
 ^*-assoc .inverses = record { invl = prop! ; invr = prop! }
 
-⊤ₘ : Subobject X
-⊤ₘ .domain = _
-⊤ₘ .map    = id
-⊤ₘ .monic  = id-monic
-
-opaque
-  !ₘ : m ≤ₘ ⊤ₘ
-  !ₘ {m = m} = record { map = m .map ; sq = refl }
-
 module _ {X} where
   open Binary-products (Sub X) (Sub-products pb) public renaming
     ( _⊗₀_  to infixr 30 _∩ₘ_
+    ; _⊗₁_  to infixr 30 _∩ₘ₁_
     ; π₁    to ∩ₘ≤l
     ; π₂    to ∩ₘ≤r
     ; ⟨_,_⟩ to ∩ₘ-univ
@@ -113,10 +105,7 @@ opaque
       }
 
   ^*-⊤ₘ : f ^* ⊤ₘ ≅ₘ ⊤ₘ
-  ^*-⊤ₘ {f = f} = Sub-antisym !ₘ record
-    { map = pb _ _ .universal {p₁' = id} {p₂' = f} id-comm
-    ; sq  = sym (pb _ _ .p₁∘universal ∙ introl refl)
-    }
+  ^*-⊤ₘ {f = f} = Sub-antisym !ₘ (^*-univ (record { map = f ; sq = id-comm }))
 
 opaque
   is-pullback-along→iso : is-pullback-along C (m .map) h (n .map) → m ≅ₘ h ^* n

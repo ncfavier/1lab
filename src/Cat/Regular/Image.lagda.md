@@ -7,6 +7,7 @@ open import Cat.Morphism.Strong.Epi
 open import Cat.Diagram.Pullback
 open import Cat.Diagram.Product
 open import Cat.Instances.Slice
+open import Cat.Diagram.Image
 open import Cat.Prelude
 open import Cat.Regular
 
@@ -47,9 +48,7 @@ $\im f$ whenever $f : x \to y$.
 
 ```agda
 Im : ∀ {x y} (f : Hom x y) → Subobject y
-Im f .domain = _
-Im f .map    = factor f .forget
-Im f .monic  = □-out! (factor f .forget∈M)
+Im f = cutₛ (□-out! (factor f .forget∈M))
 ```
 
 We may then use this to rephrase the universal property of $\im f$ as

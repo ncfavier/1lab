@@ -4,6 +4,7 @@ open import Cat.Diagram.Coequaliser.RegularEpi
 open import Cat.Diagram.Pullback.Properties
 open import Cat.Instances.Shape.Terminal
 open import Cat.Functor.FullSubcategory
+open import Cat.Morphism.Factorisation
 open import Cat.Diagram.Limit.Finite
 open import Cat.Morphism.Orthogonal
 open import Cat.Diagram.Equaliser
@@ -51,6 +52,9 @@ actually suffices to have _any_ lift: they are automatically unique.
 ```agda
 is-strong-epi : ∀ {a b} → Hom a b → Type _
 is-strong-epi f = is-epic f × ∀ {c d} (m : c ↪ d) → m⊥m C f (m .mor)
+
+StrongEpi : ∀ {a b} → Hom a b → Ω
+StrongEpi x = elΩ (is-strong-epi x)
 
 lifts→is-strong-epi
   : ∀ {a b} {f : Hom a b}
@@ -261,12 +265,11 @@ factorisation of $f$ on our hands!
 
 ```agda
 strong-epi-mono→image
-  : ∀ {a b im} (f : Hom a b)
-  → (a→im : Hom a im) → is-strong-epi a→im
-  → (im→b : Hom im b) → is-monic im→b
-  → im→b ∘ a→im ≡ f
+  : ∀ {a b} (f : Hom a b)
+  → Factorisation C StrongEpi Mono f
   → Image C f
-strong-epi-mono→image f a→im (_ , str-epi) im→b mono fact = go where
+strong-epi-mono→image f fac = go where
+  open Factorisation fac renaming (mediate∈E to str-epi; forget∈M to mono)
   open Initial
   open /-Obj
   open /-Hom
@@ -275,8 +278,8 @@ strong-epi-mono→image f a→im (_ , str-epi) im→b mono fact = go where
 
   obj : ↓Obj (!Const (cut f)) (Forget-full-subcat {P = is-monic ⊙ map})
   obj .x = tt
-  obj .y = cut im→b , mono
-  obj .map = record { map = a→im ; commutes = fact }
+  obj .y = cut forget , □-out! mono
+  obj .map = record { map = mediate ; commutes = sym factors }
 ```
 
 Actually, for an image factorisation, we don't need that $a \epi \im(f)$
@@ -291,10 +294,10 @@ in the relevant comma categories.
     module o = ↓Obj other
 
     the-lifting =
-      str-epi
+      □-out! str-epi .snd
         (record { monic = o.y .snd })
         {u = o.map .map}
-        {v = im→b} (sym (o.map .commutes ∙ sym fact))
+        {v = forget} (sym (o.map .commutes ∙ factors))
 
     dh : ↓Hom (!Const (cut f)) _ obj other
     dh .α = tt
