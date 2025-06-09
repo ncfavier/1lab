@@ -7,6 +7,8 @@ open import Cat.Diagram.Monad
 open import Cat.Functor.Base
 open import Cat.Prelude
 
+import Cat.Reasoning
+
 open Algebra-on
 open Total-hom
 open Functor
@@ -28,6 +30,7 @@ module _
     where
 
   private
+    module C = Cat.Reasoning C
     module M = Monad-on Mᵐ
 ```
 -->
@@ -44,8 +47,8 @@ obeying laws similar to the ones for [[monad algebras]].
     no-eta-equality
     field
       α : M F∘ A => A
-      α-unit : α ∘nt nat-idl-from (M.unit ◂ A) ≡ idnt
-      α-mult : α ∘nt nat-unassoc-from (M.mult ◂ A) ≡ α ∘nt (M ▸ α)
+      α-unit : ∀ {b} → α .η b C.∘ M.η (A .F₀ b) ≡ C.id
+      α-mult : ∀ {b} → α .η b C.∘ M.μ (A .F₀ b) ≡ α .η b C.∘ M.₁ (α .η b)
 ```
 
 To tie things together, we observe that $M$-actions on functors out of
@@ -88,13 +91,13 @@ module _
   Algebra≃⊤Action = over-left→over (_ , !Const-is-equiv) λ where
     c .fst alg → λ where
       .α → !constⁿ (alg .ν)
-      .α-unit → ext λ _ → alg .ν-unit
-      .α-mult → ext λ _ → alg .ν-mult
+      .α-unit → alg .ν-unit
+      .α-mult → alg .ν-mult
     c .snd → is-iso→is-equiv λ where
       .is-iso.from act → λ where
         .ν → act .α .η tt
-        .ν-unit → act .α-unit ηₚ tt
-        .ν-mult → act .α-mult ηₚ tt
+        .ν-unit → act .α-unit
+        .ν-mult → act .α-mult
       .is-iso.rinv act → ext λ _ → refl
       .is-iso.linv alg → ext refl
 ```
@@ -123,8 +126,8 @@ module _ {o ℓ} {C : Precategory o ℓ} {M : Functor C C} (Mᵐ : Monad-on M) w
   Forget-EM-action : Action-on Mᵐ (Forget-EM {M = Mᵐ})
   Forget-EM-action .α .η (_ , alg) = alg .ν
   Forget-EM-action .α .is-natural _ _ f = sym (f .preserves)
-  Forget-EM-action .α-unit = ext λ (_ , alg) → alg .ν-unit
-  Forget-EM-action .α-mult = ext λ (_ , alg) → alg .ν-mult
+  Forget-EM-action .α-unit {_ , alg} = alg .ν-unit
+  Forget-EM-action .α-mult {_ , alg} = alg .ν-mult
 ```
 
 And, second, that this left $M$-action is universal in the sense that
@@ -143,8 +146,8 @@ functors $\cB \to \cC$.
       → Functor B (Eilenberg-Moore Mᵐ)
     EM-universal {A = A} act .F₀ b .fst = A .F₀ b
     EM-universal {A = A} act .F₀ b .snd .ν = act .α .η b
-    EM-universal {A = A} act .F₀ b .snd .ν-unit = act .α-unit ηₚ b
-    EM-universal {A = A} act .F₀ b .snd .ν-mult = act .α-mult ηₚ b
+    EM-universal {A = A} act .F₀ b .snd .ν-unit = act .α-unit
+    EM-universal {A = A} act .F₀ b .snd .ν-mult = act .α-mult
     EM-universal {A = A} act .F₁ f .hom = A .F₁ f
     EM-universal {A = A} act .F₁ f .preserves = sym (act .α .is-natural _ _ f)
     EM-universal {A = A} act .F-id = ext (A .F-id)
@@ -155,8 +158,8 @@ functors $\cB \to \cC$.
       → Action-on Mᵐ (Forget-EM F∘ A^M)
     EM→Action A^M .α .η b = A^M .F₀ b .snd .ν
     EM→Action A^M .α .is-natural _ _ f = sym (A^M .F₁ f .preserves)
-    EM→Action A^M .α-unit = ext λ b → A^M .F₀ b .snd .ν-unit
-    EM→Action A^M .α-mult = ext λ b → A^M .F₀ b .snd .ν-mult
+    EM→Action A^M .α-unit {b} = A^M .F₀ b .snd .ν-unit
+    EM→Action A^M .α-mult {b} = A^M .F₀ b .snd .ν-mult
 ```
 
 Note that the universal action itself is induced by the identity

@@ -115,7 +115,7 @@ Checking the algebra laws involves the uniqueness part of the universal
 property and some tedious computations.
 
 ```agda
-      Ext-action .α-unit = σ-uniq₂ eps eq (ext λ _ → sym (C.idr _))
+      Ext-action .α-unit {d} = σ-uniq₂ eps eq (ext λ _ → sym (C.idr _)) ηₚ d
         where
           eq : eps ≡ eps ∘nt (Ext-action .α ∘nt nat-idl-from (M.unit ◂ Ext) ◂ p)
           eq = ext λ j → sym $
@@ -124,7 +124,7 @@ property and some tedious computations.
             G.₀ j .snd .ν C.∘ M.η (G.₀ j .fst) C.∘ eps .η j               ≡⟨ C.cancell (G.₀ j .snd .ν-unit) ⟩
             eps .η j                                                      ∎
 
-      Ext-action .α-mult = σ-uniq₂ _ eq refl
+      Ext-action .α-mult {d} = σ-uniq₂ _ eq refl ηₚ d
         where
           eq : _ ≡ eps ∘nt ((Ext-action .α ∘nt nat-unassoc-from (M.mult ◂ Ext)) ◂ p)
           eq = ext λ j →
