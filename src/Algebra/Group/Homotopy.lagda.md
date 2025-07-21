@@ -73,8 +73,17 @@ inverses are given by `inverting paths`{.Agda ident=sym}.
   → ⌞ πₙ₊₁ n A ⌟ → ⌞ πₙ₊₁ n B ⌟
 πₙ₊₁-map n f = ∥-∥₀-map (Ωⁿ-map (suc n) f .fst)
 
-πₙ-def : ∀ {ℓ} (A : Type∙ ℓ) n → (⌞ πₙ₊₁ n A ⌟ , inc refl) ≃∙ Ωⁿ (suc n) (n-Tr∙ A (suc (n + 2)))
-πₙ-def A n = n-Tr-set ∙e n-Tr-Ωⁿ A 1 (suc n) .fst , n-Tr-Ωⁿ A 1 (suc n) .snd
+opaque
+
+  πₙ-def
+    : ∀ {ℓ} (A : Type∙ ℓ) n
+    → (⌞ πₙ₊₁ n A ⌟ , inc refl) ≃∙ Ωⁿ (suc n) (n-Tr∙ A (suc (n + 2)))
+  πₙ-def A n = n-Tr-set ∙e n-Tr-Ωⁿ A 1 (suc n) .fst , n-Tr-Ωⁿ A 1 (suc n) .snd
+
+  πₙ-def-inc
+    : ∀ {ℓ} (A : Type∙ ℓ) n → (l : ⌞ Ωⁿ (1 + n) A ⌟)
+    → πₙ-def A n · inc l ≡ Ωⁿ-map (1 + n) inc∙ · l
+  πₙ-def-inc A n l = n-Tr-Ωⁿ-inc A 1 (suc n) ·ₚ l
 ```
 -->
 

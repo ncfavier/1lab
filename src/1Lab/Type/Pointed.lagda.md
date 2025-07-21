@@ -339,3 +339,15 @@ homogeneous-funext∙ {A = A} {B = B , b₀} {f = f∙@(f , f*)} {g∙@(g , g*)}
       k (j = i0) → hom b₀ k
       k (j = i1) → hom b₀ k
 ```
+
+<!--
+```agda
+Type∙-path-is-hlevel
+  : ∀ {ℓ} {A : Type ℓ} {x y : A} n
+  → ⦃ _ : H-Level A (suc n) ⦄ ⦃ _ : H-Level A (suc (suc n)) ⦄
+  → is-hlevel (Path (Type∙ ℓ) (A , x) (A , y)) (suc n)
+Type∙-path-is-hlevel {A = A} n = Equiv→is-hlevel (suc n)
+  (identity-system-gives-path univalence∙-identity-system e⁻¹)
+  (hlevel (suc n))
+```
+-->
