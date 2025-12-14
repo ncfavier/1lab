@@ -321,12 +321,12 @@ As a consequence of uniqueness, if a functor preserves a given Kan
 extension, then it preserves *all* extensions for the same diagram.
 
 ```agda
-preserves-is-lan→preserves-lan
+is-preserved-lan→preserves-lan
   : ∀ (H : Functor D E) {p : Functor C C'} {F : Functor C D}
   → ∀ {G} {eta : F => G F∘ p} (lan : is-lan p F G eta)
-  → preserves-is-lan H lan
+  → is-preserved-lan lan H
   → preserves-lan p F H
-preserves-is-lan→preserves-lan {E = E} {C' = C'} H lan pres {G'} lan' =
+is-preserved-lan→preserves-lan {E = E} {C' = C'} H lan pres {G'} lan' =
   natural-isos→is-lan idni idni
     (F∘-iso-r One.unique)
     (ext λ c →
@@ -582,12 +582,12 @@ module _
     (natural-isos→is-ran (p-iso ni⁻¹) (F-iso ni⁻¹) (G-iso ni⁻¹)
       (lswizzle (rswizzle (sym q ∙ assoc _ _ _) (◆.annihilate (G-iso .Isoⁿ.invr ,ₚ p-iso .Isoⁿ.invr))) (F-iso .Isoⁿ.invr)))
 
-preserves-is-ran→preserves-ran
+is-preserved-ran→preserves-ran
   : ∀ (H : Functor D E) {p : Functor C C'} {F : Functor C D}
   → ∀ {G} {eps : G F∘ p => F} (ran : is-ran p F G eps)
-  → preserves-is-ran H ran
+  → is-preserved-ran ran H
   → preserves-ran p F H
-preserves-is-ran→preserves-ran {E = E} {C' = C'} H {G = G} ran pres ran' =
+is-preserved-ran→preserves-ran {E = E} {C' = C'} H {G = G} ran pres ran' =
   natural-isos→is-ran idni idni
     (F∘-iso-r One.unique)
     (ext λ c →
@@ -633,7 +633,7 @@ lifts→preserves-lan
   → lifts-lan H Lan
   → preserves-lan p F H
 lifts→preserves-lan {H = H} lifts =
-  preserves-is-lan→preserves-lan H
+  is-preserved-lan→preserves-lan H
     (Lan.has-lan lifted) preserved
   where open lifts-lan lifts
 
@@ -643,7 +643,7 @@ lifts→preserves-ran
   → lifts-ran H Ran
   → preserves-ran p F H
 lifts→preserves-ran {H = H} lifts =
-  preserves-is-ran→preserves-ran H
+  is-preserved-ran→preserves-ran H
     (Ran.has-ran lifted) preserved
   where open lifts-ran lifts
 ```

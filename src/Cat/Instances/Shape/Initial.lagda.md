@@ -2,6 +2,7 @@
 ```agda
 open import 1Lab.Prelude
 
+open import Cat.Functor.Naturality
 open import Cat.Base
 ```
 -->
@@ -44,4 +45,7 @@ module _ {o h} {A : Precategory o h} where
   ¡nt : ∀ {F G : Functor ⊥Cat A} → F => G
   ¡nt ._=>_.η ()
   ¡nt ._=>_.is-natural ()
+
+  ¡iso : ∀ {F G : Functor ⊥Cat A} → F ≅ⁿ G
+  ¡iso = iso→isoⁿ (λ ()) (λ ())
 ```

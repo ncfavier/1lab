@@ -17,7 +17,7 @@ module 1Lab.Type.Pi where
 ```agda
 private variable
   ℓ ℓ₁ : Level
-  A B C D : Type ℓ
+  A A' B C D : Type ℓ
   P Q : A → Type ℓ
 ```
 -->
@@ -56,6 +56,12 @@ codomain of a dependent function by an equivalence across universe levels:
         ap (subst P _) (sym (from-pathp (symP (ap k (e.ε x)))))
       ∙ transport⁻transport (sym (ap P (e.ε x))) _
   where module e = Equiv e
+
+Π-ap
+  : (e : B ≃ A)
+  → ((x : B) → P x ≃ Q (e .fst x))
+  → ((x : B) → P x) ≃ ((x : A) → Q x)
+Π-ap e f = Π-ap-cod f ∙e Π-ap-dom e e⁻¹
 
 Π'-ap-cod : ((x : A) → P x ≃ Q x) → ({x : A} → P x) ≃ ({x : A} → Q x)
 Π'-ap-cod k .fst f {x} = k x .fst (f {x})

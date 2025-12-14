@@ -1,5 +1,13 @@
 <!--
 ```agda
+open import Cat.Instances.Shape.Terminal
+open import Cat.Instances.Shape.Initial
+open import Cat.Diagram.Limit.Terminal
+open import Cat.Diagram.Limit.Product
+open import Cat.Instances.Shape.Two
+open import Cat.Diagram.Limit.Base
+open import Cat.Functor.Kan.Unique
+open import Cat.Functor.Naturality
 open import Cat.Instances.Product
 open import Cat.Diagram.Terminal
 open import Cat.Diagram.Product
@@ -131,4 +139,29 @@ applying $F$ and taking a product in $\cD$.
       preserved.π₁∘⟨⟩ preserved.π₂∘⟨⟩
       (F.extendl C.π₁∘⟨⟩ ∙ ap₂ D._∘_ refl π₁inv)
       (F.extendl C.π₂∘⟨⟩ ∙ ap₂ D._∘_ refl π₂inv)
+```
+
+```agda
+  open Cartesian-functor
+
+  continuous→cartesian
+    : is-continuous lzero lzero F
+    → Cartesian-functor
+  continuous→cartesian cont .pres-products A B =
+    D.iso→invertible (×-Unique FA×FB (D.products (F.₀ A) (F.₀ B)))
+    where
+      pres = natural-isos→is-ran
+        {G' = !Const (F.₀ (A C.⊗₀ B))}
+        {eps' = 2-object-nat-trans (F.₁ C.π₁) (F.₁ C.π₂)}
+        idni (path→iso (canonical-functors _)) (!const-isoⁿ D.id-iso)
+        (ext (λ { true → D.eliml (transport-refl _) ∙ D.elimr (F.eliml refl); false → D.eliml (transport-refl _) ∙ D.elimr (F.eliml refl) }))
+        (cont
+          (is-product→is-limit C {F = 2-object-diagram A B} {eps = 2-object-nat-trans C.π₁ C.π₂}
+            (C.has-is-product {A} {B})))
+      FA×FB = Limit→Product D (to-limit pres)
+  continuous→cartesian cont .pres-terminal =
+    is-limit→is-terminal D {eps = ¡nt}
+      (natural-isos→is-ran idni ¡iso (!const-isoⁿ D.id-iso) (ext (λ ()))
+        (cont {Diagram = ¡F}
+          (is-terminal→is-limit C C.has⊤)))
 ```

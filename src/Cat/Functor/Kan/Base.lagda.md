@@ -296,14 +296,26 @@ universal! If this diagram _is_ a left Kan extension, we say that $H$
 <!--
 ```agda
 module _
+  (p : Functor C C') (F : Functor C D) (G : Functor C' D) (eta : F => G F∘ p) where
+```
+-->
+
+```agda
+  becomes-lan : (H : Functor D E) → Type _
+  becomes-lan H =
+    is-lan p (H F∘ F) (H F∘ G) (nat-assoc-to (H ▸ eta))
+```
+
+<!--
+```agda
+module _
   {p : Functor C C'} {F : Functor C D} {G : Functor C' D} {eta : F => G F∘ p} where
 ```
 -->
 
 ```agda
-  preserves-is-lan : (H : Functor D E) → is-lan p F G eta → Type _
-  preserves-is-lan H _ =
-    is-lan p (H F∘ F) (H F∘ G) (nat-assoc-to (H ▸ eta))
+  is-preserved-lan : is-lan p F G eta → (H : Functor D E) → Type _
+  is-preserved-lan _ H = becomes-lan p F G eta H
 ```
 
 In the diagram above, the 2-cell is simply the whiskering $H\eta$.
@@ -314,10 +326,30 @@ We say that a Kan extension is **absolute** if it is preserved by *all*
 functors out of $D$. An important class of examples is given by [[adjoint
 functors|adjoints are kan extensions]].
 
+<!--
 ```agda
-  is-absolute-lan : is-lan p F G eta → Typeω
-  is-absolute-lan lan =
-    {o ℓ : Level} {E : Precategory o ℓ} (H : Functor D E) → preserves-is-lan H lan
+module _
+  (p : Functor C C') (F : Functor C D) (G : Functor C' D) (eta : F => G F∘ p) where
+```
+-->
+
+```agda
+  is-absolute-lan : Typeω
+  is-absolute-lan =
+    {o ℓ : Level} {E : Precategory o ℓ} (H : Functor D E) → becomes-lan p F G eta H
+```
+
+<!--
+```agda
+module _
+  (p : Functor C C') (F : Functor C D) (G : Functor C' D) (eps : G F∘ p => F) where
+```
+-->
+
+```agda
+  becomes-ran : (H : Functor D E) → Type _
+  becomes-ran H =
+      is-ran p (H F∘ F) (H F∘ G) (nat-assoc-from (H ▸ eps))
 ```
 
 <!--
@@ -330,13 +362,21 @@ module _
 We can define dual notions for right Kan extensions as well.
 
 ```agda
-  preserves-is-ran : (H : Functor D E) → is-ran p F G eps → Type _
-  preserves-is-ran H _ =
-    is-ran p (H F∘ F) (H F∘ G) (nat-assoc-from (H ▸ eps))
+  is-preserved-ran : is-ran p F G eps → (H : Functor D E) → Type _
+  is-preserved-ran _ H = becomes-ran p F G eps H
+```
 
-  is-absolute-ran : is-ran p F G eps → Typeω
-  is-absolute-ran ran =
-    {o ℓ : Level} {E : Precategory o ℓ} (H : Functor D E) → preserves-is-ran H ran
+<!--
+```agda
+module _
+  (p : Functor C C') (F : Functor C D) (G : Functor C' D) (eps : G F∘ p => F) where
+```
+-->
+
+```agda
+  is-absolute-ran : Typeω
+  is-absolute-ran =
+    {o ℓ : Level} {E : Precategory o ℓ} (H : Functor D E) → becomes-ran p F G eps H
 ```
 
 <!--
@@ -349,7 +389,7 @@ module _ (p : Functor C C') (F : Functor C D) where
   preserves-lan H =
     ∀ {G : Functor C' D} {eta : F => G F∘ p}
     → (lan : is-lan p F G eta)
-    → preserves-is-lan H lan
+    → is-preserved-lan lan H
 
   preserves-ran
     : (H : Functor D E)
@@ -357,7 +397,7 @@ module _ (p : Functor C C') (F : Functor C D) where
   preserves-ran H =
     ∀ {G : Functor C' D} {eps : G F∘ p => F}
     → (ran : is-ran p F G eps)
-    → preserves-is-ran H ran
+    → is-preserved-ran ran H
 ```
 -->
 
@@ -405,13 +445,13 @@ preserved by $H$.
     no-eta-equality
     field
       lifted : Lan p F
-      preserved : preserves-is-lan H (Lan.has-lan lifted)
+      preserved : is-preserved-lan (Lan.has-lan lifted) H
 
   record lifts-ran (ran : Ran p (H F∘ F)) : Type (kan-lvl p F ⊔ cat-lvl E) where
     no-eta-equality
     field
       lifted : Ran p F
-      preserved : preserves-is-ran H (Ran.has-ran lifted)
+      preserved : is-preserved-ran (Ran.has-ran lifted) H
 ```
 
 <!--

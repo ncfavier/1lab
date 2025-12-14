@@ -1,8 +1,9 @@
 <!--
 ```agda
+{-# OPTIONS --allow-unsolved-metas #-}
 open import Cat.Diagram.Colimit.Representable
+open import Cat.Diagram.Limit.Representable
 open import Cat.Functor.Hom.Representable
-open import Cat.Functor.Kan.Representable
 open import Cat.Instances.Shape.Terminal
 open import Cat.Diagram.Colimit.Base
 open import Cat.Diagram.Limit.Base
@@ -68,33 +69,42 @@ module _
 ```
 -->
 
-
 ```agda
-  is-pointwise-lan : ∀ {eta : G => E F∘ F} → is-lan F G E eta → Type _
-  is-pointwise-lan lan =
-    ∀ (x : D.Ob) → preserves-is-lan (opFʳ (Hom-into D x)) lan
+  is-pointwise-lan : ∀ (eta : G => E F∘ F) → Type _
+  is-pointwise-lan eta =
+    ∀ (x : D.Ob) → becomes-lan F G E eta (opFʳ (Hom-into D x))
 
-  is-pointwise-ran : ∀ {eps : E F∘ F => G} → is-ran F G E eps → Type _
-  is-pointwise-ran ran =
-    ∀ (x : D.Ob) → preserves-is-ran (Hom-from D x) ran
+  is-pointwise-ran : ∀ (eps : E F∘ F => G) → Type _
+  is-pointwise-ran eps =
+    ∀ (x : D.Ob) → becomes-ran F G E eps (Hom-from D x)
 ```
 
 Absolute Kan extensions are trivially pointwise, since they are
 preserved by *all* functors.
 
 ```agda
+  open import Cat.Functor.Kan.Reflection
+  absolute-lan→is-lan
+    : {eta : G => E F∘ F}
+    → is-absolute-lan F G E eta
+    → is-lan F G E eta
+  absolute-lan→is-lan abs = trivial-is-lan! (abs Id)
+  absolute-ran→is-ran
+    : {eps : E F∘ F => G}
+    → is-absolute-ran F G E eps
+    → is-ran F G E eps
+  absolute-ran→is-ran abs = trivial-is-ran! (abs Id)
+
   absolute-lan→pointwise
     : {eta : G => E F∘ F}
-    → {lan : is-lan F G E eta}
-    → is-absolute-lan lan
-    → is-pointwise-lan lan
+    → is-absolute-lan F G E eta
+    → is-pointwise-lan eta
   absolute-lan→pointwise abs _ = abs _
 
   absolute-ran→pointwise
     : {eps : E F∘ F => G}
-    → {ran : is-ran F G E eps}
-    → is-absolute-ran ran
-    → is-pointwise-ran ran
+    → is-absolute-ran F G E eps
+    → is-pointwise-ran eps
   absolute-ran→pointwise abs _ = abs _
 ```
 
@@ -120,14 +130,14 @@ As noted earlier, limits and colimits are pointwise Kan extensions.
   limit→pointwise
     : {eps : Const x => Dia}
     → (lim : is-limit Dia x eps)
-    → is-pointwise-ran lim
+    → is-pointwise-ran eps
   limit→pointwise lim x = Hom-from-preserves-limits x lim
 
   colimit→pointwise
     : {eta : Dia => Const x}
     → (colim : is-colimit Dia x eta)
-    → is-pointwise-lan colim
-  colimit→pointwise colim x = よ-reverses-colimits x colim
+    → is-pointwise-lan eta
+  colimit→pointwise colim x = Hom-into-reverses-colimits x colim
 ```
 
 ## Computing pointwise extensions
@@ -144,8 +154,8 @@ $\Lan_F(G)$ exists _and_ is pointwise.
 <!--
 ```agda
 module _
-  {o o' o'' ℓ ℓ'}
-  {C : Precategory o'' ℓ} {C' : Precategory o ℓ} {D : Precategory o' ℓ'}
+  {o o' o'' ℓ ℓ' ℓ''}
+  {C : Precategory o ℓ} {C' : Precategory o' ℓ'} {D : Precategory o'' ℓ''}
   (F : Functor C C') (G : Functor C D)
   where
 
@@ -191,6 +201,43 @@ In fact, we can weaken the precondition from cocompleteness of $\cD$ to
 having colimits of these comma-category-shaped diagrams.
 
 ```agda
+  module _ {F' : Functor C' D} {eta : G => F' F∘ F} where
+    -- TODO use ↓cocone
+    ↓cocone'' : ∀ c' → ↓Dia c' => F' F∘ !Const c' F∘ Cod F (!Const c')
+    ↓cocone'' c' = nat-assoc-from (F' ▸ (θ F (!Const c'))) ∘nt (eta ◂ Dom F (!Const c'))
+    ↓cocone' : ∀ c' → ↓Dia c' => Const (F' .F₀ c')
+    ↓cocone' c' .η = ↓cocone'' c' .η
+    ↓cocone' c' .is-natural x y f = ↓cocone'' c' .is-natural x y f ∙ (F' .F-id D.⟩∘⟨refl)
+
+    module F' = Func F'
+
+    comma-colimits→is-lan
+      : (∀ (c' : C'.Ob) → is-colimit (↓Dia c') (F' .F₀ c') (↓cocone' c'))
+      → is-lan F G F' eta
+    comma-colimits→is-lan ↓colim = has-lan
+      where
+        module ↓colim c' = is-colimit (↓colim c')
+        has-lan : is-lan F G F' eta
+        has-lan .σ {M = M} α .η c' = ↓colim.universal c'
+          (λ j → M .F₁ (j .map) D.∘ α .η (j .dom))
+          (λ f → D.pullr (α .is-natural _ _ _)
+              ∙ pulll M ((f .com) ∙ C'.idl _))
+        has-lan .σ {M = M} α .is-natural x y f =
+          ↓colim.unique₂ _ (λ j → M .F₁ (f C'.∘ j .map) D.∘ α .η (j .dom))
+          (λ f → D.pullr (α .is-natural _ _ _)
+              ∙ pulll M (C'.pullr (f .com) ∙ C'.elim-inner refl))
+          (λ j → D.pullr (F'.pulll refl)
+               ∙ ↓colim.factors y {j = ↓obj (f C'.∘ j .map)} _ _)
+          (λ j → D.pullr (↓colim.factors _ {j = j} _ _)
+               ∙ D.pulll (sym (M .F-∘ _ _)))
+        has-lan .σ-comm {M = M} = ext λ c →
+          D.intro-inner (F' .F-id) ∙ ↓colim.factors (F .F₀ c) {j = ↓obj C'.id} _ _ ∙ D.eliml (M .F-id)
+        has-lan .σ-uniq {M = M} {α = α} {σ' = σ'} p = ext λ c' → sym $
+          ↓colim.unique _ _ _ _ λ j →
+            σ' .η c' D.∘ ↓colim.ψ c' j                                    ≡⟨ D.extendl (σ' .is-natural _ _ (j .map)) ⟩
+            M .F₁ (j .map) D.∘ σ' .η (F .F₀ (j .dom)) D.∘ eta .η (j .dom) ≡˘⟨ D.refl⟩∘⟨ p ηₚ j .dom ⟩
+            M .F₁ (j .map) D.∘ α .η (j .dom)                              ∎
+
   comma-colimits→lan
     : (∀ (c' : C'.Ob) → Colimit (↓Dia c'))
     → Lan F G
@@ -256,34 +303,14 @@ adjustment to $\alpha$:
 
 ```agda
       has-lan : is-lan F G F' eta
-      has-lan .σ {M = M} α .η c' = ↓colim.universal c'
-        (λ j → M .F₁ (j .map) D.∘ α .η (j .dom))
-        (λ f → D.pullr (α .is-natural _ _ _)
-            ∙ pulll M ((f .com) ∙ C'.idl _))
-      has-lan .σ {M = M} α .is-natural x y f = ↓colim.unique₂ _ _
-        (λ f → D.pullr (α .is-natural _ _ _)
-             ∙ pulll M (C'.pullr (f .com) ∙ C'.elim-inner refl))
-        (λ j → D.pullr (↓colim.factors _ _ _)
-             ∙ ↓colim.factors _ _ _)
-        (λ j → D.pullr (↓colim.factors _ _ _)
-             ∙ D.pulll (sym (M .F-∘ _ _)))
-
+      has-lan = comma-colimits→is-lan λ c' →
+        subst (is-colimit _ _) (ext λ j → ap· (↓colim.cocone _) (↓Obj-path _ _ _ refl (C'.intror refl)) ∙ sym (↓colim.factors _ _ _)) (↓colim.has-colimit c')
 ```
-
 
 Finally, commutativity and uniqueness follow from the corresponding
 properties of colimits.
 
 ```agda
-      has-lan .σ-comm {M = M} = ext λ c →
-        ↓colim.factors _ _ _ ∙ D.eliml (M .F-id)
-      has-lan .σ-uniq {M = M} {α = α} {σ' = σ'} p = ext λ c' → sym $
-        ↓colim.unique _ _ _ _ λ j →
-        σ' .η c' D.∘ ↓colim.ψ c' j                                ≡⟨ ap (λ ϕ → σ' .η c' D.∘ ↓colim.ψ c' ϕ) (↓Obj-path _ _ refl refl (sym (C'.idr _))) ⟩
-        (σ' .η c' D.∘ ↓colim.ψ c' (↓obj (j .map C'.∘ C'.id)))     ≡⟨ D.pushr (sym $ ↓colim.factors _ _ _) ⟩
-        (σ' .η c' D.∘ ↓colim.universal _ _ _) D.∘ ↓colim.ψ _ _    ≡⟨ D.pushl (σ' .is-natural _ _ _) ⟩
-        M .F₁ (j .map) D.∘ (σ' .η _ D.∘ ↓colim.ψ _ (↓obj C'.id))  ≡˘⟨ (D.refl⟩∘⟨ (p ηₚ j .dom)) ⟩
-        M .F₁ (j .map) D.∘ α .η (j .dom)                          ∎
 ```
 
 All that remains is to bundle up the data!
@@ -299,8 +326,8 @@ And, if $\cD$ is $\kappa$-cocomplete, then it certainly has the required
 colimits: we can "un-weaken" our result.
 
 ```agda
-  cocomplete→lan : is-cocomplete (o'' ⊔ ℓ) ℓ D → Lan F G
-  cocomplete→lan colimits = comma-colimits→lan (λ c' → colimits (↓Dia c'))
+  cocomplete→lan : is-cocomplete (o ⊔ ℓ') (ℓ ⊔ ℓ') D → Lan F G
+  cocomplete→lan colimits = comma-colimits→lan λ c' → colimits (↓Dia c')
 ```
 
 
@@ -341,7 +368,7 @@ end up being off by a bunch of natural isomorphisms.
     → (colimits : is-cocomplete ℓ ℓ D)
     → (H : Functor D E)
     → is-cocontinuous ℓ ℓ H
-    → preserves-is-lan H (Lan.has-lan (cocomplete→lan F G colimits))
+    → is-preserved-lan (Lan.has-lan (cocomplete→lan F G colimits)) H
   preserves-colimits→preserves-pointwise-lan {E = E} colimits H cocont =
     natural-isos→is-lan idni idni HF'-cohere fixup $
       comma-colimits→lan.has-lan F (H F∘ G) H-↓colim
@@ -409,17 +436,17 @@ words, the extension we constructed is pointwise.
 ```agda
   cocomplete→pointwise-lan
     : (colim : is-cocomplete ℓ ℓ D)
-    → is-pointwise-lan (Lan.has-lan (cocomplete→lan F G colim))
+    → is-pointwise-lan (Lan.eta (cocomplete→lan F G colim))
   cocomplete→pointwise-lan colim d =
     preserves-colimits→preserves-pointwise-lan
       colim (opFʳ (Hom-into D d))
-      (よ-reverses-colimits d)
+      (Hom-into-reverses-colimits d)
 ```
 
 ## All pointwise extensions are computed via (co)limits
 
 As we've seen earlier, we can compute the extension of $F : \cC \to \cD$
-along $p : \cC \to \cC'$ when $\cD$ has enough colimits, and that this
+along $p : \cC \to \cC'$ when $\cD$ has enough colimits, and this
 extension is pointwise. It turns out that this is an exact
 characterization of the pointwise extensions: if $L$ is a pointwise
 extension of $F$ along $p$, then $\cD$ must have colimits of all
@@ -434,7 +461,7 @@ module _
   {o ℓ}
   {C : Precategory ℓ ℓ} {C' : Precategory ℓ ℓ} {D : Precategory o ℓ}
   {p : Functor C C'} {F : Functor C D} {L : Functor C' D} {eta : F => L F∘ p}
-  (lan : is-lan p F L eta) (pointwise : is-pointwise-lan lan)
+  (pointwise : is-pointwise-lan eta)
   where
 
   private
@@ -446,7 +473,6 @@ module _
     open ↓Obj
     open ↓Hom
     open _=>_
-    module lan = is-lan lan
     module pointwise d = is-lan (pointwise d)
     open is-lan
 ```
@@ -473,6 +499,7 @@ we shall appeal to the fact that [colimits are representable].
     : ∀ (c' : C'.Ob)
     → is-colimit (F F∘ Dom p (!Const c')) (L .F₀ c') (↓cocone c')
   pointwise-lan→has-comma-colimits c' =
+    -- represents→is-colimit $ [D,Sets].make-invertible {! Lim[C[F-,=]]  !} {!   !} {!    !}
     represents→is-colimit $
     [D,Sets].make-invertible inv invl invr
     where
@@ -519,7 +546,7 @@ _pointwise_, and remember that we're working with a Kan extension.
 </summary>
 
 ```agda
-      invl : Hom-into-inj (↓cocone c') ∘nt inv ≡ idnt
+      invl : Hom-from-inj (↓cocone c') ∘nt inv ≡ idnt
       invl = ext λ d α p↓c' →
         pointwise-↓cocone d α .η _ C'.id D.∘ L .Functor.F₁ (p↓c' .map) D.∘ eta .η _ ≡⟨ D.pulll (pointwise.σ d (represent-↓cocone d α) .is-natural _ _ _ $ₚ _) ⟩
         pointwise-↓cocone d α .η _ ⌜ C'.id C'.∘ p↓c' .map ⌝ D.∘ eta .η _            ≡⟨ ap! (C'.idl _) ⟩
@@ -534,11 +561,16 @@ _pointwise_, and remember that we're working with a Kan extension.
       vaguely-yoneda α .is-natural x y f =
         funext λ g → D.pullr (sym (L .F-∘ _ _))
 
-      invr : inv ∘nt Hom-into-inj (↓cocone c') ≡ idnt
+      invr : inv ∘nt Hom-from-inj (↓cocone c') ≡ idnt
       invr = ext λ d α →
         unext (pointwise.σ-uniq d {σ' = vaguely-yoneda α}
           (ext λ c f → D.assoc _ _ _)) c' C'.id
         ∙ D.elimr (L .F-id)
+
+  pointwise-lan→is-lan : is-lan p F L eta
+  pointwise-lan→is-lan = comma-colimits→is-lan p F λ c' →
+    subst (is-colimit _ _) (ext λ _ → refl)
+      (pointwise-lan→has-comma-colimits c')
 ```
 </details>
 
@@ -639,5 +671,201 @@ module _
     ni .natural x y f =
         ↓colim.factors _ _ _
       ∙ sym (↓colim.commutes _ (↓hom (ap₂ C'._∘_ refl (sym (C'.idr _)))))
+```
+-->
+
+<!--
+```agda
+{-
+module _
+  {o ℓ}
+  {C : Precategory ℓ ℓ} {C' : Precategory ℓ ℓ} {D : Precategory o ℓ}
+  {p : Functor C C'} {F : Functor C D} {L : Functor C' D} {eps : L F∘ p => F}
+  (pointwise : is-pointwise-ran eps)
+  where
+
+  private
+    module C = Cat.Reasoning C
+    module C' = Cat.Reasoning C'
+    module D = Cat.Reasoning D
+    module [D^op,Sets] = Cat.Reasoning (Cat[ D ^op , Sets ℓ ])
+    open Func
+    open ↓Obj
+    open ↓Hom
+    open _=>_
+    module pointwise d = is-ran (pointwise d)
+    open is-ran
+
+  ↓cone : ∀ (c' : C'.Ob) → Const (L .F₀ c') => F F∘ Cod (!Const c') p
+  ↓cone c' .η j = eps .η _ D.∘ L .F₁ (j .map)
+  ↓cone c' .is-natural _ _ f =
+    D.idr _
+    ∙∙ pushr L (sym (C'.idr _) ∙ f .com)
+    ∙∙ D.pushl (eps .is-natural _ _ _)
+
+  pointwise-ran→has-comma-limits
+    : ∀ (c' : C'.Ob)
+    → is-limit (F F∘ Cod (!Const c') p) (L .F₀ c') (↓cone c')
+  pointwise-ran→has-comma-limits c' =
+    represents→is-limit $
+    [D^op,Sets].make-invertible inv invl invr
+    where
+
+      represent-↓cone
+        : ∀ (d : D.Ob)
+        → Const d => F F∘ Cod (!Const c') p
+        → Hom-from C' c' F∘ p => Hom-from D d F∘ F
+      represent-↓cone d α .η c f = α .η (↓obj f)
+      represent-↓cone d α .is-natural _ _ f = funext λ g →
+        sym (D.idr _) ∙ α .is-natural _ _ (↓hom (C'.idr _))
+
+      pointwise-↓cone
+        : ∀ (d : D.Ob)
+        → (α : Const d => F F∘ Cod (!Const c') p)
+        → Hom-from C' c' => Hom-from D d F∘ L
+      pointwise-↓cone d α = pointwise.σ d (represent-↓cone d α)
+
+      inv : Lim[C[=,F-]] => Hom-into D (L .F₀ c')
+      inv .η d α =
+        pointwise-↓cone d α .η c' C'.id
+      inv .is-natural x y f = funext λ α →
+        pointwise.σ-uniq y {σ' = (よcov₁ D f ◂ L) ∘nt pointwise-↓cone x α}
+          (ext λ c g → D.pushl (sym (pointwise.σ-comm x ηₚ _ $ₚ _))) ηₚ c' $ₚ C'.id
+
+      invl : Hom-into-inj (↓cone c') ∘nt inv ≡ idnt
+      invl = ext λ d α c'↓p →
+        (eps .η _ D.∘ L .Functor.F₁ (c'↓p .map)) D.∘ pointwise-↓cone d α .η _ C'.id ≡⟨ D.pullr (sym (pointwise.σ d (represent-↓cone d α) .is-natural _ _ _ $ₚ _)) ⟩
+        eps .η _ D.∘ pointwise-↓cone d α .η _ ⌜ c'↓p .map C'.∘ C'.id ⌝              ≡⟨ ap! (C'.idr _) ⟩
+        eps .η _ D.∘ pointwise-↓cone d α .η _ (c'↓p .map)                           ≡⟨ pointwise.σ-comm d ηₚ _ $ₚ c'↓p .map ⟩
+        α .η (↓obj (c'↓p .map))                                                     ≡⟨ ap (α .η) (↓Obj-path _ _ refl refl refl) ⟩
+        α .η c'↓p                                                                   ∎
+
+      vaguely-yoneda
+        : ∀ {d : D.Ob} (α : D.Hom d (L .F₀ c'))
+        → Hom-from C' c' => Hom-from D d F∘ L
+      vaguely-yoneda α .η c'' f = L .F₁ f D.∘ α
+      vaguely-yoneda α .is-natural x y f =
+        funext λ g → pushl L refl
+
+      invr : inv ∘nt Hom-into-inj (↓cone c') ≡ idnt
+      invr = ext λ d α →
+        unext (pointwise.σ-uniq d {σ' = vaguely-yoneda α}
+          (ext λ c f → sym (D.assoc _ _ _))) c' C'.id
+        ∙ D.eliml (L .F-id)
+
+  -- pointwise-ran→is-ran : is-ran p F L eps
+  -- pointwise-ran→is-ran = comma-limits→is-ran p F λ c' →
+  --   subst (is-limit _ _) (ext λ _ → refl)
+  --     (pointwise-ran→has-comma-limits c')
+-}
+```
+-->
+
+<!--
+Same thing but with more general universe levels
+See Riehl or MacLane.
+
+```agda
+
+Lift-Sets-preserves-ran
+  : ∀ {oc ℓc oc' ℓc' ℓ ℓ'} {C : Precategory oc ℓc} {C' : Precategory oc' ℓc'}
+  → (p : Functor C C') (F : Functor C (Sets ℓ))
+  → preserves-ran p F (Lift-Sets {ℓ} ℓ')
+Lift-Sets-preserves-ran p F =
+  {!   !}
+  -- is-preserved-ran→preserves-ran (Lift-Sets _)
+  --   {!   !}
+  --   {!   !}
+
+module _
+  {oc ℓc oc' ℓc' od ℓd}
+  {C : Precategory oc ℓc} {C' : Precategory oc' ℓc'} {D : Precategory od ℓd}
+  {p : Functor C C'} {F : Functor C D} {L : Functor C' D} {eps : L F∘ p => F}
+  (pointwise : is-pointwise-ran eps)
+  where
+
+  private
+    module C = Cat.Reasoning C
+    module C' = Cat.Reasoning C'
+    module D = Cat.Reasoning D
+    lvl = oc ⊔ ℓc ⊔ ℓc' ⊔ ℓd
+    module [D^op,Sets] = Cat.Reasoning (Cat[ D ^op , Sets lvl ])
+    open Func
+    open ↓Obj
+    open ↓Hom
+    open _=>_
+    module pointwise d = is-ran (Lift-Sets-preserves-ran {ℓ' = lvl} p _ (pointwise d))
+    open is-ran
+
+  ↓cone' : ∀ (c' : C'.Ob) → Const (L .F₀ c') => F F∘ Cod (!Const c') p
+  ↓cone' c' .η j = eps .η _ D.∘ L .F₁ (j .map)
+  ↓cone' c' .is-natural _ _ f =
+    D.idr _
+    ∙∙ pushr L (sym (C'.idr _) ∙ f .com)
+    ∙∙ D.pushl (eps .is-natural _ _ _)
+
+  pointwise-ran→has-comma-limits'
+    : ∀ (c' : C'.Ob)
+    → is-limit (F F∘ Cod (!Const c') p) (L .F₀ c') (↓cone' c')
+  pointwise-ran→has-comma-limits' c' =
+    represents→is-limit $
+    [D^op,Sets].make-invertible inv {!   !} {!   !}
+    where
+
+      represent-↓cone
+        : ∀ (d : D.Ob)
+        → Const d => F F∘ Cod (!Const c') p
+        → (Lift-Sets lvl F∘ Hom-from C' c') F∘ p => (Lift-Sets lvl F∘ Hom-from D d) F∘ F
+      represent-↓cone d α .η c (lift f) = lift (α .η (↓obj f))
+      represent-↓cone d α .is-natural _ _ f = ext λ g →
+        sym (D.idr _) ∙ α .is-natural _ _ (↓hom (C'.idr _))
+
+      pointwise-↓cone
+        : ∀ (d : D.Ob)
+        → (α : Const d => F F∘ Cod (!Const c') p)
+        → Lift-Sets lvl F∘ Hom-from C' c' => (Lift-Sets lvl F∘ Hom-from D d) F∘ L
+      pointwise-↓cone d α = nat-assoc-to foo
+        where
+          y = represent-↓cone d α
+          x : (Lift-Sets lvl F∘ Hom[ C' ,-] c') F∘ p => Lift-Sets lvl F∘ Hom[ D ,-] d F∘ F
+          x = nat-unassoc-to y
+          foo = pointwise.σ d {M = Lift-Sets lvl F∘ Hom-from C' c'} x
+
+      inv : Lim[C[=,F-]] {Dia = F F∘ Cod (!Const c') p} => Lift-Sets (oc ⊔ ℓc ⊔ ℓc') F∘ Hom-into D (L .F₀ c')
+      inv .η d α =
+        lift (pointwise-↓cone d α .η c' (lift C'.id) .lower)
+      inv .is-natural x y f = ext λ α →
+        -- pointwise.σ-uniq y {σ' = (よcov₁ D f ◂ L) ∘nt pointwise-↓cone x α}
+        --   (ext λ c g → D.pushl (sym (pointwise.σ-comm x ηₚ _ $ₚ _))) ηₚ c' $ₚ C'.id
+        let foo = pointwise.σ-uniq y {β = nat-unassoc-to (represent-↓cone y (α ∘nt constⁿ f))} {σ' = (Lift-Sets lvl ▸ (よcov₁ D f ◂ L)) ∘nt nat-unassoc-to (pointwise-↓cone x α)}
+        in ap lower (foo (ext λ c g → D.pushl (sym (ap lower (pointwise.σ-comm x ηₚ c $ₚ {!   !})))) ηₚ c' $ₚ lift C'.id)
+
+{-
+      invl : Hom-into-inj (↓cone' c') ∘nt inv ≡ idnt
+      invl = ext λ d α c'↓p →
+        (eps .η _ D.∘ L .Functor.F₁ (c'↓p .map)) D.∘ pointwise-↓cone d α .η _ C'.id ≡⟨ D.pullr (sym (pointwise.σ d (represent-↓cone d α) .is-natural _ _ _ $ₚ _)) ⟩
+        eps .η _ D.∘ pointwise-↓cone d α .η _ ⌜ c'↓p .map C'.∘ C'.id ⌝              ≡⟨ ap! (C'.idr _) ⟩
+        eps .η _ D.∘ pointwise-↓cone d α .η _ (c'↓p .map)                           ≡⟨ pointwise.σ-comm d ηₚ _ $ₚ c'↓p .map ⟩
+        α .η (↓obj (c'↓p .map))                                                     ≡⟨ ap (α .η) (↓Obj-path _ _ refl refl refl) ⟩
+        α .η c'↓p                                                                   ∎
+
+      vaguely-yoneda
+        : ∀ {d : D.Ob} (α : D.Hom d (L .F₀ c'))
+        → Hom-from C' c' => Hom-from D d F∘ L
+      vaguely-yoneda α .η c'' f = L .F₁ f D.∘ α
+      vaguely-yoneda α .is-natural x y f =
+        funext λ g → pushl L refl
+
+      invr : inv ∘nt Hom-into-inj (↓cone' c') ≡ idnt
+      invr = ext λ d α →
+        unext (pointwise.σ-uniq d {σ' = vaguely-yoneda α}
+          (ext λ c f → sym (D.assoc _ _ _))) c' C'.id
+        ∙ D.eliml (L .F-id)
+        -}
+
+  -- pointwise-ran→is-ran : is-ran p F L eps
+  -- pointwise-ran→is-ran = comma-limits→is-ran p F λ c' →
+  --   subst (is-limit _ _) (ext λ _ → refl)
+  --     (pointwise-ran→has-comma-limits c')
 ```
 -->

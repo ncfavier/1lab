@@ -4,6 +4,7 @@ open import Cat.Functor.Hom.Representable
 open import Cat.Functor.Naturality
 open import Cat.Functor.Kan.Base
 open import Cat.Functor.Compose
+open import Cat.Instances.Sets
 open import Cat.Functor.Base
 open import Cat.Functor.Hom
 open import Cat.Prelude
@@ -26,8 +27,8 @@ chains of natural isomorphisms, which can be very handy!
 <!--
 ```agda
 module _
-  {o ℓ o' ℓ'}
-  {C : Precategory o ℓ} {C' : Precategory o ℓ} {D : Precategory o' ℓ'}
+  {o ℓ o' ℓ' o'' ℓ''}
+  {C : Precategory o ℓ} {C' : Precategory o' ℓ'} {D : Precategory o'' ℓ''}
   {p : Functor C C'} {F : Functor C D} {G : Functor C' D}
   where
   private
@@ -59,15 +60,15 @@ a candidate for a left extension, as in the following diagram.
 \end{tikzcd}
 ~~~
 
-Any such pair $(G, \eta)$ induces a natural transformation
+Any such pair $(G, \eta)$ induces a natural^[We ignore the naturality
+for now to allow for more general universe levels.] transformation
 $D^{C'}(G, -) \to D^{C}(F, - \circ p)$.
 
 ```agda
   Hom-from-precompose
     : F => G F∘ p
-    → Hom-from Cat[ C' , D ] G => Hom-from Cat[ C , D ] F F∘ precompose p
-  Hom-from-precompose eta .η H α = (α ◂ p) ∘nt eta
-  Hom-from-precompose eta .is-natural H K α = funext λ β → [C,D].pushl ◂-distribl
+    → ∀ H → G => H → F => H F∘ p
+  Hom-from-precompose eta H α = (α ◂ p) ∘nt eta
 ```
 
 If this natural transformation is an isomorphism, then $(G, \eta)$ is a
@@ -76,9 +77,9 @@ left Kan extension of $F$ along $p$.
 ```agda
   represents→is-lan
     : (eta : F => G F∘ p)
-    → is-invertibleⁿ (Hom-from-precompose eta)
+    → (∀ H → is-equiv (Hom-from-precompose eta H))
     → is-lan p F G eta
-  represents→is-lan eta nat-inv = lan where
+  represents→is-lan eta inv = lan where
 ```
 
 This may seem somewhat difficult to prove at first glance, but it ends
@@ -88,12 +89,12 @@ factorisation/uniqueness follow directly from the fact that we have
 a natural isomorphism.
 
 ```agda
-    module nat-inv = is-invertibleⁿ nat-inv
+    module inv {H} = Equiv (_ , inv H)
 
     lan : is-lan p F G eta
-    lan .σ {M} α = nat-inv.inv .η M α
-    lan .σ-comm {M} {α} = nat-inv.invl ηₚ M $ₚ α
-    lan .σ-uniq {M} {α} {σ'} q = ap (nat-inv.inv .η M) q ∙ nat-inv.invr ηₚ M $ₚ σ'
+    lan .σ {M} α = inv.from α
+    lan .σ-comm {M} {α} = inv.ε α
+    lan .σ-uniq {M} {α} {σ'} q = ap inv.from q ∙ inv.η σ'
 ```
 
 Furthermore, if $(G, \eta)$ is a left extension, then we can show that
@@ -104,16 +105,16 @@ exercise in moving data around.
   is-lan→represents
     : {eta : F => G F∘ p}
     → is-lan p F G eta
-    → is-invertibleⁿ (Hom-from-precompose eta)
-  is-lan→represents {eta} lan =
-    to-is-invertibleⁿ inv
-      (λ M → funext λ α → lan .σ-comm)
-      (λ M → funext λ α → lan .σ-uniq refl)
-    where
-      inv : Hom-from Cat[ C , D ] F F∘ precompose p => Hom-from Cat[ C' , D ] G
-      inv .η M α = lan .σ α
-      inv .is-natural M N α = funext λ β →
-        lan .σ-uniq (ext λ _ → D.pushr (sym $ lan .σ-comm ηₚ _))
+    → ∀ H → is-equiv (Hom-from-precompose eta H)
+  is-lan→represents {eta} lan H =
+    is-iso→is-equiv $ iso (lan .σ)
+      (λ α → lan .σ-comm)
+      (λ α → lan .σ-uniq refl)
+
+  is-lan≃represents
+    : {eta : F => G F∘ p}
+    → is-lan p F G eta ≃ (∀ H → is-equiv (Hom-from-precompose eta H))
+  is-lan≃represents = prop-ext! is-lan→represents (represents→is-lan _)
 ```
 
 <!--
@@ -142,20 +143,24 @@ module _
   lan→represents : Lan p F → Corepresentation (Hom-from Cat[ C , D ] F F∘ precompose p)
   lan→represents lan .corep = lan .Ext
   lan→represents lan .corepresents =
-    (is-invertibleⁿ→isoⁿ (is-lan→represents (lan .has-lan))) ni⁻¹
+    iso→isoⁿ
+      (λ H → equiv→iso (_ , is-lan→represents (lan .has-lan) H))
+      (λ α → funext λ β → [C,D].pulll (sym ◂-distribl))
+      ni⁻¹
 
   represents→lan : Corepresentation (Hom-from Cat[ C , D ] F F∘ precompose p) → Lan p F
   represents→lan has-corep .Ext = has-corep .corep
   represents→lan has-corep .eta = has-corep .corepresents .from .η _ idnt
   represents→lan has-corep .has-lan =
     represents→is-lan (Corep.to has-corep idnt) $
-    to-is-invertibleⁿ (has-corep .corepresents .to)
-      (λ M → funext λ α →
+    λ H → is-iso→is-equiv $ iso
+      (has-corep .corepresents .to .η H)
+      (λ α →
         (Corep.from has-corep α ◂ p) ∘nt Corep.to has-corep idnt ≡˘⟨ has-corep .corepresents .from .is-natural _ _ _ $ₚ idnt ⟩
         Corep.to has-corep (Corep.from has-corep α ∘nt idnt)     ≡⟨ ap (Corep.to has-corep) ([C',D].idr _) ⟩
         Corep.to has-corep (Corep.from has-corep α)              ≡⟨ Corep.ε has-corep α ⟩
         α ∎)
-      (λ M → funext λ α →
+      (λ α →
         Corep.from has-corep ((α ◂ p) ∘nt Corep.to has-corep idnt) ≡⟨ has-corep .corepresents .to .is-natural _ _ _ $ₚ _ ⟩
         α ∘nt Corep.from has-corep (Corep.to has-corep idnt)       ≡⟨ [C',D].elimr (Corep.η has-corep idnt) ⟩
         α ∎)

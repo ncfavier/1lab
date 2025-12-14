@@ -336,6 +336,12 @@ other data we have been given:
     → is-ran !F D K eps
   to-is-limitp {D} {K} {eps} mklim p =
     generalize-limitp (to-is-limit mklim) p
+
+  is-limit→is-ran
+    : ∀ {Diagram : Functor J C} {X : Functor ⊤Cat C} {cone : X F∘ !F => Diagram}
+    → is-limit Diagram (X .Functor.F₀ tt) (to-coneⁿ cone)
+    → is-ran !F Diagram X cone
+  is-limit→is-ran lim = generalize-limitp lim refl
 ```
 -->
 
@@ -846,6 +852,23 @@ object! Any limit is as good as any other.
 ```agda
   preserves-limit : Type _
   preserves-limit = preserves-ran !F Diagram F
+  -- private
+  --   module C = Cat.Reasoning C
+  --   module D = Cat.Reasoning D
+  --   module F = Func F
+  -- F-cone : ∀ {X} → Const X => Diagram → Const (F .Functor.F₀ X) => F F∘ Diagram
+  -- F-cone cone ._=>_.η j = F .Functor.F₁ (cone ._=>_.η j)
+  -- F-cone cone ._=>_.is-natural x y f = (D.elimr refl ∙ F.⟨ C.intror refl ⟩) ∙∙ ap (F .Functor.F₁) (cone ._=>_.is-natural x y f) ∙∙ F.F-∘ _ _
+  -- preserves-is-limit : ∀ X (cone : Const X => Diagram) → Type _
+  -- preserves-is-limit X cone = is-limit (F F∘ Diagram) (F .Functor.F₀ X) {! F ▸ cone  !}
+  -- preserves-limit' : Type _
+  -- preserves-limit' =
+  --   ∀ {X} {cone : Const X => Diagram}
+  --   → is-limit Diagram X cone
+  --   → preserves-is-limit X cone
+  -- preserves-limit'→preserves-limit
+  --   : preserves-limit' → preserves-limit
+  -- preserves-limit'→preserves-limit pres ran = {!   !}
 ```
 
 ## Reflection of limits {defines="reflected-limit reflects-limits"}
@@ -917,7 +940,7 @@ module _ {J : Precategory o₁ h₁} {C : Precategory o₂ h₂} {D : Precategor
 ## Continuity {defines="continuous-functor"}
 
 ```agda
-is-continuous
+is-continuous -- is-continuous'
   : ∀ (oshape hshape : Level)
       {C : Precategory o₁ h₁}
       {D : Precategory o₂ h₂}
@@ -932,6 +955,9 @@ limit for that diagram.
 is-continuous oshape hshape {C = C} F =
   ∀ {J : Precategory oshape hshape} {Diagram : Functor J C}
   → preserves-limit F Diagram
+-- is-continuous' oshape hshape {C = C} F =
+--   ∀ {J : Precategory oshape hshape} {Diagram : Functor J C}
+--   → preserves-limit' F Diagram
 ```
 
 ## Lifting and creation of limits {defines="lifted-limit lifts-limits created-limit creates-limits"}
@@ -965,10 +991,10 @@ module _ {J : Precategory o₁ h₁} {C : Precategory o₂ h₂} {D : Precategor
     no-eta-equality
     field
       lifted : Limit Diagram
-      preserved : preserves-is-ran F (Limit.has-ran lifted)
+      preserved : is-preserved-ran (Limit.has-ran lifted) F
 
     lifts→preserves-limit : preserves-limit F Diagram
-    lifts→preserves-limit = preserves-is-ran→preserves-ran F
+    lifts→preserves-limit = is-preserved-ran→preserves-ran F
       (Limit.has-ran lifted) preserved
 ```
 

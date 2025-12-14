@@ -9,6 +9,7 @@ open import Cat.Functor.Base
 open import Cat.Functor.Hom
 open import Cat.Prelude
 
+import Cat.Functor.Reasoning
 import Cat.Functor.Morphism
 import Cat.Reasoning
 ```
@@ -28,6 +29,7 @@ functors]], and the [[Yoneda embedding]].
 module _ {o ℓ} {C : Precategory o ℓ} where
   open Cat.Reasoning C
   private
+    module Sets = Cat.Reasoning (Sets ℓ)
     module PSh[C] = Cat.Reasoning Cat[ C ^op , Sets ℓ ]
     module CoPSh[C] = Cat.Reasoning Cat[ C , Sets ℓ ]
     module よ = Cat.Functor.Morphism (よ C)
@@ -83,3 +85,72 @@ monos to epis, and vice versa.
   よcov-reflects-epi-to-mono : CoPSh[C].is-epic (よcov₁ C f) → is-monic f
   よcov-reflects-epi-to-mono = よcov.faithful→reflects-epi (よcov-is-faithful C)
 ```
+
+```agda
+  open import Cat.Diagram.Limit.Base
+  open import Cat.Instances.Functor.Limits
+  open import Cat.Functor.Kan.Unique
+  open import Cat.Functor.Naturality
+  open import Cat.Functor.Compose
+  open import Cat.Functor.Hom.Representable
+  open import Cat.Instances.Shape.Terminal
+
+  open Functor
+
+  よ-preserves-limits : ∀ {o' κ'} → is-continuous o' κ' (よ C)
+  よ-preserves-limits {Diagram = D} {G} {eps} lim =
+    is-limit→is-ran $ is-pointwise-limit→is-limit _ _ _ λ c →
+      natural-isos→is-ran idni
+        (iso→isoⁿ (λ _ → Sets.id-iso) λ _ → refl)
+        (!const-isoⁿ Sets.id-iso)
+        (ext λ j h → refl⟩∘⟨ G.eliml refl)
+        (Hom-from-preserves-limits c lim)
+    where module G = Cat.Functor.Reasoning G
+```
+
+
+```agda
+open import Cat.Functor.Naturality
+open import Cat.Instances.Functor.Limits
+open import Cat.Diagram.Limit.Base
+open import Cat.Functor.Kan.Unique
+open import Cat.Functor.Kan.Reflection
+open import Cat.Instances.Shape.Terminal
+open import Cat.Functor.Compose
+open import Cat.Functor.Coherence
+
+private variable
+  o ℓ : Level
+  D E F : Precategory o ℓ
+module _ (p : Functor D E) where
+
+  precompose-preserves-limits
+    : ∀ {o' κ'} → is-continuous o' κ' (precompose p {D = F})
+  precompose-preserves-limits {F = F} {Diagram = Dia} {G} {eps} lim =
+    -- natural-isos→is-ran idni idni
+    --   (!const-isoⁿ (Cat.Reasoning.id-iso _))
+    --   (ext λ j d → F.eliml refl ∙ F.elimr (F.eliml refl))
+      -- (is-pointwise-limit→is-limit (precompose p F∘ Dia) (G F∘ p)
+      --   -- (NT ((precompose p ▸ eps) .η) λ x y f → ap ((eps .η y ◂ p) ∘nt_) (sym {!   !}) ∙ (precompose p ▸ eps) .is-natural x y f)
+      --   _
+      --   λ e → {! lim   !})
+    is-limit→is-ran $ is-pointwise-limit→is-limit _ _ _ λ d →
+      trivial-is-ran!
+        (is-limit→is-pointwise-limit _ _ _
+          (to-is-limit (unmake-limit lim))
+          (p .Functor.F₀ d))
+    where
+      module F = Cat.Reasoning F
+      -- module [D,F] = Cat.Reasoning Cat[ D , F ]
+```
+
+Hom(-, =) preserves limits in =:
+  Hom(-, lim D_i)
+= (λ x → Hom(x, lim D_i))
+= (λ x → lim Hom(x, D_i)) -- Hom(x, -) preserves limits
+= lim Hom(-, D_i) -- pointwise
+
+- ∘ p preserves limits:
+  (lim D_i) ∘ p
+= λ x → (lim D_i) (p x)
+= λ x → lim (D_i (p x))

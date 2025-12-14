@@ -100,10 +100,7 @@ of $\cD$'s [[Yoneda embedding]] with precomposition by $F$.
 
 ```agda
     Nerve : Functor D (PSh κ C)
-    Nerve .F₀ c    = Hom-into D c F∘ Functor.op F
-    Nerve .F₁ f    = よ₁ D f ◂ (Functor.op F)
-    Nerve .F-id    = ext λ _ _ → D.idl _
-    Nerve .F-∘ _ _ = ext λ _ _ → sym (D.assoc _ _ _)
+    Nerve = precompose (Functor.op F) F∘ よ D
 ```
 
 The action of $F$ on morphisms assembles into a natural transformation

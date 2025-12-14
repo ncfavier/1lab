@@ -6,6 +6,7 @@ open import Cat.Displayed.Diagram.Total.Product
 open import Cat.CartesianClosed.Free.Signature
 open import Cat.Monoidal.Instances.Cartesian
 open import Cat.Displayed.Instances.Slice
+open import Cat.Functor.Hom.Properties
 open import Cat.Diagram.Exponential
 open import Cat.Displayed.Section
 open import Cat.Functor.Kan.Nerve
@@ -1178,6 +1179,8 @@ stated the universal property of $\Syn_\Sigma$*!
 ```agda
 open Cartesian-functor using (pres-products ; pres-terminal)
 
+open import Cat.Diagram.Limit.Base
+open import Cat.Functor.Hom.Representable
 Tm-cartesian : Cartesian-functor Tm Free-cartesian PSh-cartesian
 Tm-cartesian .pres-products a b = Sem.make-invertible
   (NT (elim! (λ a p q → p `, q)) λ x y f → ext λ p q → sym (Syn.⟨⟩∘ _))
@@ -1185,6 +1188,7 @@ Tm-cartesian .pres-products a b = Sem.make-invertible
   (ext (λ i x → sym `πη))
 Tm-cartesian .pres-terminal x .centre  = NT (λ _ _ → `!) (λ x y f → ext λ a → `!-η _)
 Tm-cartesian .pres-terminal x .paths a = ext λ i x → `!-η _
+-- Tm-cartesian = continuous→cartesian Tm Free-cartesian PSh-cartesian (F∘-preserves-limits よ-preserves-limits (precompose-preserves-limits _))
 ```
 
 However, there is an off-the-shelf solution we can reach for: since

@@ -797,10 +797,10 @@ module _ {J : Precategory o₁ h₁} {C : Precategory o₂ h₂} {D : Precategor
     no-eta-equality
     field
       lifted : Colimit Diagram
-      preserved : preserves-is-lan F (Colimit.has-lan lifted)
+      preserved : is-preserved-lan (Colimit.has-lan lifted) F
 
     lifts→preserves-colimit : preserves-colimit F Diagram
-    lifts→preserves-colimit = preserves-is-lan→preserves-lan F
+    lifts→preserves-colimit = is-preserved-lan→preserves-lan F
       (Colimit.has-lan lifted) preserved
 ```
 

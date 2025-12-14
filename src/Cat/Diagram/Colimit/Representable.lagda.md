@@ -53,16 +53,16 @@ conditions.
   Lim[C[F-,=]] .F-id = ext λ _ _ → C.idl _
   Lim[C[F-,=]] .F-∘ _ _ = ext λ _ _ → sym $ C.assoc _ _ _
 
-  Hom-into-inj
+  Hom-from-inj
     : ∀ {c : C.Ob} (eta : Dia => Const c)
     → Hom-from C c => Lim[C[F-,=]]
-  Hom-into-inj eta .η x f = constⁿ f ∘nt eta
-  Hom-into-inj eta .is-natural x y f = ext λ g _ →
+  Hom-from-inj eta .η x f = constⁿ f ∘nt eta
+  Hom-from-inj eta .is-natural x y f = ext λ g _ →
     sym $ C.assoc _ _ _
 
   represents→is-colimit
     : ∀ {c : C.Ob} {eta : Dia => Const c}
-    → is-invertibleⁿ (Hom-into-inj eta)
+    → is-invertibleⁿ (Hom-from-inj eta)
     → is-colimit Dia c eta
   represents→is-colimit {c} {eta} nat-inv = colim where
     module nat-inv = is-invertibleⁿ nat-inv
