@@ -127,7 +127,7 @@ As noted earlier, limits and colimits are pointwise Kan extensions.
     : {eta : Dia => Const x}
     → (colim : is-colimit Dia x eta)
     → is-pointwise-lan colim
-  colimit→pointwise colim x = よ-reverses-colimits x colim
+  colimit→pointwise colim x = Hom-into-reverses-colimits x colim
 ```
 
 ## Computing pointwise extensions
@@ -413,7 +413,7 @@ words, the extension we constructed is pointwise.
   cocomplete→pointwise-lan colim d =
     preserves-colimits→preserves-pointwise-lan
       colim (opFʳ (Hom-into D d))
-      (よ-reverses-colimits d)
+      (Hom-into-reverses-colimits d)
 ```
 
 ## All pointwise extensions are computed via (co)limits

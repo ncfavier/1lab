@@ -449,11 +449,11 @@ to give a $a + b \to x$ out of a coproduct, we are required to give
 a pair of maps $a \to x$ and $b \to x$.
 
 ```agda
-よ-reverses-colimits
+Hom-into-reverses-colimits
   : ∀ {o' κ'}
   → (c : C.Ob)
-  → is-cocontinuous o' κ' (opFʳ (よ₀ C c))
-よ-reverses-colimits c {Diagram = Dia} {K} {eta} colim =
+  → is-cocontinuous o' κ' (opFʳ (Hom-into C c))
+Hom-into-reverses-colimits c {Diagram = Dia} {K} {eta} colim =
   to-is-colimitp mc (funext λ _ → refl) where
   open make-is-colimit
   module colim = is-colimit colim
@@ -485,5 +485,5 @@ representable-reverses-colimits F-rep colim =
       natural x y f = im.to .is-natural _ _ _
   in natural-iso→preserves-colimits
     im'
-    (よ-reverses-colimits (F-rep .rep)) colim
+    (Hom-into-reverses-colimits (F-rep .rep)) colim
 ```
