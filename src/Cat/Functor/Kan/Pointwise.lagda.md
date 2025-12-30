@@ -51,8 +51,8 @@ only the Kan extensions that _are_ preserved by arbitrary
 <!--
 ```agda
 module _
-  {o o' o'' ℓ ℓ' ℓ''}
-  {C : Precategory o ℓ} {C' : Precategory o' ℓ'} {D : Precategory o'' ℓ''}
+  {oc ℓc oc' ℓc' od ℓd}
+  {C : Precategory oc ℓc} {C' : Precategory oc' ℓc'} {D : Precategory od ℓd}
   {F : Functor C C'} {G : Functor C D} {E : Functor C' D}
   where
 
@@ -101,7 +101,7 @@ preserved by *all* functors.
 <!--
 ```agda
 module _
-  {o o' ℓ ℓ'}
+  {o ℓ o' ℓ'}
   {J : Precategory o' ℓ'} {C : Precategory o ℓ}
   {Dia : Functor J C} {x : ⌞ C ⌟}
   where
@@ -136,16 +136,20 @@ One useful fact about pointwise left Kan extensions (resp. right) is
 that they can be computed via colimits (resp. limits). We will focus on
 the left extensions for the moment. Given functors $F : \cC \to \cC'$
 and $G : \cC \to \cD$, if $\cC$ is a [$\kappa$-small] category, $\cC'$
-is _locally_ $\kappa$-small, and $\cD$ has $\kappa$-small colimits, then
-$\Lan_F(G)$ exists _and_ is pointwise.
+is _locally_ $\kappa$-small, and $\cD$ has $\kappa$-small colimits,^[In
+the code, we use a more general (but equivalent) formulation: $\cC$ is
+$(o_\cC, \ell_\cC)$-small, $\cC'$ is $(o_{\cC'}, \ell_{\cC'})$-small,
+and $\cD$ has $(o_\cC \sqcup \ell_{\cC'}, \ell_\cC \sqcup
+\ell_{\cC'})$-small colimits.] then $\Lan_F(G)$ exists _and_ is
+pointwise.
 
 [$\kappa$-small]: 1Lab.intro.html#universes-and-size-issues
 
 <!--
 ```agda
 module _
-  {o o' o'' ℓ ℓ'}
-  {C : Precategory o'' ℓ} {C' : Precategory o ℓ} {D : Precategory o' ℓ'}
+  {oc ℓc oc' ℓc' od ℓd}
+  {C : Precategory oc ℓc} {C' : Precategory oc' ℓc'} {D : Precategory od ℓd}
   (F : Functor C C') (G : Functor C D)
   where
 
@@ -299,7 +303,7 @@ And, if $\cD$ is $\kappa$-cocomplete, then it certainly has the required
 colimits: we can "un-weaken" our result.
 
 ```agda
-  cocomplete→lan : is-cocomplete (o'' ⊔ ℓ) ℓ D → Lan F G
+  cocomplete→lan : is-cocomplete (oc ⊔ ℓc') (ℓc ⊔ ℓc') D → Lan F G
   cocomplete→lan colimits = comma-colimits→lan (λ c' → colimits (↓Dia c'))
 ```
 
@@ -312,8 +316,8 @@ from" colimits.
 <!--
 ```agda
 module _
-  {o o' ℓ ℓ'}
-  {C : Precategory ℓ ℓ} {C' : Precategory o ℓ} {D : Precategory o' ℓ'}
+  {oc ℓc oc' ℓc' od ℓd}
+  {C : Precategory oc ℓc} {C' : Precategory oc' ℓc'} {D : Precategory od ℓd}
   (F : Functor C C') (G : Functor C D)
   where
 
@@ -337,10 +341,10 @@ end up being off by a bunch of natural isomorphisms.
 
 ```agda
   preserves-colimits→preserves-pointwise-lan
-    : ∀ {o'' ℓ''} {E : Precategory o'' ℓ''}
-    → (colimits : is-cocomplete ℓ ℓ D)
+    : ∀ {oe ℓe} {E : Precategory oe ℓe}
+    → (colimits : is-cocomplete (oc ⊔ ℓc') (ℓc ⊔ ℓc') D)
     → (H : Functor D E)
-    → is-cocontinuous ℓ ℓ H
+    → is-cocontinuous (oc ⊔ ℓc') (ℓc ⊔ ℓc') H
     → preserves-is-lan H (Lan.has-lan (cocomplete→lan F G colimits))
   preserves-colimits→preserves-pointwise-lan {E = E} colimits H cocont =
     natural-isos→is-lan idni idni HF'-cohere fixup $
@@ -408,7 +412,7 @@ words, the extension we constructed is pointwise.
 
 ```agda
   cocomplete→pointwise-lan
-    : (colim : is-cocomplete ℓ ℓ D)
+    : (colim : is-cocomplete (oc ⊔ ℓc') (ℓc ⊔ ℓc') D)
     → is-pointwise-lan (Lan.has-lan (cocomplete→lan F G colim))
   cocomplete→pointwise-lan colim d =
     preserves-colimits→preserves-pointwise-lan
@@ -431,8 +435,8 @@ pointwise!
 <!--
 ```agda
 module _
-  {o ℓ}
-  {C : Precategory ℓ ℓ} {C' : Precategory ℓ ℓ} {D : Precategory o ℓ}
+  {o ℓ o'}
+  {C : Precategory ℓ ℓ} {C' : Precategory o' ℓ} {D : Precategory o ℓ}
   {p : Functor C C'} {F : Functor C D} {L : Functor C' D} {eta : F => L F∘ p}
   (lan : is-lan p F L eta) (pointwise : is-pointwise-lan lan)
   where
@@ -592,8 +596,8 @@ construct the requisite cocone.
           (λ {x} {y} f → collapse F (ff→faithful {F = p} p-ff (path f)))
 
 module _
-  {o o' ℓ ℓ'}
-  {C : Precategory ℓ ℓ} {C' : Precategory o ℓ} {D : Precategory o' ℓ'}
+  {oc ℓc oc' ℓc' od ℓd}
+  {C : Precategory oc ℓc} {C' : Precategory oc' ℓc'} {D : Precategory od ℓd}
   (F : Functor C C') (G : Functor C D)
   where
 
@@ -610,7 +614,7 @@ module _
   -- We don't use 'ff→pointwise-lan-ext' here, as it has a more restrictive
   -- universe bound.
   ff→cocomplete-lan-ext
-    : (cocompl : is-cocomplete ℓ ℓ D)
+    : (cocompl : is-cocomplete (oc ⊔ ℓc') (ℓc ⊔ ℓc') D)
     → is-fully-faithful F
     → cocomplete→lan F G cocompl .Ext F∘ F ≅ⁿ G
   ff→cocomplete-lan-ext cocompl ff = (to-natural-iso ni) ni⁻¹ where
