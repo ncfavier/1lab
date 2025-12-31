@@ -43,7 +43,7 @@ P(\tilde{s}))(y)=P(\tilde{s})(x)$ as $P(m):y\mapsto x$.
 
 ```agda
   さ : Functor (PSh ℓ (Sets ℓ)) (Sets ℓ)
-  さ = eval-at ★
+  さ = Eval ★
 
   has-よ-adj : さ ⊣ よ (Sets ℓ)
   has-よ-adj .unit .η P .η X p s = P ⟪ (λ _ → s) ⟫ p

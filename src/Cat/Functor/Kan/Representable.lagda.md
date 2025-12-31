@@ -114,6 +114,12 @@ exercise in moving data around.
       inv .η M α = lan .σ α
       inv .is-natural M N α = funext λ β →
         lan .σ-uniq (ext λ _ → D.pushr (sym $ lan .σ-comm ηₚ _))
+
+  is-lan≃represents
+    : {eta : F => G F∘ p}
+    → is-lan p F G eta
+    ≃ is-invertibleⁿ (Hom-from-precompose eta)
+  is-lan≃represents = prop-ext! is-lan→represents (represents→is-lan _)
 ```
 
 <!--

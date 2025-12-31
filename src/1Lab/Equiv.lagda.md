@@ -1029,6 +1029,16 @@ instructive exercise to work these out for yourself!</summary>
 ```agda
 _ : ∘-closed is-equiv
 _ = ∘-is-equiv
+
+square→equiv≃equiv
+  : ∀ {a b c d} {A : Type a} {B : Type b} {C : Type c} {D : Type d}
+  → {f : A → B} {g : C → D}
+  → (e : A ≃ C) (h : B ≃ D)
+  → h .fst ∘ f ≡ g ∘ e .fst
+  → is-equiv f ≃ is-equiv g
+square→equiv≃equiv e h p = prop-ext (is-equiv-is-prop _) (is-equiv-is-prop _)
+  (λ fe → equiv-cancelr (e .snd) (subst is-equiv p (∘-is-equiv (h .snd) fe)))
+  λ ge → equiv-cancell (h .snd) (subst is-equiv (sym p) (∘-is-equiv ge (e .snd)))
 ```
 -->
 

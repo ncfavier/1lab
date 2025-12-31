@@ -49,23 +49,27 @@ only difference between these types can be patched by
 
 <!--
 ```agda
-  is-invertible→is-equiv
-    : {A B : Set ℓ} {f : ∣ A ∣ → ∣ B ∣}
-    → Sets.is-invertible {A} {B} f
-    → is-equiv f
-  is-invertible→is-equiv x =
-    is-iso→is-equiv $ iso x.inv (happly x.invl) (happly x.invr)
-    where module x = Sets.is-invertible x
+  module _ {A B : Set ℓ} {f : ∣ A ∣ → ∣ B ∣} where
+    is-invertible→is-equiv
+      : Sets.is-invertible {A} {B} f
+      → is-equiv f
+    is-invertible→is-equiv x =
+      is-iso→is-equiv $ iso x.inv (happly x.invl) (happly x.invr)
+      where module x = Sets.is-invertible x
 
-  is-equiv→is-invertible
-    : {A B : Set ℓ} {f : ∣ A ∣ → ∣ B ∣}
-    → is-equiv f
-    → Sets.is-invertible {A} {B} f
-  is-equiv→is-invertible f-eqv =
-    Sets.make-invertible
-      (equiv→inverse f-eqv)
-      (funext (equiv→counit f-eqv))
-      (funext (equiv→unit f-eqv))
+    is-equiv→is-invertible
+      : is-equiv f
+      → Sets.is-invertible {A} {B} f
+    is-equiv→is-invertible f-eqv =
+      Sets.make-invertible
+        (equiv→inverse f-eqv)
+        (funext (equiv→counit f-eqv))
+        (funext (equiv→unit f-eqv))
+
+    is-invertible≃is-equiv
+      : Sets.is-invertible {A} {B} f
+      ≃ is-equiv f
+    is-invertible≃is-equiv = prop-ext! is-invertible→is-equiv is-equiv→is-invertible
 ```
 -->
 

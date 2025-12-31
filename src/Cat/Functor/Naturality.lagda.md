@@ -207,6 +207,13 @@ to an invertible natural transformation, resp. natural isomorphism.
     ate .η x = D.is-invertible.inv (i x)
     ate .is-natural = inverse-is-natural eta _ (λ x → D.is-invertible.invl (i x)) (λ x → D.is-invertible.invr (i x))
 
+  is-invertibleⁿ≃is-invertible
+    : ∀ {F G} {eta : F => G}
+    → is-invertibleⁿ eta
+    ≃ (∀ x → D.is-invertible (eta .η x))
+  is-invertibleⁿ≃is-invertible =
+    prop-ext! is-invertibleⁿ→is-invertible is-invertible→is-invertibleⁿ
+
   push-eqⁿ : ∀ {F G} (α : F ≅ⁿ G) {a b} {f g : C.Hom a b} → F .F₁ f ≡ F .F₁ g → G .F₁ f ≡ G .F₁ g
   push-eqⁿ {F = F} {G = G} α {f = f} {g} p =
     G .F₁ f                                           ≡⟨ D.insertl (α .Isoⁿ.invl ηₚ _) ⟩
