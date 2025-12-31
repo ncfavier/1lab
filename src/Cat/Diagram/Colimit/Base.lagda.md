@@ -468,7 +468,7 @@ module _ {o₁ h₁ o₂ h₂ : _} {J : Precategory o₁ h₁} {C : Precategory 
     → is-lan !F D K' eta
   is-invertible→is-colimitp {K' = K'} {eta = eta} eta' p q invert =
     generalize-colimitp
-      (is-invertible→is-lan Cy $ invertible→invertibleⁿ _ λ _ → invert)
+      (is-invertible→is-lan Cy $ is-invertible→is-invertibleⁿ λ _ → invert)
       q
 ```
 

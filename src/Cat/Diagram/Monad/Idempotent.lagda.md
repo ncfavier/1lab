@@ -97,7 +97,7 @@ $\mu$ is componentwise invertible.
 
 ```agda
 η≡Mη→idempotent : (∀ A → η (M₀ A) ≡ M₁ (η A)) → is-idempotent-monad
-η≡Mη→idempotent h = invertible→invertibleⁿ _ λ A →
+η≡Mη→idempotent h = is-invertible→is-invertibleⁿ λ A →
   η≡Mη→algebra-invertible h (Free-EM .F₀ A)
 
 idempotent≃η≡Mη : is-idempotent-monad ≃ (∀ A → η (M₀ A) ≡ M₁ (η A))
@@ -168,7 +168,7 @@ of our monad.
 
 ```agda
 reflective→idempotent : is-reflective (Free-EM⊣Forget-EM {M = monad}) → is-idempotent-monad
-reflective→idempotent ref = invertible→invertibleⁿ _ λ A →
+reflective→idempotent ref = is-invertible→is-invertibleⁿ λ A →
   iso→invertible (F-map-iso Forget-EM
     (is-reflective→counit-is-iso Free-EM⊣Forget-EM ref
       {Free-EM .F₀ A}))

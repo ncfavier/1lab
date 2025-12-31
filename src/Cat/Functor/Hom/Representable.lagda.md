@@ -168,7 +168,7 @@ constitutes a natural isomorphism.
   f-rep : Representation F
   f-rep .rep = top .ob
   f-rep .represents = C^.invertible→iso nat $
-    invertible→invertibleⁿ nat inv
+    is-invertible→is-invertibleⁿ inv
 ```
 
 In the other direction, we take the terminal element to be the image of the
@@ -353,7 +353,7 @@ initial-element→corepresentation {F} init = f-corep where
   f-corep : Corepresentation F
   f-corep .corep = bot .ob
   f-corep .corepresents = [C,Sets].invertible→iso nat $
-    invertible→invertibleⁿ nat inv
+    is-invertible→is-invertibleⁿ inv
 
 corepresentation→initial-element {F} F-corep = init where
   module F = Functor F

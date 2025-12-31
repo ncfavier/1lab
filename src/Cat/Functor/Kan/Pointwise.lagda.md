@@ -560,7 +560,7 @@ construct the requisite cocone.
 
 ```agda
   ff→pointwise-lan-ext p-ff =
-     invertible→invertibleⁿ eta λ c →
+     is-invertible→is-invertibleⁿ λ c →
        D.make-invertible (inv c)
          (pointwise-colim.unique₂ _ _
            (λ f → D.pullr (eta .is-natural _ _ _)

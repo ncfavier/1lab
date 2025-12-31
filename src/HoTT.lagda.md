@@ -879,7 +879,7 @@ _ = Functor
 _ = _=>_
 _ = Nat-is-set
 _ = Functor-path
-_ = invertible→invertibleⁿ
+_ = is-invertible→is-invertibleⁿ
 _ = isoⁿ→iso
 _ = Functor-is-category
 _ = _F∘_
@@ -898,7 +898,7 @@ _ = Cat
     `Nat-is-set`{.Agda}
   * The one after that is `Functor-path`{.Agda}.
 * Definition 9.2.3: `Cat[_,_]`{.Agda}
-* Lemma 9.2.4: If: `invertible→invertibleⁿ`{.Agda}; Only if: `isoⁿ→iso`{.Agda}
+* Lemma 9.2.4: If: `is-invertible→is-invertibleⁿ`{.Agda}; Only if: `isoⁿ→iso`{.Agda}
 * Theorem 9.2.5: `Functor-is-category`{.Agda}
 * Theorem 9.2.6: `_F∘_`{.Agda}
 * Definition 9.2.7: `_◂_`{.Agda}, `_▸_`{.Agda}

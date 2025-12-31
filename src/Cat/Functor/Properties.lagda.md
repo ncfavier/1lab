@@ -299,7 +299,7 @@ and $F$ covers every object of $\cD$.
 </summary>
 ```agda
   eso→precompose-conservative {A = A} F F-eso {G} {H} {α} α⁻¹ =
-    invertible→invertibleⁿ α λ d → ∥-∥-out! do
+    is-invertible→is-invertibleⁿ λ d → ∥-∥-out! do
       (c , Fc≅d) ← F-eso d
       let module Fc≅d = D._≅_ Fc≅d
       pure $

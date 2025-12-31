@@ -272,7 +272,7 @@ the [[postcomposition functor]] $F \circ -$ is conservative if $F$ is.
     : ∀ {o ℓ} {E : Precategory o ℓ}
     → is-conservative (postcompose F {D = E})
   conservative→postcompose-conservative inv =
-    invertible→invertibleⁿ _ λ d →
+    is-invertible→is-invertibleⁿ λ d →
       conservative (is-invertibleⁿ→is-invertible inv d)
 ```
 

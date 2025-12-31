@@ -198,11 +198,11 @@ to an invertible natural transformation, resp. natural isomorphism.
   isoⁿ→is-invertibleⁿ : ∀ {F G : Functor C D} (i : F ≅ⁿ G) → is-invertibleⁿ (Isoⁿ.to i)
   isoⁿ→is-invertibleⁿ i = CD.iso→invertible i
 
-  invertible→invertibleⁿ
-    : ∀ {F G} (eta : F => G)
+  is-invertible→is-invertibleⁿ
+    : ∀ {F G} {eta : F => G}
     → (∀ x → D.is-invertible (eta .η x))
     → is-invertibleⁿ eta
-  invertible→invertibleⁿ eta i = to-is-invertibleⁿ ate (λ x → D.is-invertible.invl (i x)) λ x → D.is-invertible.invr (i x) where
+  is-invertible→is-invertibleⁿ {eta = eta} i = to-is-invertibleⁿ ate (λ x → D.is-invertible.invl (i x)) λ x → D.is-invertible.invr (i x) where
     ate : _ => _
     ate .η x = D.is-invertible.inv (i x)
     ate .is-natural = inverse-is-natural eta _ (λ x → D.is-invertible.invl (i x)) (λ x → D.is-invertible.invr (i x))

@@ -117,7 +117,7 @@ module
 
   is-reflective→counit-iso : (L F∘ ι) ≅ⁿ Id
   is-reflective→counit-iso = DD.invertible→iso counit invs where
-    invs = invertible→invertibleⁿ counit λ x →
+    invs = is-invertible→is-invertibleⁿ λ x →
       is-reflective→counit-is-invertible
 
   η-comonad-commute : ∀ {x} → unit.η (ι.₀ (L.₀ x)) ≡ ι.₁ (L.₁ (unit.η x))

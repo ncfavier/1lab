@@ -586,7 +586,7 @@ module _ {o₁ h₁ o₂ h₂ : _} {J : Precategory o₁ h₁} {C : Precategory 
     → is-ran !F D K' eps
   is-invertible→is-limitp {K' = K'} eps' p q invert =
     generalize-limitp
-      (is-invertible→is-ran Ly $ invertible→invertibleⁿ _ (λ _ → invert))
+      (is-invertible→is-ran Ly $ is-invertible→is-invertibleⁿ (λ _ → invert))
       q
 ```
 

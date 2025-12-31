@@ -112,7 +112,7 @@ $F : \cI \to [ \cC, \cD ]$.
     → is-conservative (Swap F)
     → is-jointly-conservative (F .F₀)
   swap-conservative→jointly-conservative F reflect-iso isos =
-    reflect-iso (invertible→invertibleⁿ (Swap F .F₁ _) isos)
+    reflect-iso (is-invertible→is-invertibleⁿ isos)
 
   jointly-conservative→swap-conservative
     : (F : Functor K Cat[ C , D ])

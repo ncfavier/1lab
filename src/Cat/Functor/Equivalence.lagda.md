@@ -61,11 +61,11 @@ morphisms gives isomorphisms in the respective functor categories:
   F∘F⁻¹≅Id : Cat.Isomorphism [D,D] (F F∘ F⁻¹) Id
   F∘F⁻¹≅Id = Cat.invertible→iso [D,D]
     counit
-    (invertible→invertibleⁿ _ counit-iso)
+    (is-invertible→is-invertibleⁿ counit-iso)
 
   Id≅F⁻¹∘F : Cat.Isomorphism [C,C] Id (F⁻¹ F∘ F)
   Id≅F⁻¹∘F = Cat.invertible→iso [C,C]
-    unit (invertible→invertibleⁿ _ unit-iso)
+    unit (is-invertible→is-invertibleⁿ unit-iso)
 
   unit⁻¹   = Cat.from Id≅F⁻¹∘F
   counit⁻¹ = Cat.from F∘F⁻¹≅Id
