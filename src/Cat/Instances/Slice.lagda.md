@@ -727,11 +727,11 @@ If $\cC/B$ is the category of _families of $\cC$-objects indexed by
 $B$_, it stands to reason that we should be able to consider _any_
 object $A : \cC$ as a family over $B$, where each fibre of the family is
 isomorphic to $A$. Type-theoretically, this would correspond to taking a
-closed type and trivially regarding it as living in a context $\Gamma$
+closed type and trivially regarding it as living in a context $B$
 by ignoring the context entirely.
 
 From the perspective of slice categories, the **constant families
-functor**, $\Delta : \cC \to \cC/B$, sends an object $A : \cC$ to the
+functor**, $B^* : \cC \to \cC/B$, sends an object $A : \cC$ to the
 projection morphism $\pi_2 : A \times B \to B$.
 
 ```agda
@@ -750,7 +750,7 @@ module _ {o ℓ} {C : Precategory o ℓ} {B} (prod : has-products C) where
 
 We can observe that this really is a _constant families_ functor by
 performing the following little calculation: If we have a map $h : Y \to
-B$, then the fibre of $\Delta_B(A)$ over $h$ is isomorphic to $A \times Y$;
+B$, then the fibre of $B^* A$ over $h$ is isomorphic to $A \times Y$;
 that is, we have the following pullback square:
 
 ~~~{.quiver}
@@ -798,7 +798,8 @@ functor $\cC \to \cC/B$ that is just the constant families functor.
 On the other hand, the "dependent sum" functor sends a map $A \to B$
 to the unique composite $A \to B \to \top$: it simply `Forget/`{.Agda}s the
 map. Thus the following adjunction is a special case of the
-adjunction between [[dependent sum]] and base change.
+adjunction between [[dependent sum]] and base change, and we refer to
+the forgetful functor as $\Sigma_B$.
 
 ```agda
   Forget⊣constant-family : Forget/ ⊣ constant-family
@@ -820,20 +821,20 @@ adjunction between [[dependent sum]] and base change.
 ```
 
 Furthermore, this adjunction is [[comonadic]]! First, notice
-that the [[induced comonad|comonad from an adjunction]] $U \circ \Delta$
+that the [[induced comonad|comonad from an adjunction]] $\Sigma_B \circ B^*$
 on $\cC$ is none other than the [[writer comonad]] $B \times -$, up to
 swapping.
 
 ```agda
-  UΔ≡Writer : Forget/ F∘ constant-family ≅ⁿ Writer C B (prod B)
-  UΔ≡Writer = iso→isoⁿ
+  Forget∘constant≅Writer : Forget/ F∘ constant-family ≅ⁿ Writer C B (prod B)
+  Forget∘constant≅Writer = iso→isoⁿ
     (λ _ → invertible→iso swap swap-is-iso)
     λ f → (ap ⟨_, f ∘ π₂ ⟩ (sym (idl _)) ⟩∘⟨refl)
        ∙∙ swap-natural (f , id)
        ∙∙ (refl⟩∘⟨ ap ⟨ f ∘ π₁ ,_⟩ (idl _))
 ```
 
-It remains to ponder what a $U\Delta$-coalgebra on $A$ is: this should
+It remains to ponder what a $\Sigma_B B^*$-coalgebra on $A$ is: this should
 consist of a map $\langle f, g \rangle : A \to A \times B$ obeying some
 laws. In particular, the `counit law`{.Agda ident=ρ-counit} implies that
 $f = \id$, so that we are left with $g : A \to B$, an object of $\cC/B$!
@@ -851,9 +852,9 @@ $f = \id$, so that we are left with $g : A \to B$, an object of $\cC/B$!
       eso .linv _ = /-Obj-path refl π₂∘⟨⟩
 ```
 
-A short computation shows that morphisms of $U\Delta$-coalgebras also
+A short computation shows that morphisms of $\Sigma_B B^*$-coalgebras also
 precisely correspond to commuting triangles, so we get an [[isomorphism
-of precategories]] between the category of $U\Delta$-coalgebras and
+of precategories]] between the category of $\Sigma_B B^*$-coalgebras and
 $\cC/B$.
 
 ```agda
