@@ -123,7 +123,7 @@ exercises, so we leave them hidden in this `<details>` tag.</summary>
 
     is-subterminal₂→₀ : is-subterminal₂ P → is-subterminal P
     is-subterminal₂→₀ = rec! λ p h X f g →
-      sym (p .π₁∘⟨⟩) ∙∙ h ⟩∘⟨refl ∙∙ p .π₂∘⟨⟩
+      sym (p .π₁∘⟨⟩) ∙∙ car h ∙∙ p .π₂∘⟨⟩
 
     is-subterminal₁→₃ : is-subterminal₁ P → is-subterminal₃ P
     is-subterminal₁→₃ h = inc (p , subst is-invertible eq id-invertible)
