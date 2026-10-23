@@ -81,7 +81,7 @@ product projections from $\Sets$, and the pairing $\langle f, g \rangle$
 is, componentwise, pairing.
 
 ```agda
-_×PSh_ : ⌞ PSh κ C ⌟ → ⌞ PSh κ C ⌟ → ⌞ PSh κ C ⌟
+_×PSh_ : ∀ {κ'} → ⌞ PSh κ' C ⌟ → ⌞ PSh κ C ⌟ → ⌞ PSh (κ ⊔ κ') C ⌟
 (A ×PSh B) .F₀ x = el! (∣ A .F₀ x ∣ × ∣ B .F₀ x ∣)
 (A ×PSh B) .F₁ f (x , y) = A .F₁ f x , B .F₁ f y
 (A ×PSh B) .F-id i (x , y) = A .F-id i x , B .F-id i y

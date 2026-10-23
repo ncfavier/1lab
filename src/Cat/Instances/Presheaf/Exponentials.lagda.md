@@ -18,18 +18,19 @@ import Cat.Reasoning as Cat
 -->
 
 ```agda
-module Cat.Instances.Presheaf.Exponentials {ℓ} (C : Precategory ℓ ℓ) where
+module Cat.Instances.Presheaf.Exponentials {o ℓ} (C : Precategory o ℓ) where
 ```
 
 <!--
 ```agda
 private
   module C = Cat C
-  module PSh = Cat (PSh ℓ C)
+  κ = o ⊔ ℓ
+  module PSh = Cat (PSh κ C)
 
-open Lim ℓ C
+open Lim κ C
 
-open Binary-products (PSh ℓ C) PSh-products
+open Binary-products (PSh κ C) PSh-products
 open Functor
 open _=>_
 open _⊣_
@@ -45,8 +46,8 @@ construction. First, fix a pair of presheaves $A$ and $B$ over some
 category $\cC$, and suppose that the exponential object $B^A$ exists.
 
 ```agda
-module _ (A B : Functor (C ^op) (Sets ℓ))
-         (exp : Exponential Cat[ C ^op , Sets ℓ ] PSh-cartesian A B)
+module _ (A B : Functor (C ^op) (Sets κ))
+         (exp : Exponential Cat[ C ^op , Sets κ ] PSh-cartesian A B)
   where
   open Exponential exp
 ```
@@ -58,11 +59,11 @@ this $\hom$-set is equivalent to $$ \hom(-, x) \times A \to B $$, and
 this essentially fixes the value of $B^A(c)$.
 
 ```agda
-  _ : ∀ x → ⌞ B^A .F₀ x ⌟ ≃ ((よ₀ C x ⊗₀ A) => B)
-  _ = λ x →
-    ⌞ B^A .F₀ x ⌟       ≃⟨ yo B^A , yo-is-equiv _ ⟩
-    (よ₀ C x => B^A)    ≃˘⟨ ƛ , lambda-is-equiv ⟩
-    (よ₀ C x ⊗₀ A) => B ≃∎
+  -- _ : ∀ x → ⌞ B^A .F₀ x ⌟ ≃ ((よ₀ C x ×PSh A) => B)
+  -- _ = λ x →
+  --   ⌞ B^A .F₀ x ⌟       ≃⟨ {!yo B^A , yo-is-equiv _!} ⟩
+  --   (よ₀ C x => B^A)    ≃˘⟨ {!ƛ , lambda-is-equiv!} ⟩
+  --   (よ₀ C x ×PSh A) => B ≃∎
 ```
 
 
@@ -81,7 +82,7 @@ and functoriality.
 
 ```agda
   PSh[_,_] : PSh.Ob
-  PSh[_,_] .F₀ c = el ((よ₀ C c ⊗₀ A) => B) Nat-is-set
+  PSh[_,_] .F₀ c = el ((よ₀ C c ×PSh A) => B) Nat-is-set
   PSh[_,_] .F₁ f nt .η i (g , x) = nt .η i (f C.∘ g , x)
   PSh[_,_] .F₁ f nt .is-natural x y g = funext λ (h , z) →
     nt .η y (f C.∘ h C.∘ g , A.₁ g z)    ≡⟨ ap (nt .η y) (Σ-pathp (C.assoc _ _ _) refl) ⟩
@@ -98,12 +99,12 @@ functorial in $B$, which is essentially symbol shuffling; and to show
 that this functor is right adjoint to the "product with $A$" functor.
 
 ```agda
-PSh-closed : Cartesian-closed (PSh ℓ C) PSh-cartesian
+PSh-closed : Cartesian-closed (PSh κ C) PSh-cartesian
 PSh-closed = cc where
-  cat = PSh ℓ C
+  cat = PSh κ C
 
   module _ (A : PSh.Ob) where
-    func : Functor (PSh ℓ C) (PSh ℓ C)
+    func : Functor (PSh κ C) (PSh κ C)
     func .F₀ = PSh[ A ,_]
     func .F₁ f .η i g .η j (h , x) = f .η _ (g .η _ (h , x))
     func .F₁ f .η i g .is-natural x y h = funext λ x →
@@ -125,6 +126,6 @@ PSh-closed = cc where
     adj .zig {A} = ext λ x _ _ → happly (F-id A) _ ,ₚ refl
     adj .zag {A} = ext λ _ x i f g j → x .η i (C.idr f j , g)
 
-  cc : Cartesian-closed (PSh ℓ C) PSh-cartesian
-  cc = product-adjoint→cartesian-closed (PSh ℓ C) _ func adj
+  cc : Cartesian-closed (PSh κ C) PSh-cartesian
+  cc = product-adjoint→cartesian-closed (PSh κ C) _ func adj
 ```
